@@ -10,6 +10,8 @@ Welcome to minihass's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   minihass
+
 
 
 Indices and tables
