@@ -1,13 +1,14 @@
-'''
+"""
 This module provides classes to define devices and entities to be exposed
 to Home Assistant over MQTT in CircuitPython, as well as methods to publish
 states and availability for those entities.
-'''
+"""
 from adafruit_minimqtt.adafruit_minimqtt import MQTT
 
+
 class Device:
-    '''A class representing a Home Assistant device
-    
+    """A class representing a Home Assistant device
+
     :param device_id: Gloablly unique identifier for the Home Assistant device
     :type device_id: str
     :param name: Device name
@@ -17,14 +18,14 @@ class Device:
     :param connections: List of tuples of Home Assistant device connections
         e.g. ``[('mac', 'de:ad:be:ef:d0:0d')]``
     :type connections: list[tuple(str, str)]
-    '''  
+    """
 
     def __init__(
-            self,
-            device_id: str = None,
-            name: str = None,
-            mqtt_client: MQTT = None,
-            connections: list[tuple[str, str]] = []
+        self,
+        device_id: str = None,
+        name: str = None,
+        mqtt_client: MQTT = None,
+        connections: list[tuple[str, str]] = [],
     ):
 
         self.device_id = device_id
@@ -33,28 +34,29 @@ class Device:
         self.connections = connections
 
     def announce(self, clean: bool = False):
-        '''Sends MQTT discovery messages for all device entities
+        """Sends MQTT discovery messages for all device entities
 
         :param clean: Remove previously discovered entites that are no longer
             present, defaults to False
         :type clean: bool, optional
         :raises NotImplementedError: Not done yet
-        '''
+        """
         raise NotImplementedError
 
+
 class _Entity:
-    '''Parent class representing a Home Assistant entity
+    """Parent class representing a Home Assistant entity
 
     :param name: Entity name
     :type name: str
-    '''
+    """
 
-    def __init__(self,name: str):
+    def __init__(self, name: str):
         pass
 
+
 class BinarySensor(_Entity):
-    '''Class representing a Home Assistant Binary Sensor
-    '''    
+    """Class representing a Home Assistant Binary Sensor"""
 
     # def __init__(
     #         self
