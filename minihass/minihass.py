@@ -5,7 +5,7 @@ states and availability for those entities.
 '''
 from adafruit_minimqtt.adafruit_minimqtt import MQTT
 
-class Device(object):
+class Device:
     '''A class representing a Home Assistant device
     
     :param device_id: Gloablly unique identifier for the Home Assistant device
@@ -17,29 +17,7 @@ class Device(object):
     :param connections: List of tuples of Home Assistant device connections
         e.g. ``[('mac', 'de:ad:be:ef:d0:0d')]``
     :type connections: list[tuple(str, str)]
-
-    Properties
-    ----------
-
-    device_id : str
-        Gloablly unique identifier for the Home Assistant device
-    name : str
-        Friendly name of the device
-    mqtt_client : adafruit_minimqtt.adafruit_minimqtt.MQTT
-        MMQTT object for communicating with Home Assistant
-    connections : list of (str, str)
-        List of Home Assistant Device Connections
-        e.g.: `[('mac', 'de:ad:be:ef:d0:0d')]`
-    entities : list of d
-        
-
-    Methods
-    -------
-
-    announce(clean: bool = False)
-        Sends MQTT discovery messages for all device entities
-
-    '''
+    '''  
 
     def __init__(
             self,
@@ -48,43 +26,37 @@ class Device(object):
             mqtt_client: MQTT = None,
             connections: list[tuple[str, str]] = []
     ):
+
         self.device_id = device_id
         self.name = name
         self.mqtt_client = mqtt_client
         self.connections = connections
 
     def announce(self, clean: bool = False):
+        '''Sends MQTT discovery messages for all device entities
+
+        :param clean: Remove previously discovered entites that are no longer
+            present, defaults to False
+        :type clean: bool, optional
+        :raises NotImplementedError: Not done yet
+        '''
         raise NotImplementedError
 
 class _Entity:
-    '''
-    Parent class for other component entities (sensor, binary_sensor, etc)
+    '''Parent class representing a Home Assistant entity
 
-    Attributes
-    ----------
-    
-    Methods
-    -------
+    :param name: Entity name
+    :type name: str
     '''
 
-    def __init__(
-            self
-    ):
+    def __init__(self,name: str):
         pass
 
 class BinarySensor(_Entity):
-    '''
-    Class representing a binary sensor.
+    '''Class representing a Home Assistant Binary Sensor
+    '''    
 
-    Attributes
-    ----------
-
-    Methods
-    -------
-
-    Also inherits attributes and methods from the base entity class:
-
-    '''
-    __doc__ += _Entity.__doc__
-
+    # def __init__(
+    #         self
+    # ):
     pass
