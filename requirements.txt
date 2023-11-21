@@ -1,39 +1,13 @@
-adafruit-blinka==8.25.0 ; python_version >= "3.10" and python_version < "4.0" \
-    --hash=sha256:4cae1655a60c341d97e59108c0fa4f3963e8373b6195381e3b7f76ce1f4c2a5b \
-    --hash=sha256:6ccb124143bfc1073af7225445c75781e5415ecb97484bd24a9e0d9dbfb90816
-adafruit-circuitpython-busdevice==5.2.6 ; python_version >= "3.10" and python_version < "4.0" \
-    --hash=sha256:9f25577843f0a338a0936a1b57436f4451f7783b38e3cf46160b6be78faeaa44 \
-    --hash=sha256:ed06f5552e5567b0c89589c5bc6ef3adcac67d59eb505ce9127af99f33c2bc90
-adafruit-circuitpython-minimqtt==7.4.4 ; python_version >= "3.10" and python_version < "4.0" \
-    --hash=sha256:4b5c9c95ec008d1ed1f8fcde55ea5a16be0ec0eaaaa3144dd7010c02838da023 \
-    --hash=sha256:ac262f0c29a4279a2a584421e898a772ac5aeab7c9ff51173db5659fcbcd5a75
-adafruit-circuitpython-requests==2.0.2 ; python_version >= "3.10" and python_version < "4.0" \
-    --hash=sha256:91e7634cd223ee3adf22ca3cf6e8f34713a56a3809031f37ec31b90a3a9f503f \
-    --hash=sha256:fec34d21be9d721a44bd1471e3651630eb7d394ce806de2fb39536dac73408aa
-adafruit-circuitpython-typing==1.9.5 ; python_version >= "3.10" and python_version < "4.0" \
-    --hash=sha256:02625de1f8fdeb42db5a88999d2dc7a905339b30c673f7a2d8608b840e8520cc \
-    --hash=sha256:6a2a7a4f60d54348f3c4aad8f4dd0d0f0aaf9c854ddd1761b20d5146440faa1d
-adafruit-platformdetect==3.54.0 ; python_version >= "3.10" and python_version < "4.0" \
-    --hash=sha256:3fe7fb781a83d3f28812bcbff34edd4100afb68901d9c62ee22d07e824d82168 \
-    --hash=sha256:fecae7a6612bbcd32d1f40c2d2f1aa263c554be5e52cc6fa4eebaf8b80c33519
-adafruit-pureio==1.1.11 ; python_version >= "3.10" and python_version < "4.0" \
-    --hash=sha256:281ab2099372cc0decc26326918996cbf21b8eed694ec4764d51eefa029d324e \
-    --hash=sha256:c4cfbb365731942d1f1092a116f47dfdae0aef18c5b27f1072b5824ad5ea8c7c
-contextlib2==21.6.0 ; python_version >= "3.10" and python_version < "4.0" \
-    --hash=sha256:3fbdb64466afd23abaf6c977627b75b6139a5a3e8ce38405c5b413aed7a0471f \
-    --hash=sha256:ab1e2bfe1d01d968e1b7e8d9023bc51ef3509bba217bb730cee3827e1ee82869
-pyftdi==0.55.0 ; python_version >= "3.10" and python_version < "4.0" \
-    --hash=sha256:6af7b6c73da1256fd5140076fe77a616c13e44dd0779dd561dac1b5981dbd43f \
-    --hash=sha256:a747bbbccc4eeea26cefa2c8bd3d2b8bef8c94ecb6969bb9c75a63640887519a
-pyserial==3.5 ; python_version >= "3.10" and python_version < "4.0" \
-    --hash=sha256:3c77e014170dfffbd816e6ffc205e9842efb10be9f58ec16d3e8675b4925cddb \
-    --hash=sha256:c4451db6ba391ca6ca299fb3ec7bae67a5c55dde170964c7a14ceefec02f2cf0
-pyusb==1.2.1 ; python_version >= "3.10" and python_version < "4.0" \
-    --hash=sha256:2b4c7cb86dbadf044dfb9d3a4ff69fd217013dbe78a792177a3feb172449ea36 \
-    --hash=sha256:a4cc7404a203144754164b8b40994e2849fde1cfff06b08492f12fff9d9de7b9
-schema==0.7.5 ; python_version >= "3.10" and python_version < "4.0" \
-    --hash=sha256:f06717112c61895cabc4707752b88716e8420a8819d71404501e114f91043197 \
-    --hash=sha256:f3ffdeeada09ec34bf40d7d79996d9f7175db93b7a5065de0faa7f41083c1e6c
-typing-extensions==4.8.0 ; python_version >= "3.10" and python_version < "4.0" \
-    --hash=sha256:8f92fc8806f9a6b641eaa5318da32b44d401efaac0f6678c9bc448ba3605faa0 \
-    --hash=sha256:df8e4339e9cb77357558cbdbceca33c303714cf861d1eef15e1070055ae8b7ef
+adafruit-blinka==8.25.0 ; python_version >= "3.10" and python_version < "4.0"
+adafruit-circuitpython-busdevice==5.2.6 ; python_version >= "3.10" and python_version < "4.0"
+adafruit-circuitpython-minimqtt==7.4.4 ; python_version >= "3.10" and python_version < "4.0"
+adafruit-circuitpython-requests==2.0.2 ; python_version >= "3.10" and python_version < "4.0"
+adafruit-circuitpython-typing==1.9.5 ; python_version >= "3.10" and python_version < "4.0"
+adafruit-platformdetect==3.54.0 ; python_version >= "3.10" and python_version < "4.0"
+adafruit-pureio==1.1.11 ; python_version >= "3.10" and python_version < "4.0"
+contextlib2==21.6.0 ; python_version >= "3.10" and python_version < "4.0"
+pyftdi==0.55.0 ; python_version >= "3.10" and python_version < "4.0"
+pyserial==3.5 ; python_version >= "3.10" and python_version < "4.0"
+pyusb==1.2.1 ; python_version >= "3.10" and python_version < "4.0"
+schema==0.7.5 ; python_version >= "3.10" and python_version < "4.0"
+typing-extensions==4.8.0 ; python_version >= "3.10" and python_version < "4.0"
