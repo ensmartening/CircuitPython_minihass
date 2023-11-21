@@ -10,9 +10,9 @@ class Device:
     """A class representing a Home Assistant device
 
     :param device_id: Gloablly unique identifier for the Home Assistant device
-    :type device_id: str
+    :type device_id: str, optional
     :param name: Device name
-    :type name: str
+    :type name: str, optional
     :param mqtt_client: MMQTT object for communicating wiht Home Assistant
     :type mqtt_client: adafruit_minimqtt.adafruit_minimqtt.MQTT
     :param connections: List of tuples of Home Assistant device connections
@@ -22,9 +22,9 @@ class Device:
 
     def __init__(
         self,
-        device_id: str = None,
-        name: str = None,
-        mqtt_client: MQTT = None,
+        device_id: str = "",
+        name: str = "",
+        mqtt_client: MQTT = "",
         connections: list[tuple[str, str]] = [],
     ):
 
