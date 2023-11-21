@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../well-monitor"
+		}
+	],
+	"settings": {
+		"esbonio.sphinx.confDir": ""
+	}
+}
