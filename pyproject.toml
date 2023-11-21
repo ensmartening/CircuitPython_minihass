@@ -8,8 +8,6 @@ readme = "README.rst"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-adafruit-circuitpython-minimqtt = "^7.4.3"
-schema = "^0.7.5"
 
 [tool.poetry.group.docs]
 optional = true
