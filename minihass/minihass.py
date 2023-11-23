@@ -46,21 +46,28 @@ class Device:
 
 
 class _Entity:
-    """Parent class representing a Home Assistant entity
-
-    :param name: Entity name
-    :type name: str
-    """
+    """Parent class representing a Home Assistant entity"""
 
     def __init__(self, **kwargs):
-        if kwargs["category"]:
+        """init summary
+
+        :param name: foo
+        :type name: bar
+        """
+        if "category" in kwargs:
             self.category = validators.validate_entity_category(kwargs["category"])
 
     pass
 
 
 class BinarySensor(_Entity):
-    """Class representing a Home Assistant Binary Sensor"""
+    """Class representing a Home Assistant Binary Sensor
+
+    :param name: Entity name
+    :type name: str
+    :param category: Entity category
+    :type category: str, optional
+    """
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
