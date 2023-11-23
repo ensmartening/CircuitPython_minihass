@@ -4,6 +4,7 @@ to Home Assistant over MQTT in CircuitPython, as well as methods to publish
 states and availability for those entities.
 """
 from adafruit_minimqtt.adafruit_minimqtt import MQTT
+from . import _validators as validators
 
 
 class Device:
@@ -51,12 +52,16 @@ class _Entity:
     :type name: str
     """
 
-    def __init__(self, name: str):
-        pass
+    def __init__(self, **kwargs):
+        if kwargs["category"]:
+            self.category = validators.validate_entity_category(kwargs["category"])
+
+    pass
 
 
 class BinarySensor(_Entity):
     """Class representing a Home Assistant Binary Sensor"""
 
     def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         pass
