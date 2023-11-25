@@ -1,6 +1,7 @@
 """ Module to provide classes and methods to communicate with
 Home Assistant over MQTT, intended for use with CircuitPython
 """
-from .minihass import Device, BinarySensor
+from .binary_sensor import BinarySensor
+from .device import Device
 
 __all__ = ("Device", "BinarySensor")

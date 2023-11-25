@@ -21,3 +21,13 @@ def validate_entity_category(category: str) -> str:
         )
 
     return category
+
+
+def validate_string_or_none(param: str | type(None)) -> str | type(None):
+    if not isinstance(param, (str, type(None))):
+        raise TypeError
+
+    if param == "":
+        param = None
+
+    return param
