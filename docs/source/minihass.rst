@@ -6,4 +6,3 @@ Module contents
 
 .. automodule:: minihass
    :members:
-   :undoc-members:

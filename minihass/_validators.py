@@ -24,7 +24,7 @@ def validate_entity_category(category: str) -> str:
 
 
 def validate_string(param, none_ok: bool = False) -> str | type(None):
-    """ Validates where the entry is a non-null string. If `none_ok` is set to `True`,
+    """Validates that the entry is a non-null string. If `none_ok` is set to `True`,
         then `None` values are also accepted.
     :param param: Parameter to validate
     :param none_ok: True if `None` is a valid parameter, defaults to `False`
@@ -48,6 +48,13 @@ def validate_string(param, none_ok: bool = False) -> str | type(None):
 
 
 def validate_bool(param) -> bool:
+    '''Validates that the entry is a `bool`. `None` is returned as `False`.
+
+    :param param: Parameter to validate
+    :raises TypeError: On a type that is not `bool` or `None`
+    :return: Validate parameter
+    :rtype: bool
+    '''
     if not isinstance(param, (bool, type(None))):
         raise TypeError
 

@@ -1,5 +1,6 @@
 import sys
 import os
+import minihass
 
 sys.path.insert(0, os.path.abspath("../"))
 # Configuration file for the Sphinx documentation builder.
@@ -24,6 +25,7 @@ templates_path = ["_templates"]
 exclude_patterns = []
 autoclass_content = "both"
 intersphinx_mapping = {
+    "python": ("https://docs.python.org/3", None),
     "mmqtt": ("https://docs.circuitpython.org/projects/minimqtt/en/latest/", None)
 }
 # intersphinx_disabled_reftypes = ["*"]
