@@ -22,6 +22,7 @@ class _Entity:
     :param force_update: Send update events even when the state hasn't changed, defaults to `false`
     :type force_update: bool, optional
     :param enabled_by_default: Specifies whether the entity should be enabled when it is first added, defaults to `false`
+    :type enabled_by_default: bool, optional
 
     """
 
@@ -29,7 +30,7 @@ class _Entity:
         """Base entity class"""
 
         self.name = (
-            validators.validate_string_or_none(kwargs["name"])
+            validators.validate_string(kwargs["name"], True)
             if "name" in kwargs
             else None
         )
@@ -40,19 +41,38 @@ class _Entity:
             else None
         )
 
-    pass
+        self.object_id = (
+            validators.validate_string(kwargs["object_id"], True)
+            if "object_id" in kwargs
+            else None
+        )
+
+        self.unique_id_prefix = (
+            validators.validate_string(kwargs["unique_id"], True)
+            if "unique_id" in kwargs
+            else None
+        )
+
+        self.icon = (
+            validators.validate_string(kwargs["icon"], True)
+            if "icon" in kwargs
+            else None
+        )
+
+        self.force_update = (
+            validators.validate_bool(kwargs["force_update"])
+            if "force_update" in kwargs
+            else None
+        )
+
+        self.enabled_by_default = (
+            validators.validate_bool(kwargs["enabled_by_default"])
+            if "enabled_by_default" in kwargs
+            else None
+        )
 
 
 class _CommandEntity(_Entity):
     """Parent class representing a Home Assistant Entity that accepts commands"""
-
-    def __init__(self, **kwargs):
-        """init summary
-
-        :param name: foo
-        :type name: bar
-        """
-        if "category" in kwargs:
-            self.category = validators.validate_entity_category(kwargs["category"])
 
     pass

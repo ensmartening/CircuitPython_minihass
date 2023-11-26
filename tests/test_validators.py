@@ -10,9 +10,21 @@ def test_validate_entity_category():
     assert validators.validate_entity_category("config") == "config"  # valid option
 
 
-def test_validate_string_or_none():
+def test_validate_string():
     with pytest.raises(TypeError):
-        o = validators.validate_string_or_none(1)  # invalid type
-    assert validators.validate_string_or_none(None) == None  # valid type
-    assert validators.validate_string_or_none("foo") == "foo"  # valid string
-    assert validators.validate_string_or_none("") == None  # Null string is None
+        o = validators.validate_string(1)  # invalid type, integer
+    with pytest.raises(TypeError):
+        o = validators.validate_string(None)  # invalid type, Not not allowed
+    with pytest.raises(ValueError):
+        o = validators.validate_string("")  # invalid type, Null string not allowed
+    assert validators.validate_string(None, True) == None  # valid type
+    assert validators.validate_string("foo") == "foo"  # valid string
+    assert validators.validate_string("", True) == None  # Null string is None
+
+
+def test_validate_bool():
+    with pytest.raises(TypeError):
+        o = validators.validate_bool(1)  # invalid type
+    assert validators.validate_bool(True) == True  # Valid bool
+    assert validators.validate_bool(False) == False  # valid string
+    assert validators.validate_bool(None) == False  # None is False

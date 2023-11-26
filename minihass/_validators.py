@@ -23,11 +23,32 @@ def validate_entity_category(category: str) -> str:
     return category
 
 
-def validate_string_or_none(param: str | type(None)) -> str | type(None):
-    if not isinstance(param, (str, type(None))):
+def validate_string(param, none_ok: bool = False) -> str | type(None):
+    """ Validates where the entry is a non-null string. If `none_ok` is set to `True`,
+        then `None` values are also accepted.
+    :param param: Parameter to validate
+    :param none_ok: True if `None` is a valid parameter, defaults to `False`
+    :raises TypeError: On a type that is not `str`, unless `none_ok` is `True`
+    :raises ValueError: On a null string
+    :return: Validated parameter
+    :rtype: str | bool
+    """
+    if param == None:
+        if not none_ok:
+            raise TypeError
+
+    elif isinstance(param, (str)):
+        if param == "" and not none_ok:
+            raise ValueError
+
+    else:
         raise TypeError
 
-    if param == "":
-        param = None
+    return param if param else None
 
-    return param
+
+def validate_bool(param) -> bool:
+    if not isinstance(param, (bool, type(None))):
+        raise TypeError
+
+    return param if param else False

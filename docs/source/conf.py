@@ -18,10 +18,15 @@ release = "0.1.0"
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ["sphinx.ext.autodoc"]
+extensions = ["sphinx.ext.autodoc", "sphinx.ext.intersphinx"]
 
 templates_path = ["_templates"]
 exclude_patterns = []
+autoclass_content = "both"
+intersphinx_mapping = {
+    "mmqtt": ("https://docs.circuitpython.org/projects/minimqtt/en/latest/", None)
+}
+# intersphinx_disabled_reftypes = ["*"]
 
 
 # -- Options for HTML output -------------------------------------------------
