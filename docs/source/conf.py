@@ -26,7 +26,7 @@ exclude_patterns = []
 autoclass_content = "both"
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
-    "mmqtt": ("https://docs.circuitpython.org/projects/minimqtt/en/latest/", None)
+    "mmqtt": ("https://docs.circuitpython.org/projects/minimqtt/en/latest/", None),
 }
 # intersphinx_disabled_reftypes = ["*"]
 

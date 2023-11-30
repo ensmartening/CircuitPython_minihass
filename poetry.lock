@@ -2,13 +2,13 @@
 
 [[package]]
 name = "adafruit-blinka"
-version = "8.25.0"
+version = "8.26.0"
 description = "CircuitPython APIs for non-CircuitPython versions of Python such as CPython on Linux and MicroPython."
 optional = false
 python-versions = ">=3.7.0"
 files = [
-    {file = "Adafruit-Blinka-8.25.0.tar.gz", hash = "sha256:4cae1655a60c341d97e59108c0fa4f3963e8373b6195381e3b7f76ce1f4c2a5b"},
-    {file = "Adafruit_Blinka-8.25.0-py3-none-any.whl", hash = "sha256:6ccb124143bfc1073af7225445c75781e5415ecb97484bd24a9e0d9dbfb90816"},
+    {file = "Adafruit-Blinka-8.26.0.tar.gz", hash = "sha256:3d6783456f0558633357ca8982f69400a9dc41e350ce8162a4f6adf9aa463a4f"},
+    {file = "Adafruit_Blinka-8.26.0-py3-none-any.whl", hash = "sha256:df833c5ffc2488a162e5e20745aac16f65df48f726570a710eecc8bdd4847439"},
 ]
 
 [package.dependencies]
@@ -34,13 +34,13 @@ adafruit-circuitpython-typing = "*"
 
 [[package]]
 name = "adafruit-circuitpython-minimqtt"
-version = "7.4.4"
+version = "7.5.3"
 description = "MQTT client library for CircuitPython"
 optional = false
 python-versions = "*"
 files = [
-    {file = "adafruit-circuitpython-minimqtt-7.4.4.tar.gz", hash = "sha256:4b5c9c95ec008d1ed1f8fcde55ea5a16be0ec0eaaaa3144dd7010c02838da023"},
-    {file = "adafruit_circuitpython_minimqtt-7.4.4-py3-none-any.whl", hash = "sha256:ac262f0c29a4279a2a584421e898a772ac5aeab7c9ff51173db5659fcbcd5a75"},
+    {file = "adafruit-circuitpython-minimqtt-7.5.3.tar.gz", hash = "sha256:2daf65c2a0132144c72d5503c3043b69077bc820f82ac96b6e9566e4e6a6e990"},
+    {file = "adafruit_circuitpython_minimqtt-7.5.3-py3-none-any.whl", hash = "sha256:e27eeb2b4547718672e503d8b158c448342cd33ad2be310834a2c260bf8682d4"},
 ]
 
 [package.dependencies]
@@ -79,13 +79,13 @@ typing-extensions = ">=4.0,<5.0"
 
 [[package]]
 name = "adafruit-platformdetect"
-version = "3.54.0"
+version = "3.55.0"
 description = "Platform detection for use by libraries like Adafruit-Blinka."
 optional = false
 python-versions = "*"
 files = [
-    {file = "Adafruit-PlatformDetect-3.54.0.tar.gz", hash = "sha256:3fe7fb781a83d3f28812bcbff34edd4100afb68901d9c62ee22d07e824d82168"},
-    {file = "Adafruit_PlatformDetect-3.54.0-py3-none-any.whl", hash = "sha256:fecae7a6612bbcd32d1f40c2d2f1aa263c554be5e52cc6fa4eebaf8b80c33519"},
+    {file = "Adafruit-PlatformDetect-3.55.0.tar.gz", hash = "sha256:39ccf92bbc356bc358a175e87fda513e35e1e9e418d18b9b8a0c8fd0358baf63"},
+    {file = "Adafruit_PlatformDetect-3.55.0-py3-none-any.whl", hash = "sha256:7484c4ab131a277f9397da8d6dba12b86064fe3d9729c365b455174d677e3060"},
 ]
 
 [[package]]
@@ -1011,13 +1011,13 @@ files = [
 
 [[package]]
 name = "tox"
-version = "4.11.3"
+version = "4.11.4"
 description = "tox is a generic virtualenv management and test command line tool"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "tox-4.11.3-py3-none-any.whl", hash = "sha256:599af5e5bb0cad0148ac1558a0b66f8fff219ef88363483b8d92a81e4246f28f"},
-    {file = "tox-4.11.3.tar.gz", hash = "sha256:5039f68276461fae6a9452a3b2c7295798f00a0e92edcd9a3b78ba1a73577951"},
+    {file = "tox-4.11.4-py3-none-any.whl", hash = "sha256:2adb83d68f27116812b69aa36676a8d6a52249cb0d173649de0e7d0c2e3e7229"},
+    {file = "tox-4.11.4.tar.gz", hash = "sha256:73a7240778fabf305aeb05ab8ea26e575e042ab5a18d71d0ed13e343a51d6ce1"},
 ]
 
 [package.dependencies]

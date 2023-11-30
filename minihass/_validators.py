@@ -48,13 +48,13 @@ def validate_string(param, none_ok: bool = False) -> str | type(None):
 
 
 def validate_bool(param) -> bool:
-    '''Validates that the entry is a `bool`. `None` is returned as `False`.
+    """Validates that the entry is a `bool`. `None` is returned as `False`.
 
     :param param: Parameter to validate
     :raises TypeError: On a type that is not `bool` or `None`
     :return: Validate parameter
     :rtype: bool
-    '''
+    """
     if not isinstance(param, (bool, type(None))):
         raise TypeError
 
