@@ -22,14 +22,14 @@ class Device:
         device_id: str = "",
         name: str = "",
         mqtt_client: MQTT = "",
-        connections: list[tuple[str, str]] = [],
-        entities: list[Entity] = [],
+        connections: list[tuple[str, str]] | None = None,
+        entities: list[Entity] | None = None,
     ):
         self.device_id = device_id
         self.name = name
         self.mqtt_client = mqtt_client
-        self.connections = connections
-        self._entities = entities
+        self.connections = connections if connections else []
+        self._entities = entities if entities else []
 
     @property
     def entities(self) -> list[Entity]:
