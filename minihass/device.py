@@ -1,5 +1,5 @@
 from adafruit_minimqtt.adafruit_minimqtt import MQTT
-from .entity import _Entity
+from .entity import Entity
 
 
 class Device:
@@ -23,7 +23,7 @@ class Device:
         name: str = "",
         mqtt_client: MQTT = "",
         connections: list[tuple[str, str]] = [],
-        entities: list[_Entity] = [],
+        entities: list[Entity] = [],
     ):
         self.device_id = device_id
         self.name = name
@@ -32,7 +32,7 @@ class Device:
         self._entities = entities
 
     @property
-    def entities(self) -> list["Entity"]:
+    def entities(self) -> list[Entity]:
         """List of entites associated with the device.
         Modify with :meth:`add_entity()` and :meth:`delete_entity()` methods.
 
@@ -42,7 +42,7 @@ class Device:
         print("in getter")
         return list(self._entities)
 
-    def announce(self, clean: bool = False):
+    def announce(self, clean: bool = False) -> bool:
         """Sends MQTT discovery messages for all device entities
 
         Args:
@@ -51,5 +51,10 @@ class Device:
 
         Raises:
             NotImplementedError : Not done yet
+
+        Returns:
+            bool : :class:`True` if announcement succeeds, :class:`False` otherwise.
         """
         raise NotImplementedError
+
+        return True

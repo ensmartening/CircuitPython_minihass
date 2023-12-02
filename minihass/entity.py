@@ -5,8 +5,9 @@ as well as components that accept commands (e.g. switches)
 from . import _validators as validators
 
 
-class _Entity:
-    """Parent class representing a Home Assistant entity
+class Entity(object):
+    """Parent class representing a Home Assistant entity. Cannot be instantiated
+    directly.
 
     Args:
         name (int, optional) : Entity Name. Can be null if only the device name is
@@ -27,6 +28,11 @@ class _Entity:
             sensor's state expires, if it's not updated. After expiry, the sensor's
             state becomes unavailable. Defaults to :class:`False`.
     """
+
+    def __new__(cls, *args, **kwargs):
+        if cls is Entity:
+            raise TypeError(f"only children of '{cls.__name__}' may be instantiated")
+        return object.__new__(cls)
 
     def __init__(self, **kwargs):
 
@@ -81,17 +87,19 @@ class _Entity:
 
     @availability.setter
     def availability(self, value: str):
-        validators.validate_bool(value)
-        self._availability = value
+        self._availability = validators.validate_bool(value)
         self.publish_availability()
 
-    def publish_availability(self):
-        """Explicitly publishes availability of the entity."""
+    def publish_availability(self) -> bool:
+        """Explicitly publishes availability of the entity.
+
+        Returns:
+            bool : :class:`True` if publishing succeeds, :class:`False` otherwise."""
         # TODO: Implement availability updates
-        pass
+        return True
 
 
-class _CommandEntity(_Entity):
+class _CommandEntity(Entity):
     """Parent class representing a Home Assistant Entity that accepts commands"""
 
     pass

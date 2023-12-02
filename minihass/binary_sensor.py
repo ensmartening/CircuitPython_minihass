@@ -1,11 +1,11 @@
 """Implements the binary_sensor MQTT component"""
-from .entity import _Entity
+from .entity import Entity
 from . import _validators as validators
 
 
-class BinarySensor(_Entity):
+class BinarySensor(Entity):
     """
-    Class representing a Home Assistant Binary Sensor entity
+    Class representing a Home Assistant Binary Sensor entity.
 
     Args:
         name (int, optional) : Entity Name. Can be null if only the device name is
