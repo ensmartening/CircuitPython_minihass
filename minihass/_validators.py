@@ -7,9 +7,11 @@ VALID_ENTITY_CATEGORIES = ["diagnostic", "config"]
 def validate_entity_category(category: str) -> str:
     """Validates that the entity category is an allowed value
 
-    :param category: Entity category to validate
-    :type category: str
-    :raises ValueError: The entity category is not valid
+    Args:
+        category (str) : Entity category to validate
+
+    Raises:
+        ValueError : The entity category is not valid
     """
 
     if not isinstance(category, (str, type(None))):
@@ -26,12 +28,18 @@ def validate_entity_category(category: str) -> str:
 def validate_string(param, none_ok: bool = False) -> str | type(None):
     """Validates that the entry is a non-null string. If `none_ok` is set to `True`,
         then `None` values are also accepted.
-    :param param: Parameter to validate
-    :param none_ok: True if `None` is a valid parameter, defaults to `False`
-    :raises TypeError: On a type that is not `str`, unless `none_ok` is `True`
-    :raises ValueError: On a null string
-    :return: Validated parameter
-    :rtype: str | bool
+
+    Args:
+        param (str): Parameter to validate
+        none_ok (bool, optional): True if `None` is a valid parameter, defaults to
+            `False`
+
+    Raises:
+        TypeError : On a type that is not `str`, unless `none_ok` is `True`
+        ValueError : On a null string
+
+    Returns:
+        Validated parameter
     """
     if param == None:
         if not none_ok:
@@ -48,14 +56,21 @@ def validate_string(param, none_ok: bool = False) -> str | type(None):
 
 
 def validate_bool(param, strict: bool = False) -> bool:
-    """Validates that the entry is a `bool`. `None` is returned as `False`.
+    """Validates that the entry is a :class:`bool`. :class:`None` is returned as
+    :class:`False`.
 
-    :param param: Parameter to validate
-    :raises TypeError: On a type that is not `bool` or `None`
-    :param strict: Disallow "truthy" or "falsy" values
-    :type strict: bool
-    :return: Validate parameter
-    :rtype: bool
+    Args:
+        param (bool) : Parameter to validate
+        strict (bool, optional) : Disallow "truthy" or "falsy" values, defaults to
+            :class:`False`
+
+    Raises:
+        TypeError: On a type that is not :class:`bool`, or :class:`None` if ``strict``
+            is set to :class:`True`
+
+    Returns:
+        Validated parameter
+
     """
     if strict and not isinstance(param, (bool, type(None))):
         raise TypeError(f"Expected bool, got {type(param).__name__}")
