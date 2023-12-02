@@ -24,7 +24,9 @@ def test_validate_string():
 
 def test_validate_bool():
     with pytest.raises(TypeError):
-        o = validators.validate_bool(1)  # invalid type
-    assert validators.validate_bool(True) == True  # Valid bool
-    assert validators.validate_bool(False) == False  # valid string
+        o = validators.validate_bool(1, True)  # invalid type
+    assert validators.validate_bool(0) == False  # falsy value
+    assert validators.validate_bool(1) == True  # truthy value
+    assert validators.validate_bool(True) == True  # valid bool
+    assert validators.validate_bool(False) == False  # valid bool
     assert validators.validate_bool(None) == False  # None is False

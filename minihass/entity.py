@@ -71,6 +71,17 @@ class _Entity:
             else None
         )
 
+        self._availability = False
+
+    @property
+    def availability(self):
+        return self._availability
+
+    @availability.setter
+    def availability(self, value: str):
+        validators.validate_bool(value)
+        self._availability = value
+
 
 class _CommandEntity(_Entity):
     """Parent class representing a Home Assistant Entity that accepts commands"""

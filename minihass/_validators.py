@@ -12,10 +12,10 @@ def validate_entity_category(category: str) -> str:
     :raises ValueError: The entity category is not valid
     """
 
-    if not isinstance(category, str):
-        raise TypeError(f"String expected, got {type(category).__name__}")
+    if not isinstance(category, (str, type(None))):
+        raise TypeError(f"String or None expected, got {type(category).__name__}")
 
-    if category not in VALID_ENTITY_CATEGORIES:
+    if category not in VALID_ENTITY_CATEGORIES + [None]:
         raise ValueError(
             f"Invalid entity category \"{category}\", must be one of ({'|'.join(VALID_ENTITY_CATEGORIES)})"
         )
@@ -47,15 +47,17 @@ def validate_string(param, none_ok: bool = False) -> str | type(None):
     return param if param else None
 
 
-def validate_bool(param) -> bool:
+def validate_bool(param, strict: bool = False) -> bool:
     """Validates that the entry is a `bool`. `None` is returned as `False`.
 
     :param param: Parameter to validate
     :raises TypeError: On a type that is not `bool` or `None`
+    :param strict: Disallow "truthy" or "falsy" values
+    :type strict: bool
     :return: Validate parameter
     :rtype: bool
     """
-    if not isinstance(param, (bool, type(None))):
+    if strict and not isinstance(param, (bool, type(None))):
         raise TypeError(f"Expected bool, got {type(param).__name__}")
 
-    return param if param else False
+    return True if param else False
