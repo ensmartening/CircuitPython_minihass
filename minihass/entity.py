@@ -102,6 +102,9 @@ class Entity(object):
     def publish_availability(self) -> bool:
         """Explicitly publishes availability of the entity.
 
+        This function is called automatically when :attr:`availability` property is
+        changed.
+
         Returns:
             bool : :class:`True` if successful.
         """
