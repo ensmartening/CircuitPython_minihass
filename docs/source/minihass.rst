@@ -6,3 +6,4 @@ Module contents
 
 .. automodule:: minihass
    :members:
+   :inherited-members:

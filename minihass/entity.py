@@ -65,22 +65,29 @@ class _Entity:
             else None
         )
 
-        self.enabled_by_default = (
+        self._availability = (
             validators.validate_bool(kwargs["enabled_by_default"])
             if "enabled_by_default" in kwargs
-            else None
+            else False
         )
 
         self._availability = False
 
     @property
-    def availability(self):
+    def availability(self) -> bool:
+        """Availability of the entity. Setting this property triggers :meth:`publish_availability()`"""
         return self._availability
 
     @availability.setter
     def availability(self, value: str):
         validators.validate_bool(value)
         self._availability = value
+        self.publish_availability()
+
+    def publish_availability(self):
+        """Explicitly publishes availability of the entity."""
+        # TODO: Implement availability updates
+        pass
 
 
 class _CommandEntity(_Entity):
