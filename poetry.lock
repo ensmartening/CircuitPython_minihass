@@ -79,13 +79,13 @@ typing-extensions = ">=4.0,<5.0"
 
 [[package]]
 name = "adafruit-platformdetect"
-version = "3.55.0"
+version = "3.56.0"
 description = "Platform detection for use by libraries like Adafruit-Blinka."
 optional = false
 python-versions = "*"
 files = [
-    {file = "Adafruit-PlatformDetect-3.55.0.tar.gz", hash = "sha256:39ccf92bbc356bc358a175e87fda513e35e1e9e418d18b9b8a0c8fd0358baf63"},
-    {file = "Adafruit_PlatformDetect-3.55.0-py3-none-any.whl", hash = "sha256:7484c4ab131a277f9397da8d6dba12b86064fe3d9729c365b455174d677e3060"},
+    {file = "Adafruit-PlatformDetect-3.56.0.tar.gz", hash = "sha256:3c0a5f3635bbb1f566613d0d7042ace4c6491bae4fed6439595a50b8e8fc115e"},
+    {file = "Adafruit_PlatformDetect-3.56.0-py3-none-any.whl", hash = "sha256:99eed5a2c0655ae05101c01f13889d12f09e058de2d81e5984861011490e3b81"},
 ]
 
 [[package]]
