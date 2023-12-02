@@ -13,7 +13,7 @@ def validate_entity_category(category: str) -> str:
     """
 
     if not isinstance(category, str):
-        raise TypeError
+        raise TypeError(f"String expected, got {type(category).__name__}")
 
     if category not in VALID_ENTITY_CATEGORIES:
         raise ValueError(
@@ -35,14 +35,14 @@ def validate_string(param, none_ok: bool = False) -> str | type(None):
     """
     if param == None:
         if not none_ok:
-            raise TypeError
+            raise TypeError("String expected, got None")
 
     elif isinstance(param, (str)):
         if param == "" and not none_ok:
-            raise ValueError
+            raise ValueError("Null string not allowed")
 
     else:
-        raise TypeError
+        raise TypeError(f"String expected, got {type(param).__name__}")
 
     return param if param else None
 
@@ -56,6 +56,6 @@ def validate_bool(param) -> bool:
     :rtype: bool
     """
     if not isinstance(param, (bool, type(None))):
-        raise TypeError
+        raise TypeError(f"Expected bool, got {type(param).__name__}")
 
     return param if param else False
