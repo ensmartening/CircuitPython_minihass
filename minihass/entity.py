@@ -6,8 +6,8 @@ from . import _validators as validators
 
 
 class Entity(object):
-    """Parent class representing a Home Assistant entity. Cannot be instantiated
-    directly.
+    """Parent class for child classes representing Home Assistant entities. Cannot be
+    instantiated directly.
 
     Args:
         name (int, optional) : Entity Name. Can be null if only the device name is
@@ -80,7 +80,7 @@ class Entity(object):
 
     @property
     def availability(self) -> bool:
-        """Availability of the entity. Setting this property triggers :meth:`publish_availability()`"""
+        """Availability of the entity. Setting this property triggers :meth:`publish_availability()`."""
         return self._availability
 
     @availability.setter

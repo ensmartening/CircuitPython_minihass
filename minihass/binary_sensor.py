@@ -13,15 +13,15 @@ class BinarySensor(Entity):
         entity_category (str, optional) : Set to specify `DIAGNOSTIC` or `CONFIG`
             entities.
         object_id (str, optional) : Set to generate ``entity_id`` from ``object_id``
-            instead of ``name``
+            instead of ``name``.
         unique_id_suffix (str, optional) : The entity's ``unique_id`` is genrated by
             concatenating ``name`` or ``object_id`` onto the device's unique
             identifier. Set to use a different string, or if ``name`` and ``object_id``
-            are both :class:`None`
+            are both :class:`None`.
         icon (str, optional) : Send update events even when the state hasn't changed,
-            defaults to :class:`False`
+            defaults to :class:`False`.
         force_update  (bool, optional) : Specifies whether the entity should be enabled
-            when it is first added, defaults to :class:`False`
+            when it is first added, defaults to :class:`False`.
         enabled_by_default (bool, optional) : Defines the number of seconds after the
             sensor's state expires, if it's not updated. After expiry, the sensor's
             state becomes unavailable. Defaults to :class:`False`.

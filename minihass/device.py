@@ -3,7 +3,7 @@ from .entity import Entity
 
 
 class Device:
-    """A class representing a Home Assistant device
+    """A class representing a Home Assistant device.
 
     Args:
         device_id (str, optional) : Gloablly unique identifier for the Home Assistant
@@ -37,19 +37,19 @@ class Device:
         Modify with :meth:`add_entity()` and :meth:`delete_entity()` methods.
 
         Returns:
-            list[Entity]: List of Entity subclasses
+            list[Entity]: List of Entity subclasses.
         """
         return list(self._entities)
 
     def announce(self, clean: bool = False) -> bool:
-        """Sends MQTT discovery messages for all device entities
+        """Sends MQTT discovery messages for all device entities.
 
         Args:
             clean (bool, optional) : Remove previously discovered entites that are no
-                longer present, defaults to :class:`False`
+                longer present. Defaults to :class:`False`.
 
         Raises:
-            NotImplementedError : Not done yet
+            NotImplementedError : Not done yet.
 
         Returns:
             bool : :class:`True` if announcement succeeds, :class:`False` otherwise.
