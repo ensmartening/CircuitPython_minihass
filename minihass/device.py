@@ -60,21 +60,18 @@ class Device:
         return list(self._entities)
 
     def announce(self, clean: bool = False) -> bool:
-        """Sends MQTT discovery messages for all device entities.
+        """Send MQTT discovery messages for all device entities.
 
         Used immediately after connnecting to the MQTT broker to configure the
         corresponding entities in Home Assistant. Individual entities can be announced
-        with their own :meth:`Entity.announce` methods.
+        with their own :meth:`Entity.announce()` methods.
 
         Args:
             clean (bool, optional) : Remove previously discovered entites that are no
                 longer present. Defaults to :class:`False`.
 
-        Raises:
-            NotImplementedError : Not done yet.
-
         Returns:
-            bool : :class:`True` if announcement succeeds, :class:`False` otherwise.
+            bool : :class:`True` if successful.
         """
         raise NotImplementedError
 

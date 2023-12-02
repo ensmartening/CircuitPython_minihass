@@ -12,6 +12,12 @@ def test_Entity():
     o.availability = False  # Set by property.setter
     assert not o.availability
 
+    # Unimplemented functions
+    with pytest.raises(NotImplementedError):
+        o.announce()
+    with pytest.raises(NotImplementedError):
+        o.publish_availability()
+
 
 def test_BinarySensor():
     o = minihass.BinarySensor(name="test", category="config")
@@ -36,5 +42,6 @@ def test_Device():
     l.append(g)
     l = o.entities
     assert g not in l
+
     with pytest.raises(NotImplementedError):
         o.announce()
