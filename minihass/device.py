@@ -30,7 +30,18 @@ class Device:
         self.name = name
         self.mqtt_client = mqtt_client
         self.connections = connections
-        self.entities = entities
+        self._entities = entities
+
+    @property
+    def entities(self) -> list["Entity"]:
+        """List of entites associated with the device.
+        Modify with :meth:`add_entity()` and :meth:`delete_entity()` methods.
+
+        Returns:
+            list[Entity]: List of Entity subclasses
+        """
+        print("in getter")
+        return list(self._entities)
 
     def announce(self, clean: bool = False):
         """Sends MQTT discovery messages for all device entities
