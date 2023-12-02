@@ -78,8 +78,6 @@ class Entity(object):
             else False
         )
 
-        self._availability = False
-
     @property
     def availability(self) -> bool:
         """Availability of the entity. Setting this property triggers :meth:`publish_availability()`"""

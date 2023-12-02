@@ -39,7 +39,6 @@ class Device:
         Returns:
             list[Entity]: List of Entity subclasses
         """
-        print("in getter")
         return list(self._entities)
 
     def announce(self, clean: bool = False) -> bool:
