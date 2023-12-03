@@ -2,8 +2,10 @@
 Defines base classes for components that only publish shates (e.g. sensors),
 as well as components that accept commands (e.g. switches)
 """
+from __future__ import annotations
 from . import _validators as validators
 import microcontroller
+import json
 
 
 class Entity(object):
@@ -12,11 +14,13 @@ class Entity(object):
 
     Args:
         name (int, optional) : Entity Name. Can be null if only the device name is
-            relevant.
+            relevant. One of ``name`` or ``object_id`` must be set.
+        device_class (str, optional) : Device class of the entity. Defaults to
+            :class:`None`
         entity_category (str, optional) : Set to specify `DIAGNOSTIC` or `CONFIG`
             entities.
         object_id (str, optional) : Set to generate ``entity_id`` from ``object_id``
-            instead of ``name``
+            instead of ``name``. One of ``name`` or ``object_id`` must be set.
         unique_id_suffix (str, optional) : The entity's ``unique_id`` is genrated by
             concatenating ``name`` or ``object_id`` onto the device's unique
             identifier. Set to use a different string, or if ``name`` and ``object_id``
@@ -35,7 +39,7 @@ class Entity(object):
     if hasattr(microcontroller, "cpu"):
         _chip_id = f"{int.from_bytes(microcontroller.cpu.uid, 'big'):x}"
     else:
-        _chip_id = "not_a_microcontroller"  # for testing
+        _chip_id = "1337d00d"  # for testing
 
     def __new__(cls, *args, **kwargs):
         if cls is Entity:  # Prevent instantiation of the base class
@@ -56,11 +60,22 @@ class Entity(object):
             else None
         )
 
-        self.object_id = (
-            validators.validate_string(kwargs["object_id"], none_ok=True)
-            if "object_id" in kwargs
+        self.device_class = (
+            validators.validate_entity_category(kwargs["device_class"])
+            if "device_class" in kwargs
             else None
         )
+
+        if kwargs["object_id"]:
+            self.object_id = (
+                f"{validators.validate_id_string(kwargs['object_id'])}{Entity._chip_id}"
+            )
+        elif kwargs["name"]:
+            self.object_id = (
+                f"{validators.validate_id_string(kwargs['name'])}{Entity._chip_id}"
+            )
+        else:
+            raise ValueError("One of name or object_id must be set")
 
         self.unique_id_prefix = (
             validators.validate_string(kwargs["unique_id"], none_ok=True)
@@ -96,14 +111,20 @@ class Entity(object):
         self._availability = validators.validate_bool(value)
         # self.publish_availability()
 
-    def announce(self) -> bool:
+    def announce(self, device: "Device") -> bool:
         """Send MQTT discovery message for this entity only.
+
+        Args:
+            device (Device) : Parent device of this entity
 
         Returns:
             bool: :class:`True` if successful.
         """
-        # TODO: Implement announcements
-        raise NotImplementedError
+
+        discovery_topic = f"{device.mqtt_discovery_prefix}/{self.COMPONENT}/{device.device_id}/{self.object_id}/config"
+        print(discovery_topic)
+        discovery_payload = {"name": self.name, "device_class": self.device_class}
+        print(json.dumps(discovery_payload))
 
         return True
 

@@ -1,5 +1,6 @@
 from adafruit_minimqtt.adafruit_minimqtt import MQTT
 from .entity import Entity
+from . import _validators as validators
 import microcontroller
 
 
@@ -14,11 +15,11 @@ class Device:
     objects in one instance of CircuitPython using this module.
 
     Args:
+        mqtt_client (adafruit_minimqtt.adafruit_minimqtt.MQTT) : MMQTT
+            object for communicating with Home Assistant.
         device_id (str, optional) : Gloablly unique identifier for the Home
             Assistant device. Auto-generated if not specified.
         name (str, optional) : Device name. Auto-generated if not specified.
-        mqtt_client (adafruit_minimqtt.adafruit_minimqtt.MQTT, optional) : MMQTT
-            object for communicating with Home Assistant. Defaults to ``""``.
         connections (list[tuple(str, str)], optiona;) : List of tuples of Home
             Assistant device connections e.g. ``[('mac', 'de:ad:be:ef:d0:0d')]``.
             Defaults to :class:`None`.
@@ -36,22 +37,35 @@ class Device:
     if hasattr(microcontroller, "cpu"):
         _chip_id = f"{int.from_bytes(microcontroller.cpu.uid, 'big'):x}"
     else:
-        _chip_id = "not_a_microcontroller"  # for testing
+        _chip_id = "1337d00d"  # for testing
 
     def __init__(
         self,
+        mqtt_client: MQTT = "",
         device_id: str = "",
         name: str = "",
-        mqtt_client: MQTT = "",
         connections: list[tuple[str, str]] | None = None,
         entities: list[Entity] | None = None,
+        mqtt_discovery_prefix: str = "homeassistant",
     ):
 
-        self.device_id = device_id
-        self.name = name
+        self.name = validators.validate_string(name) if name else f"MQTT Device"
+
+        if device_id:
+            self.device_id = (
+                f"{validators.validate_id_string(device_id)}{Device._chip_id}"
+            )
+        else:
+            self.device_id = (
+                f"{validators.validate_id_string(self.name)}{Device._chip_id}"
+            )
+
         self.mqtt_client = mqtt_client
         self.connections = connections if connections else []
         self._entities = entities if entities else []
+        self.mqtt_discovery_prefix = validators.validate_id_string(
+            mqtt_discovery_prefix
+        )
 
     @property
     def entities(self) -> list[Entity]:
@@ -79,6 +93,11 @@ class Device:
         Returns:
             bool : :class:`True` if successful.
         """
-        raise NotImplementedError
+        components = {entity.COMPONENT for entity in self._entities}
+
+        for component in components:
+
+            for entity in [x for x in self._entities if x.COMPONENT == component]:
+                entity.announce(self)
 
         return True

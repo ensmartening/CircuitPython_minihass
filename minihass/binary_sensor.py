@@ -12,6 +12,8 @@ class BinarySensor(Entity):
             relevant.
         entity_category (str, optional) : Set to specify `DIAGNOSTIC` or `CONFIG`
             entities.
+        device_class (str, optional) : `Device class <https://www.home-assistant.io/integrations/binary_sensor/#device-class>`
+            of the entity. Defaults to :class:`None`
         object_id (str, optional) : Set to generate ``entity_id`` from ``object_id``
             instead of ``name``.
         unique_id_suffix (str, optional) : The entity's ``unique_id`` is genrated by
@@ -30,10 +32,13 @@ class BinarySensor(Entity):
             state becomes unavailable. Defaults to :class:`False`.
     """
 
+    COMPONENT = "binary_sensor"
+
     def __init__(
         self,
         name: str = None,
         category: str = None,
+        device_class: str = None,
         object_id: str = None,
         unique_id_prefix: str = None,
         icon: str = None,
@@ -45,6 +50,7 @@ class BinarySensor(Entity):
         super().__init__(
             name=name,
             category=category,
+            device_class=device_class,
             object_id=object_id,
             unique_id_prefix=unique_id_prefix,
             icon=icon,
