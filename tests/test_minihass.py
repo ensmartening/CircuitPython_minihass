@@ -14,6 +14,8 @@ def test_Entity():
 
     # Unimplemented functions
     with pytest.raises(NotImplementedError):
+        o.announce()
+    with pytest.raises(NotImplementedError):
         o.publish_availability()
 
 
@@ -40,3 +42,6 @@ def test_Device():
     l.append(g)
     l = o.entities
     assert g not in l
+
+    with pytest.raises(NotImplementedError):
+        o.announce()
