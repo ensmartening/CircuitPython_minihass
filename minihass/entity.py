@@ -30,6 +30,8 @@ class Entity(object):
             state becomes unavailable. Defaults to :class:`False`.
     """
 
+    COMPONENT = None
+
     if hasattr(microcontroller, "cpu"):
         _chip_id = f"{int.from_bytes(microcontroller.cpu.uid, 'big'):x}"
     else:
