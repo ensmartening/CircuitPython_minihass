@@ -12,14 +12,15 @@ def test_validate_entity_category():
 
 def test_validate_string():
     with pytest.raises(TypeError):
-        o = validators.validate_string(1)  # invalid type, integer
+        o = validators.validate_string(1, strict=True)  # invalid type, integer
+    assert validators.validate_string(1) == "1"  # Non-strict
     with pytest.raises(TypeError):
         o = validators.validate_string(None)  # invalid type, Not not allowed
     with pytest.raises(ValueError):
         o = validators.validate_string("")  # invalid type, Null string not allowed
-    assert validators.validate_string(None, True) == None  # valid type
+    assert validators.validate_string(None, none_ok=True) == None  # valid type
     assert validators.validate_string("foo") == "foo"  # valid string
-    assert validators.validate_string("", True) == None  # Null string is None
+    assert validators.validate_string("", none_ok=True) == None  # Null string is None
 
 
 def test_validate_bool():

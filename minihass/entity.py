@@ -3,6 +3,7 @@ Defines base classes for components that only publish shates (e.g. sensors),
 as well as components that accept commands (e.g. switches)
 """
 from . import _validators as validators
+import microcontroller
 
 
 class Entity(object):
@@ -29,15 +30,20 @@ class Entity(object):
             state becomes unavailable. Defaults to :class:`False`.
     """
 
+    if hasattr(microcontroller, "cpu"):
+        _chip_id = f"{int.from_bytes(microcontroller.cpu.uid, 'big'):x}"
+    else:
+        _chip_id = "not_a_microcontroller"  # for testing
+
     def __new__(cls, *args, **kwargs):
-        if cls is Entity:
+        if cls is Entity:  # Prevent instantiation of the base class
             raise TypeError(f"only children of '{cls.__name__}' may be instantiated")
         return object.__new__(cls)
 
     def __init__(self, **kwargs):
 
         self.name = (
-            validators.validate_string(kwargs["name"], True)
+            validators.validate_string(kwargs["name"], none_ok=True)
             if "name" in kwargs
             else None
         )
@@ -49,19 +55,19 @@ class Entity(object):
         )
 
         self.object_id = (
-            validators.validate_string(kwargs["object_id"], True)
+            validators.validate_string(kwargs["object_id"], none_ok=True)
             if "object_id" in kwargs
             else None
         )
 
         self.unique_id_prefix = (
-            validators.validate_string(kwargs["unique_id"], True)
+            validators.validate_string(kwargs["unique_id"], none_ok=True)
             if "unique_id" in kwargs
             else None
         )
 
         self.icon = (
-            validators.validate_string(kwargs["icon"], True)
+            validators.validate_string(kwargs["icon"], none_ok=True)
             if "icon" in kwargs
             else None
         )

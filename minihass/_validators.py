@@ -1,6 +1,8 @@
 """Functions to validate various parameters passed to device and entity classes
 """
 
+import re
+
 VALID_ENTITY_CATEGORIES = ["diagnostic", "config"]
 
 
@@ -25,14 +27,19 @@ def validate_entity_category(category: str) -> str:
     return category
 
 
-def validate_string(param, none_ok: bool = False) -> str | type(None):
+def validate_string(
+    param, strict: bool = False, none_ok: bool = False
+) -> str | type(None):
     """Validates that the entry is a non-null string. If `none_ok` is set to `True`,
         then `None` values are also accepted.
 
     Args:
-        param (str): Parameter to validate
-        none_ok (bool, optional): True if `None` is a valid parameter, defaults to
-            `False`
+        param (str):  Parameter to validate
+        strict (bool) : When :class:`True`, return string representation of ``param``.
+            When :class:`False`, raises an exception if ``param`` is not a string.
+            Defaults to :class:`False`
+        none_ok (bool, optional) : :class:`True` if `None` is a valid parameter.
+            Defaults to :class:`False`
 
     Raises:
         TypeError : On a type that is not `str`, unless `none_ok` is `True`
@@ -44,15 +51,61 @@ def validate_string(param, none_ok: bool = False) -> str | type(None):
     if param == None:
         if not none_ok:
             raise TypeError("String expected, got None")
+        else:
+            return None
 
-    elif isinstance(param, (str)):
-        if param == "" and not none_ok:
+    if not isinstance(param, str):
+        if strict:
+            raise TypeError(f"String expected, got {type(param).__name__}")
+        else:
+            param = str(param)
+            print(param)
+
+    if param == "":
+        if none_ok:
+            return None
+        else:
             raise ValueError("Null string not allowed")
 
-    else:
-        raise TypeError(f"String expected, got {type(param).__name__}")
+    return param
 
-    return param if param else None
+
+def validate_hostname_string(param: str, strict: bool = False) -> str:
+    """Validates that the entry is a valid hostname.
+
+    If ``strict`` is :class:`False`, a normalized hostname is returned by stripping
+    non-alphanumeric characters and converting underscores or spaces to hyphens. If
+    ``strict`` is :class:`True`, an invalid hostname raises an exception.
+
+    Args:
+        param (str) : Hostname to validate
+        strict (bool) : When :class:`True`, disallow invalid hostnames. When
+            :class:`False`, convert ``param`` to a valid hostname. Defaults to
+            :class:`False`
+
+    Returns:
+        str: Normalized hostname
+
+    Raises:
+        ValueError : On an invalid hostname string when ``strict`` is :class:`True`, or
+            when the input string cannot be normalized to a hostname
+    """
+
+    if not isinstance(param, str):
+        raise TypeError(f"Expected str, got {type(param).__name__}")
+
+    if not strict:
+        param = re.sub(r"[^A-Za-z0-9-\ _]", "", param)  # Remove non-alphanumerics
+        param = re.sub(r"[\ _]+", "-", param)  # Underscores and spaces to hyphens
+        param = re.sub(r"^-|-$", "", param)  # First and last must be alphanumeric
+
+    if not re.fullmatch(r"^[A-Za-z0-9]+([A-Za-z0-9\-]*[A-Za-z0-9]$)*", param):
+        if strict:
+            raise ValueError("Invalid hostname")
+        else:
+            raise ValueError("Could not normalize string to valid hostname")
+
+    return param
 
 
 def validate_bool(param, strict: bool = False) -> bool:

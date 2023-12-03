@@ -1,5 +1,6 @@
 from adafruit_minimqtt.adafruit_minimqtt import MQTT
 from .entity import Entity
+import microcontroller
 
 
 class Device:
@@ -31,6 +32,11 @@ class Device:
         connections (list[tuple(str, str)]) : List of Home Aassistant device
             connections.
     """
+
+    if hasattr(microcontroller, "cpu"):
+        _chip_id = f"{int.from_bytes(microcontroller.cpu.uid, 'big'):x}"
+    else:
+        _chip_id = "not_a_microcontroller"  # for testing
 
     def __init__(
         self,
