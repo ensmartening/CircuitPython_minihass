@@ -94,17 +94,6 @@ class Entity(object):
         self._availability = validators.validate_bool(value)
         # self.publish_availability()
 
-    def announce(self) -> bool:
-        """Send MQTT discovery message for this entity only.
-
-        Returns:
-            bool: :class:`True` if successful.
-        """
-        # TODO: Implement announcements
-        raise NotImplementedError
-
-        return True
-
     def publish_availability(self) -> bool:
         """Explicitly publishes availability of the entity.
 
