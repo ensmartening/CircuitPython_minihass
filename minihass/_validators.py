@@ -108,6 +108,46 @@ def validate_hostname_string(param: str, strict: bool = False) -> str:
     return param
 
 
+def validate_id_string(param: str, strict: bool = False) -> str:
+    """Validates that the entry is a valid device or entity id.
+
+    If ``strict`` is :class:`False`, a normalized id is returned by stripping
+    non-alphanumeric characters, converting hyphens or spaces to underscores, and
+    converting to lowercase. If ``strict`` is :class:`True`, an invalid id raises an
+    exception.
+
+    Args:
+        param (str) : id to validate
+        strict (bool) : When :class:`True`, disallow invalid ids. When
+            :class:`False`, convert ``param`` to a valid id. Defaults to
+            :class:`False`.
+
+    Returns:
+        str: Normalized id.
+
+    Raises:
+        ValueError : On an invalid id string when ``strict`` is :class:`True`, or
+            when the input string cannot be normalized to a id.
+    """
+
+    if not isinstance(param, str):
+        raise TypeError(f"Expected str, got {type(param).__name__}")
+
+    if not strict:
+        param = param.lower()  # Lowercase
+        param = re.sub(r"[^a-z0-9-\ _]", "", param)  # Remove non-alphanumerics
+        param = re.sub(r"[\ -]+", "_", param)  # Spaces and hyphens to underscores
+        param = re.sub(r"^_|_$", "", param)  # First and last must be alphanumeric
+
+    if not re.fullmatch(r"^[a-z0-9]+([a-z0-9_]*[a-z0-9]$)*", param):
+        if strict:
+            raise ValueError("Invalid id")
+        else:
+            raise ValueError("Could not normalize string to valid id")
+
+    return param
+
+
 def validate_bool(param, strict: bool = False) -> bool:
     """Validates that the entry is a :class:`bool`. :class:`None` is returned as
     :class:`False`.
