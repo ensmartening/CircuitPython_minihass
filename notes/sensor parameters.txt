@@ -5,7 +5,6 @@ State classes:
 Common:
 enabled_by_default
 entity_category
-force_update
 icon
 attributes?
 name
@@ -16,11 +15,14 @@ Unidirectional:
 
 binary_sensor:
 expire_after
+force_update
+
 off_delay <don't implement>
 
 
 sensor:
 expire_after
+force_update
 suggested_display_precision
 state_class
 

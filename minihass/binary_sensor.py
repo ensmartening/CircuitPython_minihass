@@ -43,7 +43,7 @@ class BinarySensor(Entity):
         unique_id_prefix: str = None,
         icon: str = None,
         force_update: bool = False,
-        enabled_by_default: bool = False,
+        enabled_by_default: bool = True,
         expire_after: int = None,
     ):
 

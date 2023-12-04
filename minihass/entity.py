@@ -27,8 +27,6 @@ class Entity(object):
             are both :class:`None`
         icon (str, optional) : Send update events even when the state hasn't changed,
             defaults to :class:`False`
-        force_update  (bool, optional) : Specifies whether the entity should be enabled
-            when it is first added, defaults to :class:`False`
         enabled_by_default (bool, optional) : Defines the number of seconds after the
             sensor's state expires, if it's not updated. After expiry, the sensor's
             state becomes unavailable. Defaults to :class:`False`.
@@ -89,17 +87,13 @@ class Entity(object):
             else None
         )
 
-        self.force_update = (
-            validators.validate_bool(kwargs["force_update"])
-            if "force_update" in kwargs
-            else None
-        )
-
-        self._availability = (
+        self.enabled_by_default = (
             validators.validate_bool(kwargs["enabled_by_default"])
             if "enabled_by_default" in kwargs
-            else False
+            else True
         )
+
+        self._availability = False
 
     @property
     def availability(self) -> bool:
@@ -111,7 +105,7 @@ class Entity(object):
         self._availability = validators.validate_bool(value)
         # self.publish_availability()
 
-    def announce(self, device: "Device") -> bool:
+    def announce(self, device: "Device", payload_merge: dict = {}) -> bool:  # type: ignore (forward declaration)
         """Send MQTT discovery message for this entity only.
 
         Args:
@@ -123,7 +117,22 @@ class Entity(object):
 
         discovery_topic = f"{device.mqtt_discovery_prefix}/{self.COMPONENT}/{device.device_id}/{self.object_id}/config"
         print(discovery_topic)
-        discovery_payload = {"name": self.name, "device_class": self.device_class}
+        discovery_payload = {
+            "avty": [
+                {"t": f"{self.COMPONENT}/{self.object_id}/availability"},
+                {"t": f"device/{device.device_id}/availability"}
+            ],
+            "dev_cla": self.device_class,
+            "en": self.enabled_by_default,
+            "ent_cat": self.category,
+            "ic": self.icon,
+            "name": self.name,
+            "stat_t": f"device/{device.device_id}/state",
+            "val_tpl": f"{{{{ value_json.{self.object_id}}}}}"
+        }
+
+        discovery_payload.update(payload_merge)
+
         print(json.dumps(discovery_payload))
 
         return True
