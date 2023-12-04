@@ -3,8 +3,8 @@ import minihass
 
 
 def test_Entity():
-    with pytest.raises(TypeError):
-        o = minihass.Entity()
+    with pytest.raises(RuntimeError):
+        o = minihass.entity._Entity()
 
     o = minihass.BinarySensor(name="test")
     assert not o.availability  # Set by constructor

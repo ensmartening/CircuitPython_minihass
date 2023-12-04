@@ -1,5 +1,5 @@
 from adafruit_minimqtt.adafruit_minimqtt import MQTT
-from .entity import Entity
+from .entity import _Entity as Entity
 from . import _validators as validators
 import microcontroller
 

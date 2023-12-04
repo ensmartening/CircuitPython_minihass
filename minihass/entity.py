@@ -9,7 +9,7 @@ import json
 from os import getenv
 
 
-class Entity(object):
+class _Entity(object):
     """Parent class for child classes representing Home Assistant entities. Cannot be
     instantiated directly.
 
@@ -40,12 +40,10 @@ class Entity(object):
     else:
         _chip_id = "1337d00d"  # for testing
 
-    def __new__(cls, *args, **kwargs):
-        if cls is Entity:  # Prevent instantiation of the base class
-            raise TypeError(f"only children of '{cls.__name__}' may be instantiated")
-        return object.__new__(cls)
-
     def __init__(self, **kwargs):
+
+        if self.__class__ == _Entity:
+            raise RuntimeError("Entity class cannot be raised on its own")
 
         self.name = (
             validators.validate_string(kwargs["name"], none_ok=True)
@@ -66,12 +64,10 @@ class Entity(object):
         )
 
         if kwargs["object_id"]:
-            self.object_id = (
-                f"{validators.validate_id_string(kwargs['object_id'])}{Entity._chip_id}"
-            )
+            self.object_id = f"{validators.validate_id_string(kwargs['object_id'])}{_Entity._chip_id}"
         elif kwargs["name"]:
             self.object_id = (
-                f"{validators.validate_id_string(kwargs['name'])}{Entity._chip_id}"
+                f"{validators.validate_id_string(kwargs['name'])}{_Entity._chip_id}"
             )
         else:
             raise ValueError("One of name or object_id must be set")
@@ -161,7 +157,7 @@ class Entity(object):
         return True
 
 
-class _CommandEntity(Entity):
+class _CommandEntity(_Entity):
     """Parent class representing a Home Assistant Entity that accepts commands"""
 
     pass
