@@ -12,7 +12,7 @@ class BinarySensor(Entity):
             relevant.
         entity_category (str, optional) : Set to specify `DIAGNOSTIC` or `CONFIG`
             entities.
-        device_class (str, optional) : `Device class <https://www.home-assistant.io/integrations/binary_sensor/#device-class>`
+        device_class (str, optional) : `Device class <https://www.home-assistant.io/integrations/binary_sensor/#device-class>`_
             of the entity. Defaults to :class:`None`
         object_id (str, optional) : Set to generate ``entity_id`` from ``object_id``
             instead of ``name``.

@@ -16,8 +16,8 @@ class _Entity(object):
     Args:
         name (int, optional) : Entity Name. Can be null if only the device name is
             relevant. One of ``name`` or ``object_id`` must be set.
-        device_class (str, optional) : Device class of the entity. Defaults to
-            :class:`None`
+        device_class (str, optional) : `Device class <https://www.home-assistant.io/integrations/binary_sensor/#device-class>`_
+            of the entity. Defaults to :class:`None`
         entity_category (str, optional) : Set to specify `DIAGNOSTIC` or `CONFIG`
             entities.
         object_id (str, optional) : Set to generate ``entity_id`` from ``object_id``
