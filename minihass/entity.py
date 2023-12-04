@@ -22,10 +22,6 @@ class _Entity(object):
             entities.
         object_id (str, optional) : Set to generate ``entity_id`` from ``object_id``
             instead of ``name``. One of ``name`` or ``object_id`` must be set.
-        unique_id_suffix (str, optional) : The entity's ``unique_id`` is genrated by
-            concatenating ``name`` or ``object_id`` onto the device's unique
-            identifier. Set to use a different string, or if ``name`` and ``object_id``
-            are both :class:`None`
         icon (str, optional) : Send update events even when the state hasn't changed,
             defaults to :class:`False`
         enabled_by_default (bool, optional) : Defines the number of seconds after the
@@ -40,55 +36,34 @@ class _Entity(object):
     else:
         _chip_id = "1337d00d"  # for testing
 
-    def __init__(self, **kwargs):
+    def __init__(self,
+        name: str = None,
+        entity_category: str = None,
+        device_class: str = None,
+        object_id: str = None,
+        icon: str = None,
+        enabled_by_default: bool = True,):
 
         if self.__class__ == _Entity:
             raise RuntimeError("Entity class cannot be raised on its own")
 
-        self.name = (
-            validators.validate_string(kwargs["name"], none_ok=True)
-            if "name" in kwargs
-            else None
-        )
+        self.name = validators.validate_string(name, none_ok=True)
 
-        self.category = (
-            validators.validate_entity_category(kwargs["category"])
-            if "category" in kwargs
-            else None
-        )
+        self.entity_category = validators.validate_entity_category(entity_category)
 
-        self.device_class = (
-            validators.validate_string(kwargs["device_class"], none_ok=True)
-            if "device_class" in kwargs
-            else None
-        )
+        self.device_class = validators.validate_string(device_class, none_ok=True)
 
-        if kwargs["object_id"]:
-            self.object_id = f"{validators.validate_id_string(kwargs['object_id'])}{_Entity._chip_id}"
-        elif kwargs["name"]:
-            self.object_id = (
-                f"{validators.validate_id_string(kwargs['name'])}{_Entity._chip_id}"
-            )
+        if object_id:
+            self.object_id = f"{validators.validate_id_string(object_id)}{_Entity._chip_id}"
+        elif name:
+            self.object_id = f"{validators.validate_id_string(name)}{_Entity._chip_id}"
         else:
             raise ValueError("One of name or object_id must be set")
 
-        self.unique_id_prefix = (
-            validators.validate_string(kwargs["unique_id"], none_ok=True)
-            if "unique_id" in kwargs
-            else None
-        )
 
-        self.icon = (
-            validators.validate_string(kwargs["icon"], none_ok=True)
-            if "icon" in kwargs
-            else None
-        )
+        self.icon = validators.validate_string(icon, none_ok=True)
 
-        self.enabled_by_default = (
-            validators.validate_bool(kwargs["enabled_by_default"])
-            if "enabled_by_default" in kwargs
-            else True
-        )
+        self.enabled_by_default = validators.validate_bool(enabled_by_default)
 
         self._availability = False
 
@@ -129,7 +104,7 @@ class _Entity(object):
             },
             "dev_cla": self.device_class,
             "en": self.enabled_by_default,
-            "ent_cat": self.category,
+            "ent_cat": self.entity_category,
             "ic": self.icon,
             "name": self.name,
             "stat_t": f"device/{device.device_id}/state",
@@ -157,7 +132,7 @@ class _Entity(object):
         return True
 
 
-class _CommandEntity(_Entity):
-    """Parent class representing a Home Assistant Entity that accepts commands"""
+# class _CommandEntity(_Entity):
+#     """Parent class representing a Home Assistant Entity that accepts commands"""
 
-    pass
+#     pass

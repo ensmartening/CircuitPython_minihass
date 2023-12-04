@@ -1,5 +1,6 @@
 import pytest
 import minihass
+from inspect import signature
 
 
 def test_Entity():
@@ -19,9 +20,16 @@ def test_Entity():
 
 
 def test_BinarySensor():
-    o = minihass.BinarySensor(name="test", category="config")
+    o = minihass.BinarySensor(name="test", entity_category="config")
     assert isinstance(o, minihass.BinarySensor)
 
+def test_Entity_signatures():
+    # Verify that _Entity signature is a subset of all child classes
+    e = signature(minihass.entity._Entity)
+    for s in minihass.entity._Entity.__subclasses__():
+        sp = signature(s)
+        for p in e.parameters:
+            assert p in sp.parameters
 
 def test_Device():
     e = minihass.BinarySensor(name="foo")
