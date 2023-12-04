@@ -36,13 +36,15 @@ class Entity(object):
     else:
         _chip_id = "1337d00d"  # for testing
 
-    def __init__(self,
+    def __init__(
+        self,
         name: str = None,
         entity_category: str = None,
         device_class: str = None,
         object_id: str = None,
         icon: str = None,
-        enabled_by_default: bool = True,):
+        enabled_by_default: bool = True,
+    ):
 
         if self.__class__ == Entity:
             raise RuntimeError("Entity class cannot be raised on its own")
@@ -54,12 +56,13 @@ class Entity(object):
         self.device_class = validators.validate_string(device_class, none_ok=True)
 
         if object_id:
-            self.object_id = f"{validators.validate_id_string(object_id)}{Entity._chip_id}"
+            self.object_id = (
+                f"{validators.validate_id_string(object_id)}{Entity._chip_id}"
+            )
         elif name:
             self.object_id = f"{validators.validate_id_string(name)}{Entity._chip_id}"
         else:
             raise ValueError("One of name or object_id must be set")
-
 
         self.icon = validators.validate_string(icon, none_ok=True)
 
@@ -67,7 +70,7 @@ class Entity(object):
 
         self._availability = False
         self.component_config = {}
-        self.device_topic_path = ''
+        self.device_topic_path = ""
         self.device_config = {}
         self.state_topic = f"entity/{self.object_id}/state"
 
@@ -84,9 +87,6 @@ class Entity(object):
     def announce(self) -> bool:  # type: ignore (forward declaration)
         """Send MQTT discovery message for this entity only.
 
-        Args:
-            device (Device) : Parent device of this entity
-
         Returns:
             bool: :class:`True` if successful.
         """
@@ -94,9 +94,7 @@ class Entity(object):
         discovery_topic = f"homeassistant/{self.COMPONENT}/{self.device_topic_path}{self.object_id}/config"
         print(discovery_topic)
         discovery_payload = {
-            "avty": [
-                {"t": f"{self.COMPONENT}/{self.object_id}/availability"}
-            ],
+            "avty": [{"t": f"{self.COMPONENT}/{self.object_id}/availability"}],
             "dev_cla": self.device_class,
             "en": self.enabled_by_default,
             "ent_cat": self.entity_category,
@@ -105,9 +103,13 @@ class Entity(object):
             "stat_t": self.state_topic,
             "val_tpl": f"{{{{ value_json.{self.object_id}}}}}",
         }
+
+        print(f"device config: {self.device_config}")
         discovery_payload.update(self.device_config)
         if self.device_topic_path:
-            discovery_payload.avty.append({"t": f"device/{self.device_topic_path}availability"})
+            discovery_payload["avty"].append(
+                {"t": f"device/{self.device_topic_path}availability"}
+            )
         discovery_payload.update(self.component_config)
 
         print(json.dumps(discovery_payload))

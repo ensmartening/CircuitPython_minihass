@@ -71,7 +71,6 @@ class Device:
 
         self.mqtt_client = mqtt_client
         self.connections = connections if connections else []
-        self._entities = entities if entities else []
 
         self.device_config = {
             "dev": {
@@ -80,7 +79,12 @@ class Device:
                 "ids": [self.device_id],
                 "cns": self.connections,
             }
-        },
+        }
+
+        self._entities = []
+
+        for entity in entities:
+            self.add_entity(entity)
 
     @property
     def entities(self) -> list[Entity]:
@@ -105,7 +109,7 @@ class Device:
             self._entities.append(entity)
             entity.device_config = self.device_config
             entity.device_topic_path = f"{self.device_id}/"
-            entity.state_topic = f"device/{self.device_id}/state",
+            entity.state_topic = (f"device/{self.device_id}/state",)
             entity.announce()
         else:
             raise TypeError(f"Expected Entity, got {type(param).__name__}")
@@ -124,11 +128,8 @@ class Device:
         Returns:
             bool : :class:`True` if successful.
         """
-        components = {entity.COMPONENT for entity in self._entities}
 
-        for component in components:
-
-            for entity in [x for x in self._entities if x.COMPONENT == component]:
-                entity.announce()
+        for entity in [x for x in self._entities]:
+            entity.announce()
 
         return True
