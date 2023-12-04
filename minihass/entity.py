@@ -6,6 +6,7 @@ from __future__ import annotations
 from . import _validators as validators
 import microcontroller
 import json
+from os import getenv
 
 
 class Entity(object):
@@ -59,7 +60,7 @@ class Entity(object):
         )
 
         self.device_class = (
-            validators.validate_entity_category(kwargs["device_class"])
+            validators.validate_string(kwargs["device_class"], none_ok=True)
             if "device_class" in kwargs
             else None
         )
@@ -95,6 +96,8 @@ class Entity(object):
 
         self._availability = False
 
+        self.component_config = {}
+
     @property
     def availability(self) -> bool:
         """Availability of the entity. Setting this property triggers :meth:`publish_availability()`."""
@@ -105,7 +108,7 @@ class Entity(object):
         self._availability = validators.validate_bool(value)
         # self.publish_availability()
 
-    def announce(self, device: "Device", payload_merge: dict = {}) -> bool:  # type: ignore (forward declaration)
+    def announce(self, device: "Device") -> bool:  # type: ignore (forward declaration)
         """Send MQTT discovery message for this entity only.
 
         Args:
@@ -120,18 +123,24 @@ class Entity(object):
         discovery_payload = {
             "avty": [
                 {"t": f"{self.COMPONENT}/{self.object_id}/availability"},
-                {"t": f"device/{device.device_id}/availability"}
+                {"t": f"device/{device.device_id}/availability"},
             ],
+            "dev": {
+                "mf": device.manufacturer,
+                "hw": device.hw_version,
+                "ids": [device.device_id],
+                "cns": device.connections,
+            },
             "dev_cla": self.device_class,
             "en": self.enabled_by_default,
             "ent_cat": self.category,
             "ic": self.icon,
             "name": self.name,
             "stat_t": f"device/{device.device_id}/state",
-            "val_tpl": f"{{{{ value_json.{self.object_id}}}}}"
+            "val_tpl": f"{{{{ value_json.{self.object_id}}}}}",
         }
 
-        discovery_payload.update(payload_merge)
+        discovery_payload.update(self.component_config)
 
         print(json.dumps(discovery_payload))
 

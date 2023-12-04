@@ -59,3 +59,9 @@ class BinarySensor(Entity):
         )
 
         self.expire_after = validators.validate_bool(expire_after)
+        self.force_update = validators.validate_bool(force_update)
+
+        self.component_config = {
+            "expire_after": self.expire_after,
+            "force_update": self.force_update,
+        }

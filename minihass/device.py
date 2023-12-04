@@ -20,6 +20,10 @@ class Device:
         device_id (str, optional) : Gloablly unique identifier for the Home
             Assistant device. Auto-generated if not specified.
         name (str, optional) : Device name. Auto-generated if not specified.
+        manufacturer (str, optional) : Device manufacturer to appear in Home
+            Assistant's device registry. Defaults to :class:`None`
+        hw_version (str, optional) : Device hardware version to appear in Home
+            Assistant's device registry, Defaults to :class:`None`
         connections (list[tuple(str, str)], optiona;) : List of tuples of Home
             Assistant device connections e.g. ``[('mac', 'de:ad:be:ef:d0:0d')]``.
             Defaults to :class:`None`.
@@ -44,6 +48,8 @@ class Device:
         mqtt_client: MQTT = "",
         device_id: str = "",
         name: str = "",
+        manufacturer: str = None,
+        hw_version: str = None,
         connections: list[tuple[str, str]] | None = None,
         entities: list[Entity] | None = None,
         mqtt_discovery_prefix: str = "homeassistant",
@@ -59,6 +65,10 @@ class Device:
             self.device_id = (
                 f"{validators.validate_id_string(self.name)}{Device._chip_id}"
             )
+
+        self.manufacturer = validators.validate_string(manufacturer, none_ok=True)
+
+        self.hw_version = validators.validate_string(hw_version, none_ok=True)
 
         self.mqtt_client = mqtt_client
         self.connections = connections if connections else []

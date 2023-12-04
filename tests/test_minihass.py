@@ -6,11 +6,11 @@ def test_Entity():
     with pytest.raises(TypeError):
         o = minihass.Entity()
 
-    o = minihass.BinarySensor(name="test", enabled_by_default=True)
-    assert o.availability  # Set by constructor
+    o = minihass.BinarySensor(name="test")
+    assert not o.availability  # Set by constructor
 
-    o.availability = False  # Set by property.setter
-    assert not o.availability
+    o.availability = True  # Set by property.setter
+    assert o.availability
 
     assert o.announce(minihass.Device())
 
