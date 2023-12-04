@@ -5,7 +5,7 @@ from inspect import signature
 
 def test_Entity():
     with pytest.raises(RuntimeError):
-        o = minihass.entity._Entity()
+        o = minihass.entity.Entity()
 
     o = minihass.BinarySensor(name="test")
     assert not o.availability  # Set by constructor
@@ -13,7 +13,7 @@ def test_Entity():
     o.availability = True  # Set by property.setter
     assert o.availability
 
-    assert o.announce(minihass.Device())
+    assert o.announce()
 
     with pytest.raises(NotImplementedError):
         o.publish_availability()
@@ -25,8 +25,8 @@ def test_BinarySensor():
 
 def test_Entity_signatures():
     # Verify that _Entity signature is a subset of all child classes
-    e = signature(minihass.entity._Entity)
-    for s in minihass.entity._Entity.__subclasses__():
+    e = signature(minihass.entity.Entity)
+    for s in minihass.entity.Entity.__subclasses__():
         sp = signature(s)
         for p in e.parameters:
             assert p in sp.parameters

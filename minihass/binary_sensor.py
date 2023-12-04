@@ -1,5 +1,5 @@
 """Implements the binary_sensor MQTT component"""
-from .entity import _Entity as Entity
+from .entity import Entity
 from . import _validators as validators
 
 

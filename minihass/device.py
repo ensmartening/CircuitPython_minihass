@@ -1,5 +1,5 @@
 from adafruit_minimqtt.adafruit_minimqtt import MQTT
-from .entity import _Entity as Entity
+from .entity import Entity
 from . import _validators as validators
 import microcontroller
 
@@ -24,7 +24,7 @@ class Device:
             Assistant's device registry. Defaults to :class:`None`
         hw_version (str, optional) : Device hardware version to appear in Home
             Assistant's device registry, Defaults to :class:`None`
-        connections (list[tuple(str, str)], optiona;) : List of tuples of Home
+        connections (list[tuple(str, str)], optional) : List of tuples of Home
             Assistant device connections e.g. ``[('mac', 'de:ad:be:ef:d0:0d')]``.
             Defaults to :class:`None`.
         entities (list[Entity], optional) : List of entity objects to include as
@@ -52,7 +52,6 @@ class Device:
         hw_version: str = None,
         connections: list[tuple[str, str]] | None = None,
         entities: list[Entity] | None = None,
-        mqtt_discovery_prefix: str = "homeassistant",
     ):
 
         self.name = validators.validate_string(name) if name else f"MQTT Device"
@@ -73,9 +72,15 @@ class Device:
         self.mqtt_client = mqtt_client
         self.connections = connections if connections else []
         self._entities = entities if entities else []
-        self.mqtt_discovery_prefix = validators.validate_id_string(
-            mqtt_discovery_prefix
-        )
+
+        self.device_config = {
+            "dev": {
+                "mf": self.manufacturer,
+                "hw": self.hw_version,
+                "ids": [self.device_id],
+                "cns": self.connections,
+            }
+        },
 
     @property
     def entities(self) -> list[Entity]:
@@ -88,6 +93,22 @@ class Device:
             list[Entity]: List of Entity subclasses.
         """
         return list(self._entities)
+
+    def add_entity(self, entity):
+        """Add an entity to the device
+
+        Args:
+            Entity (Entity): Entity to add to the Home Assistant device
+        """
+
+        if isinstance(entity, Entity):
+            self._entities.append(entity)
+            entity.device_config = self.device_config
+            entity.device_topic_path = f"{self.device_id}/"
+            entity.state_topic = f"device/{self.device_id}/state",
+            entity.announce()
+        else:
+            raise TypeError(f"Expected Entity, got {type(param).__name__}")
 
     def announce(self, clean: bool = False) -> bool:
         """Send MQTT discovery messages for all device entities.
@@ -108,6 +129,6 @@ class Device:
         for component in components:
 
             for entity in [x for x in self._entities if x.COMPONENT == component]:
-                entity.announce(self)
+                entity.announce()
 
         return True

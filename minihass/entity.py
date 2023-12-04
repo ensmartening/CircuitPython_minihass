@@ -9,7 +9,7 @@ import json
 from os import getenv
 
 
-class _Entity(object):
+class Entity(object):
     """Parent class for child classes representing Home Assistant entities. Cannot be
     instantiated directly.
 
@@ -44,7 +44,7 @@ class _Entity(object):
         icon: str = None,
         enabled_by_default: bool = True,):
 
-        if self.__class__ == _Entity:
+        if self.__class__ == Entity:
             raise RuntimeError("Entity class cannot be raised on its own")
 
         self.name = validators.validate_string(name, none_ok=True)
@@ -54,9 +54,9 @@ class _Entity(object):
         self.device_class = validators.validate_string(device_class, none_ok=True)
 
         if object_id:
-            self.object_id = f"{validators.validate_id_string(object_id)}{_Entity._chip_id}"
+            self.object_id = f"{validators.validate_id_string(object_id)}{Entity._chip_id}"
         elif name:
-            self.object_id = f"{validators.validate_id_string(name)}{_Entity._chip_id}"
+            self.object_id = f"{validators.validate_id_string(name)}{Entity._chip_id}"
         else:
             raise ValueError("One of name or object_id must be set")
 
@@ -66,8 +66,10 @@ class _Entity(object):
         self.enabled_by_default = validators.validate_bool(enabled_by_default)
 
         self._availability = False
-
         self.component_config = {}
+        self.device_topic_path = ''
+        self.device_config = {}
+        self.state_topic = f"entity/{self.object_id}/state"
 
     @property
     def availability(self) -> bool:
@@ -79,7 +81,7 @@ class _Entity(object):
         self._availability = validators.validate_bool(value)
         # self.publish_availability()
 
-    def announce(self, device: "Device") -> bool:  # type: ignore (forward declaration)
+    def announce(self) -> bool:  # type: ignore (forward declaration)
         """Send MQTT discovery message for this entity only.
 
         Args:
@@ -89,28 +91,23 @@ class _Entity(object):
             bool: :class:`True` if successful.
         """
 
-        discovery_topic = f"{device.mqtt_discovery_prefix}/{self.COMPONENT}/{device.device_id}/{self.object_id}/config"
+        discovery_topic = f"homeassistant/{self.COMPONENT}/{self.device_topic_path}{self.object_id}/config"
         print(discovery_topic)
         discovery_payload = {
             "avty": [
-                {"t": f"{self.COMPONENT}/{self.object_id}/availability"},
-                {"t": f"device/{device.device_id}/availability"},
+                {"t": f"{self.COMPONENT}/{self.object_id}/availability"}
             ],
-            "dev": {
-                "mf": device.manufacturer,
-                "hw": device.hw_version,
-                "ids": [device.device_id],
-                "cns": device.connections,
-            },
             "dev_cla": self.device_class,
             "en": self.enabled_by_default,
             "ent_cat": self.entity_category,
             "ic": self.icon,
             "name": self.name,
-            "stat_t": f"device/{device.device_id}/state",
+            "stat_t": self.state_topic,
             "val_tpl": f"{{{{ value_json.{self.object_id}}}}}",
         }
-
+        discovery_payload.update(self.device_config)
+        if self.device_topic_path:
+            discovery_payload.avty.append({"t": f"device/{self.device_topic_path}availability"})
         discovery_payload.update(self.component_config)
 
         print(json.dumps(discovery_payload))
@@ -132,7 +129,7 @@ class _Entity(object):
         return True
 
 
-# class _CommandEntity(_Entity):
+# class _CommandEntity(Entity):
 #     """Parent class representing a Home Assistant Entity that accepts commands"""
 
 #     pass
