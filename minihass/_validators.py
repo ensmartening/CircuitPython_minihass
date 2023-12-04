@@ -99,7 +99,7 @@ def validate_hostname_string(param: str, strict: bool = False) -> str:
         param = re.sub(r"[\ _]+", "-", param)  # Underscores and spaces to hyphens
         param = re.sub(r"^-|-$", "", param)  # First and last must be alphanumeric
 
-    if not re.fullmatch(r"^[A-Za-z0-9]+([A-Za-z0-9\-]*[A-Za-z0-9]$)*", param):
+    if not re.match(r"(?:^[A-Za-z0-9](?:$|(?:[A-Za-z0-9-]*[A-Za-z0-9]$)+))", param):
         if strict:
             raise ValueError("Invalid hostname")
         else:
@@ -139,7 +139,7 @@ def validate_id_string(param: str, strict: bool = False) -> str:
         param = re.sub(r"[\ -]+", "_", param)  # Spaces and hyphens to underscores
         param = re.sub(r"^_|_$", "", param)  # First and last must be alphanumeric
 
-    if not re.fullmatch(r"^[a-z0-9]+([a-z0-9_]*[a-z0-9]$)*", param):
+    if not re.match(r"(?:^[a-z0-9](?:$|(?:[a-z0-9_]*[a-z0-9]$)+))", param):
         if strict:
             raise ValueError("Invalid id")
         else:
