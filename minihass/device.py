@@ -55,12 +55,10 @@ class Device:
         entities: list[Entity] = [],
     ):
 
-        self.name = validators.validate_string(name) if name else f"MQTT Device"
+        self.name = validators.validate_string(name) if name else "MQTT Device"
 
         if device_id:
-            self.device_id = (
-                f"{validators.validate_id_string(device_id)}{Device._chip_id}"
-            )
+            self.device_id = f"{validators.validate_id_string(device_id)}"
         else:
             self.device_id = f"{validators.validate_id_string(self.name)}{Device._chip_id}"  # type: ignore
 
