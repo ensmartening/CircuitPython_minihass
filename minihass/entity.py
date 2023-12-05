@@ -3,10 +3,13 @@ Defines base classes for components that only publish shates (e.g. sensors),
 as well as components that accept commands (e.g. switches)
 """
 from __future__ import annotations
-from . import _validators as validators
-import microcontroller
+
 import json
 from os import getenv
+
+import microcontroller
+
+from . import _validators as validators
 
 
 class Entity(object):

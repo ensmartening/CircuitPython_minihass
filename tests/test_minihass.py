@@ -1,6 +1,8 @@
-import pytest
-import minihass
 from inspect import signature
+
+import pytest
+
+import minihass
 
 
 def test_Entity():

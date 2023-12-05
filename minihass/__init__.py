@@ -2,8 +2,7 @@
 intended for use with CircuitPython.
 """
 from .binary_sensor import BinarySensor
-
-from .entity import Entity
 from .device import Device
+from .entity import Entity
 
 __all__ = ("Device", "BinarySensor", "Entity")

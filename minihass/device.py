@@ -1,7 +1,8 @@
-from adafruit_minimqtt.adafruit_minimqtt import MQTT
-from .entity import Entity
-from . import _validators as validators
 import microcontroller
+from adafruit_minimqtt.adafruit_minimqtt import MQTT
+
+from . import _validators as validators
+from .entity import Entity
 
 
 class Device:
