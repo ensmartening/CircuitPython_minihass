@@ -67,9 +67,7 @@ class Device:
             )
 
         self.manufacturer = validators.validate_string(manufacturer, none_ok=True)
-
         self.hw_version = validators.validate_string(hw_version, none_ok=True)
-
         self.mqtt_client = mqtt_client
         self.connections = connections if connections else []
 
@@ -81,7 +79,8 @@ class Device:
                 "cns": self.connections,
             }
         }
-
+        self.availability_topic = f"device/{self.device_id}/availability"
+        self.state_topic = f"device/{self.device_id}/state"
         self._entities = []
 
         for entity in entities:
@@ -99,21 +98,44 @@ class Device:
         """
         return list(self._entities)
 
-    def add_entity(self, entity):
+    def add_entity(self, entity: Entity) -> bool:
         """Add an entity to the device
 
         Args:
-            Entity (Entity): Entity to add to the Home Assistant device
+            Entity (Entity): Entity to add.
+
+        Returns:
+            bool: :class:`True` if the entity was added. :class:`False` if the entity
+                is already a member of the device.
         """
 
         if isinstance(entity, Entity):
-            self._entities.append(entity)
-            entity.device_config = self.device_config
-            entity.device_topic_path = f"{self.device_id}/"
-            entity.state_topic = (f"device/{self.device_id}/state",)
-            entity.announce()
+            if not entity in self._entities:
+                self._entities.append(entity)
+                entity.device = self
+                entity.announce()
+                return True
+            else:
+                return False
         else:
             raise TypeError(f"Expected Entity, got {type(param).__name__}")
+
+    def delete_entity(self, entity: Entity) -> bool:
+        """Delete an entity from the device
+
+        Args:
+            entity (Entity): Entity to delete.
+
+        Returns:
+            bool: :class:`True` if the entity is deleted, :class:`False` if the entity
+                was not a member of the device
+        """
+        if entity in self._entities:
+            self._entities.remove(entity)
+            entity.device = None
+            return True
+        else:
+            return False
 
     def announce(self, clean: bool = False) -> bool:
         """Send MQTT discovery messages for all device entities.

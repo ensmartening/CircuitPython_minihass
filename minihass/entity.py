@@ -8,6 +8,7 @@ import json
 from os import getenv
 
 import microcontroller
+from adafruit_minimqtt.adafruit_minimqtt import MQTT
 
 from . import _validators as validators
 
@@ -30,6 +31,9 @@ class Entity(object):
         enabled_by_default (bool, optional) : Defines the number of seconds after the
             sensor's state expires, if it's not updated. After expiry, the sensor's
             state becomes unavailable. Defaults to :class:`False`.
+        mqtt_client (adafruit_minimqtt.adafruit_minimqtt.MQTT, optional) : MMQTT object for
+            communicating with Home Assistant. If the entity is a member of a device,
+            the device's broker will be used instead.
     """
 
     COMPONENT = None
@@ -47,6 +51,8 @@ class Entity(object):
         object_id: str = None,
         icon: str = None,
         enabled_by_default: bool = True,
+        mqtt_client: MQTT = None
+
     ):
 
         if self.__class__ == Entity:
@@ -71,11 +77,11 @@ class Entity(object):
 
         self.enabled_by_default = validators.validate_bool(enabled_by_default)
 
+        self.mqtt_client = mqtt_client
+
         self._availability = False
         self.component_config = {}
-        self.device_topic_path = ""
-        self.device_config = {}
-        self.state_topic = f"entity/{self.object_id}/state"
+        self.device = None
 
     @property
     def availability(self) -> bool:
@@ -94,7 +100,13 @@ class Entity(object):
             bool: :class:`True` if successful.
         """
 
-        discovery_topic = f"homeassistant/{self.COMPONENT}/{self.device_topic_path}{self.object_id}/config"
+        if self.device:
+            discovery_topic = f"homeassistant/{self.COMPONENT}/{self.device.device_id}/{self.object_id}/config"
+            state_topic = self.device.state_topic
+        else:
+            discovery_topic = f"homeassistant/{self.COMPONENT}/{self.object_id}/config"
+            state_topic = f"entity/{self.object_id}/state"
+
         print(discovery_topic)
         discovery_payload = {
             "avty": [{"t": f"{self.COMPONENT}/{self.object_id}/availability"}],
@@ -103,17 +115,16 @@ class Entity(object):
             "ent_cat": self.entity_category,
             "ic": self.icon,
             "name": self.name,
-            "stat_t": self.state_topic,
+            "stat_t": state_topic,
             "val_tpl": f"{{{{ value_json.{self.object_id}}}}}",
         }
 
-        print(f"device config: {self.device_config}")
-        discovery_payload.update(self.device_config)
-        if self.device_topic_path:
-            discovery_payload["avty"].append(
-                {"t": f"device/{self.device_topic_path}availability"}
-            )
-        discovery_payload.update(self.component_config)
+        if self.device:
+            discovery_payload.update(self.device.device_config)
+            discovery_payload["avty"].append({"t": self.device.availability_topic})
+
+        if self.component_config:
+            discovery_payload.update(self.component_config)
 
         print(json.dumps(discovery_payload))
 
