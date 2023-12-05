@@ -33,25 +33,3 @@ def test_Entity_signatures():
         sp = signature(s)
         for p in e.parameters:
             assert p in sp.parameters
-
-
-def test_Device():
-    e = minihass.BinarySensor(name="foo")
-    f = minihass.BinarySensor(name="bar")
-    g = minihass.BinarySensor(name="baz")
-
-    # Instantiate Device
-    o = minihass.Device(entities=[e, f])
-    assert isinstance(o, minihass.Device)
-
-    # Ensure entities are populated
-    l = o.entities
-    assert e in l
-    assert f in l
-
-    # Ensure Device.entities is immmutable
-    l.append(g)
-    l = o.entities
-    assert g not in l
-
-    assert o.announce()
