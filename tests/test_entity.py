@@ -1,4 +1,3 @@
-from cgi import test
 from inspect import signature
 
 import pytest
