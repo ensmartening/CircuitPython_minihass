@@ -1,4 +1,6 @@
 """Implements the binary_sensor MQTT component"""
+from adafruit_minimqtt.adafruit_minimqtt import MQTT
+
 from . import _validators as validators
 from .entity import Entity
 
@@ -21,6 +23,9 @@ class BinarySensor(Entity):
         enabled_by_default (bool, optional) : Defines the number of seconds after the
             sensor's state expires, if it's not updated. After expiry, the sensor's
             state becomes unavailable. Defaults to :class:`False`.
+        mqtt_client (adafruit_minimqtt.adafruit_minimqtt.MQTT, optional) : MMQTT object for
+            communicating with Home Assistant. If the entity is a member of a device,
+            the device's broker will be used instead.
         force_update  (bool, optional) : Specifies whether the entity should be enabled
             when it is first added, defaults to :class:`False`.
         expire_after (bool, optional) : Defines the number of seconds after the
@@ -32,15 +37,16 @@ class BinarySensor(Entity):
 
     def __init__(
         self,
-        name: str = None,
-        entity_category: str = None,
-        device_class: str = None,
-        object_id: str = None,
-        icon: str = None,
+        name: str | None= None,
+        entity_category: str | None = None,
+        device_class: str | None = None,
+        object_id: str | None = None,
+        icon: str | None = None,
         enabled_by_default: bool = True,
+        mqtt_client: MQTT | None = None,
         # Component-specific arguments start here
         force_update: bool = False,
-        expire_after: int = None,
+        expire_after: int |None = None,
     ):
 
         super().__init__(

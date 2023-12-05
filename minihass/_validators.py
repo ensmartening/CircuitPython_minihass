@@ -6,7 +6,7 @@ import re
 VALID_ENTITY_CATEGORIES = ["diagnostic", "config"]
 
 
-def validate_entity_category(category: str) -> str:
+def validate_entity_category(category: str | None) -> str | None:
     """Validates that the entity category is an allowed value
 
     Args:
@@ -29,7 +29,7 @@ def validate_entity_category(category: str) -> str:
 
 def validate_string(
     param, strict: bool = False, none_ok: bool = False
-) -> str | type(None):
+) -> str | None:
     """Validates that the entry is a non-null string. If `none_ok` is set to `True`,
         then `None` values are also accepted.
 

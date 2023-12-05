@@ -45,13 +45,13 @@ class Entity(object):
 
     def __init__(
         self,
-        name: str = None,
-        entity_category: str = None,
-        device_class: str = None,
-        object_id: str = None,
-        icon: str = None,
+        name: str | None= None,
+        entity_category: str | None = None,
+        device_class: str | None = None,
+        object_id: str | None = None,
+        icon: str | None = None,
         enabled_by_default: bool = True,
-        mqtt_client: MQTT = None
+        mqtt_client: MQTT | None = None
 
     ):
 
@@ -89,7 +89,7 @@ class Entity(object):
         return self._availability
 
     @availability.setter
-    def availability(self, value: str):
+    def availability(self, value: bool):
         self._availability = validators.validate_bool(value)
         # self.publish_availability()
 
