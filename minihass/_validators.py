@@ -27,9 +27,7 @@ def validate_entity_category(category: str | None) -> str | None:
     return category
 
 
-def validate_string(
-    param, strict: bool = False, none_ok: bool = False
-) -> str | None:
+def validate_string(param, strict: bool = False, none_ok: bool = False) -> str | None:
     """Validates that the entry is a non-null string. If `none_ok` is set to `True`,
         then `None` values are also accepted.
 
