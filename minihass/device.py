@@ -46,13 +46,13 @@ class Device:
 
     def __init__(
         self,
-        mqtt_client: MQTT = "",
+        mqtt_client: MQTT | None = None,
         device_id: str = "",
         name: str = "",
-        manufacturer: str = None,
-        hw_version: str = None,
+        manufacturer: str | None = None,
+        hw_version: str | None = None,
         connections: list[tuple[str, str]] | None = None,
-        entities: list[Entity] | None = None,
+        entities: list[Entity] = [],
     ):
 
         self.name = validators.validate_string(name) if name else f"MQTT Device"
@@ -62,9 +62,7 @@ class Device:
                 f"{validators.validate_id_string(device_id)}{Device._chip_id}"
             )
         else:
-            self.device_id = (
-                f"{validators.validate_id_string(self.name)}{Device._chip_id}"
-            )
+            self.device_id = f"{validators.validate_id_string(self.name)}{Device._chip_id}"  # type: ignore
 
         self.manufacturer = validators.validate_string(manufacturer, none_ok=True)
         self.hw_version = validators.validate_string(hw_version, none_ok=True)
@@ -118,7 +116,7 @@ class Device:
             else:
                 return False
         else:
-            raise TypeError(f"Expected Entity, got {type(param).__name__}")
+            raise TypeError(f"Expected Entity, got {type(entity).__name__}")
 
     def delete_entity(self, entity: Entity) -> bool:
         """Delete an entity from the device

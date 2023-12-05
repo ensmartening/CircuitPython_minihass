@@ -80,7 +80,7 @@ class Entity(object):
 
         self._availability = False
         self.component_config = {}
-        self.device = None
+        self.device: "Device" | None = None  # type: ignore
 
     @property
     def availability(self) -> bool:
