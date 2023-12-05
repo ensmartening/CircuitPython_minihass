@@ -90,12 +90,23 @@ class Entity(object):
         self._availability = validators.validate_bool(value)
         # self.publish_availability()
 
-    def announce(self) -> bool:  # type: ignore (forward declaration)
+    def announce(self):
         """Send MQTT discovery message for this entity only.
 
-        Returns:
-            bool: :class:`True` if successful.
+        Raises:
+            ValueError : If the entity or its parent device does not have a valid
+                ``mqtt_client`` set.
+            RuntimeError : If the MQTT client is not connected
         """
+
+        if self.device:
+            self.mqtt_client = self.device.mqtt_client
+
+        if not isinstance(self.mqtt_client, MQTT):
+            raise ValueError("mqtt_client not set")
+
+        elif not self.mqtt_client.is_connected():
+            raise RuntimeError("mqtt_client not connected")
 
         if self.device:
             discovery_topic = f"homeassistant/{self.COMPONENT}/{self.device.device_id}/{self.object_id}/config"
@@ -113,7 +124,7 @@ class Entity(object):
             "ic": self.icon,
             "name": self.name,
             "stat_t": state_topic,
-            "val_tpl": f"{{{{ value_json.{self.object_id}}}}}",
+            "val_tpl": f"{{{{ value_json.{self.object_id} }}}}",
         }
 
         if self.device:
@@ -125,7 +136,9 @@ class Entity(object):
 
         print(json.dumps(discovery_payload))
 
-        return True
+        self.mqtt_client.publish(
+            discovery_topic, json.dumps(discovery_payload), True, 1
+        )
 
     def publish_availability(self) -> bool:
         """Explicitly publishes availability of the entity.

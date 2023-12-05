@@ -56,6 +56,7 @@ class BinarySensor(Entity):
             object_id=object_id,
             icon=icon,
             enabled_by_default=enabled_by_default,
+            mqtt_client=mqtt_client,
         )
 
         self.expire_after = validators.validate_bool(expire_after)

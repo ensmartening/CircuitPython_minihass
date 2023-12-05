@@ -1,1 +1,1 @@
-Device entity list... new class inheriting from collections.MutableSequence to make entities an attribute with its own add and delete functions
+Custom exceptions

@@ -44,7 +44,7 @@ class Device:
 
     def __init__(
         self,
-        mqtt_client: MQTT | None = None,
+        mqtt_client: MQTT,
         device_id: str = "",
         name: str = "",
         manufacturer: str | None = None,
