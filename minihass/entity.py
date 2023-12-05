@@ -40,8 +40,6 @@ class Entity(object):
 
     if hasattr(microcontroller, "cpu"):
         _chip_id = f"{int.from_bytes(microcontroller.cpu.uid, 'big'):x}"
-    else:
-        _chip_id = "1337d00d"  # for testing
 
     def __init__(
         self,
