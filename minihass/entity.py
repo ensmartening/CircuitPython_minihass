@@ -45,14 +45,13 @@ class Entity(object):
 
     def __init__(
         self,
-        name: str | None= None,
+        name: str | None = None,
         entity_category: str | None = None,
         device_class: str | None = None,
         object_id: str | None = None,
         icon: str | None = None,
         enabled_by_default: bool = True,
-        mqtt_client: MQTT | None = None
-
+        mqtt_client: MQTT | None = None,
     ):
 
         if self.__class__ == Entity:

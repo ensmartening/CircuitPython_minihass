@@ -37,7 +37,7 @@ class BinarySensor(Entity):
 
     def __init__(
         self,
-        name: str | None= None,
+        name: str | None = None,
         entity_category: str | None = None,
         device_class: str | None = None,
         object_id: str | None = None,
@@ -46,7 +46,7 @@ class BinarySensor(Entity):
         mqtt_client: MQTT | None = None,
         # Component-specific arguments start here
         force_update: bool = False,
-        expire_after: int |None = None,
+        expire_after: int | None = None,
     ):
 
         super().__init__(
