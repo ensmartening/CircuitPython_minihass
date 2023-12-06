@@ -57,6 +57,10 @@ def test_Entity_auto_device_id_fail(m):
     with pytest.raises(RuntimeError):
         minihass.Entity.chip_id()
 
+def test_Entity_no_name_or_device_id():
+    """Throw error when neither name nor object_id are set"""
+    with pytest.raises(ValueError):
+        minihass.BinarySensor()
 
 def test_Entity_signatures():
     """Verify that _Entity signature is a subset of all child classes"""
@@ -80,3 +84,16 @@ def test_Entity_announce(mqtt_client):
     expected_msg = '{"avty": [{"t": "binary_sensor/foo1337d00d/availability"}], "dev_cla": null, "en": true, "ent_cat": null, "ic": null, "name": "Foo", "stat_t": "entity/foo1337d00d/state", "val_tpl": "{{ value_json.foo1337d00d }}", "expire_after": false, "force_update": false}'
     e.announce()
     mqtt_client.publish.assert_called_with(expected_topic, expected_msg, True, 1)
+
+def test_Entity_announce_mqtt_client_disconnected(mqtt_client):
+    """Throw exception if MQTT client is not connected"""
+    e = minihass.BinarySensor(name="Foo", mqtt_client=mqtt_client)
+    mqtt_client.is_connected.return_value = False
+    with pytest.raises(RuntimeError):
+        e.announce()
+
+def test_Entity_announce_no_mqtt_client():
+    """Throw an error if announce is called without an MQTT client object"""
+    e = minihass.BinarySensor(name="Foo", mqtt_client=None)
+    with pytest.raises(ValueError):
+        e.announce()
