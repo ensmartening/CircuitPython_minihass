@@ -39,9 +39,6 @@ class Device:
             connections.
     """
 
-    if hasattr(microcontroller, "cpu"):
-        _chip_id = f"{int.from_bytes(microcontroller.cpu.uid, 'big'):x}"
-
     def __init__(
         self,
         mqtt_client: MQTT,
@@ -58,7 +55,7 @@ class Device:
         if device_id:
             self.device_id = f"{validators.validate_id_string(device_id)}"
         else:
-            self.device_id = f"{validators.validate_id_string(self.name)}{Device._chip_id}"  # type: ignore
+            self.device_id = f"{validators.validate_id_string(self.name)}{Entity.chip_id()}"  # type: ignore
 
         self.manufacturer = validators.validate_string(manufacturer, none_ok=True)
         self.hw_version = validators.validate_string(hw_version, none_ok=True)

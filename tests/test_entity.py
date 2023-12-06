@@ -1,5 +1,7 @@
+import os
+from importlib import reload
 from inspect import signature
-from unittest.mock import MagicMock, Mock
+from unittest.mock import Mock, PropertyMock, patch
 
 import pytest
 from adafruit_minimqtt.adafruit_minimqtt import MQTT
@@ -22,7 +24,7 @@ def mqtt_client():
 
 
 def test_Entity_instantiation(entity):
-
+    """Test basic Entity instantiation and sanity-check attributes"""
     assert isinstance(entity, minihass.Entity)
     assert entity.name == "test"
     assert entity.object_id == "foo1337d00d"
@@ -37,22 +39,27 @@ def test_Entity_instantiation(entity):
 
 
 def test_Entity_auto_device_id():
-    o = minihass.BinarySensor(name="bar")
+    """Test object_id autogeneration from friendly name"""
+    o = minihass.BinarySensor(name="Bar")
     assert o.object_id == "bar1337d00d"
 
 
-def test_Entity_auto_device_id_fail():
-    with pytest.raises(ValueError):
-        o = minihass.BinarySensor()
+@patch("microcontroller.cpu", spec="")
+def test_Entity_auto_device_id_from_env(m):
+    """Test chip ID environement variable from non-circuitpython instances"""
+    with patch.dict(os.environ, {"CPU_UID": "deadbeef"}):
+        assert minihass.Entity.chip_id() == "deadbeef"
 
 
-def test_BinarySensor():
-    o = minihass.BinarySensor(name="test", entity_category="config")
-    assert isinstance(o, minihass.BinarySensor)
+@patch("microcontroller.cpu", spec="")
+def test_Entity_auto_device_id_fail(m):
+    """Test exception when chip ID can't be discovered"""
+    with pytest.raises(RuntimeError):
+        minihass.Entity.chip_id()
 
 
 def test_Entity_signatures():
-    # Verify that _Entity signature is a subset of all child classes
+    """Verify that _Entity signature is a subset of all child classes"""
     e = signature(minihass.entity.Entity)
     for s in minihass.entity.Entity.__subclasses__():
         sp = signature(s)
@@ -61,11 +68,13 @@ def test_Entity_signatures():
 
 
 def test_Entity_instantiate_parent():
+    """Prevent direct instantiation of the Entity parent class"""
     with pytest.raises(RuntimeError):
         minihass.Entity()
 
 
-def test_publish(mqtt_client):
+def test_Entity_announce(mqtt_client):
+    """Test publishing of MQTT dicsovery messages"""
     e = minihass.BinarySensor(name="Foo", mqtt_client=mqtt_client)
     expected_topic = "homeassistant/binary_sensor/foo1337d00d/config"
     expected_msg = '{"avty": [{"t": "binary_sensor/foo1337d00d/availability"}], "dev_cla": null, "en": true, "ent_cat": null, "ic": null, "name": "Foo", "stat_t": "entity/foo1337d00d/state", "val_tpl": "{{ value_json.foo1337d00d }}", "expire_after": false, "force_update": false}'

@@ -38,14 +38,17 @@ class Entity(object):
 
     COMPONENT = None
 
-    try:
-        _chip_id = f"{int.from_bytes(microcontroller.cpu.uid, 'big'):x}"
-    except AttributeError as e:
-        _chip_id = getenv("CPU_UID")
-        if not _chip_id:
-            raise ValueError(
-                "Can't get cpu.uid from platform, and CPU_UID environment variable is not defined."
-            )
+    @classmethod
+    def chip_id(cls):
+        try:
+            _chip_id = f"{int.from_bytes(microcontroller.cpu.uid, 'big'):x}"
+        except AttributeError:
+            _chip_id = getenv("CPU_UID")
+            if not _chip_id:
+                raise RuntimeError(
+                    "Can't get cpu.uid from microcontroller, and CPU_UID environment variable is not defined."
+                )
+        return _chip_id
 
     def __init__(
         self,
@@ -69,10 +72,10 @@ class Entity(object):
 
         if object_id:
             self.object_id = (
-                f"{validators.validate_id_string(object_id)}{Entity._chip_id}"
+                f"{validators.validate_id_string(object_id)}{Entity.chip_id()}"
             )
         elif name:
-            self.object_id = f"{validators.validate_id_string(name)}{Entity._chip_id}"
+            self.object_id = f"{validators.validate_id_string(name)}{Entity.chip_id()}"
         else:
             raise ValueError("One of name or object_id must be set")
 

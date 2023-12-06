@@ -1,4 +1,4 @@
-from unittest.mock import MagicMock, Mock
+from unittest.mock import Mock, patch
 
 import pytest
 from adafruit_minimqtt.adafruit_minimqtt import MQTT
