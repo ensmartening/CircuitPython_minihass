@@ -38,8 +38,14 @@ class Entity(object):
 
     COMPONENT = None
 
-    if hasattr(microcontroller, "cpu"):
+    try:
         _chip_id = f"{int.from_bytes(microcontroller.cpu.uid, 'big'):x}"
+    except AttributeError as e:
+        _chip_id = getenv("CPU_UID")
+        if not _chip_id:
+            raise ValueError(
+                "Can't get cpu.uid from platform, and CPU_UID environment variable is not defined."
+            )
 
     def __init__(
         self,
