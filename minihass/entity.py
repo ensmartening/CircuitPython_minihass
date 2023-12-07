@@ -46,8 +46,8 @@ class Entity(object):
     def chip_id(cls):
         try:
             _chip_id = (
-                f"{int.from_bytes(microcontroller.cpu.uid, 'big'):x}"
-            )  # type:ignore
+                f"{int.from_bytes(microcontroller.cpu.uid, 'big'):x}"  # type: ignore
+            )
         except AttributeError:
             _chip_id = getenv("CPU_UID")
             if not _chip_id:
@@ -120,6 +120,7 @@ class Entity(object):
         self._availability = False
         self.component_config = {}
         self.device: "Device" | None = None  # type: ignore
+        self.availability_topic = f"{self.COMPONENT}/{self.object_id}/availability"
 
         self.logger.info(f"Initialized {self.COMPONENT} {self.name}: {self.object_id} ")
 
@@ -155,6 +156,21 @@ class Entity(object):
         except:  # TODO: Narrow exceptions to catch
             self.logger.warning("Unable to publish availability.")
 
+    @property
+    def _state_topic(self) -> str:
+        """Returns device-level state topic if a member of a device to allow batching
+        of state updates, returns entity-level topic otherwise"""
+
+        state_topic = ""
+        try:
+            self.logger.debug(f"State topic from device {self.device.device_id}")  # type: ignore
+            state_topic = self.device.state_topic  # type: ignore
+        except AttributeError:
+            state_topic = f"entity/{self.object_id}/state"
+
+        self.logger.debug(f"State topic: {state_topic}")
+        return state_topic
+
     def announce(self):
         """Send MQTT discovery message for this entity only.
 
@@ -176,15 +192,10 @@ class Entity(object):
 
         if self.device:
             discovery_topic = f"homeassistant/{self.COMPONENT}/{self.device.device_id}/{self.object_id}/config"
-            state_topic = self.device.state_topic
         else:
             discovery_topic = f"homeassistant/{self.COMPONENT}/{self.object_id}/config"
-            state_topic = f"entity/{self.object_id}/state"
-
-        self.availability_topic = f"{self.COMPONENT}/{self.object_id}/availability"
 
         self.logger.debug(f"Discovery topic: {discovery_topic}")
-        self.logger.debug(f"State topic: {state_topic}")
 
         discovery_payload = {
             "avty": [{"t": self.availability_topic}],
@@ -193,7 +204,7 @@ class Entity(object):
             "ent_cat": self.entity_category,
             "ic": self.icon,
             "name": self.name,
-            "stat_t": state_topic,
+            "stat_t": self._state_topic,
             "val_tpl": f"{{{{ value_json.{self.object_id} }}}}",
         }
 
@@ -210,7 +221,7 @@ class Entity(object):
         self.logger.debug(f"Discovery paylods: {dumps(discovery_payload)}")
         self.mqtt_client.publish(discovery_topic, dumps(discovery_payload), True, 1)
 
-    def publish_availability(self) -> bool:
+    def publish_availability(self):
         """Explicitly publishes availability of the entity.
 
         This function is called automatically when :attr:`availability` property is
@@ -219,11 +230,12 @@ class Entity(object):
         Returns:
             bool : :class:`True` if successful.
         """
-        # TODO: Implement availability updates
-        self.logger.error("publish_availability not yet implemented")
-        raise NotImplementedError
-
-        return True
+        self.mqtt_client.publish(
+            self.availability_topic,
+            "online" if self.availability else "offline",
+            True,
+            1,
+        )
 
 
 # class _CommandEntity(Entity):

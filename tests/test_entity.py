@@ -9,8 +9,10 @@ import minihass
 
 
 @pytest.fixture
-def entity():
-    e = minihass.BinarySensor(name="test", entity_category="config", object_id="foo")
+def entity(mqtt_client):
+    e = minihass.BinarySensor(
+        name="test", entity_category="config", object_id="foo", mqtt_client=mqtt_client
+    )
     yield e
 
 
@@ -29,13 +31,15 @@ def test_Entity_instantiation(entity):
     assert entity.name == "test"
     assert entity.object_id == "foo1337d00d"
 
+
+def test_Entity_availability(entity):
     assert not entity.availability  # Set by constructor
 
+    expected_topic = "binary_sensor/foo1337d00d/availability"
+    expected_msg = "online"
     entity.availability = True  # Set by property.setter
     assert entity.availability
-
-    with pytest.raises(NotImplementedError):
-        entity.publish_availability()
+    entity.mqtt_client.publish.assert_called_with(expected_topic, expected_msg, True, 1)
 
 
 def test_Entity_auto_device_id():
