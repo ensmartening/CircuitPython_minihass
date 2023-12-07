@@ -26,6 +26,8 @@ class BinarySensor(Entity):
         mqtt_client (adafruit_minimqtt.adafruit_minimqtt.MQTT, optional) : MMQTT object for
             communicating with Home Assistant. If the entity is a member of a device,
             the device's broker will be used instead.
+        logger_name (str) : Name for the :class:`adafruit_logging.logger` used by this
+            object. Defaults to ``'minihass'``.
         force_update  (bool, optional) : Specifies whether the entity should be enabled
             when it is first added, defaults to :class:`False`.
         expire_after (bool, optional) : Defines the number of seconds after the
@@ -44,6 +46,7 @@ class BinarySensor(Entity):
         icon: str | None = None,
         enabled_by_default: bool = True,
         mqtt_client: MQTT | None = None,
+        logger_name: str = "minimqtt",
         # Component-specific arguments start here
         force_update: bool = False,
         expire_after: int | None = None,

@@ -33,6 +33,21 @@ Adafruit-Blinka = ">=7.0.0"
 adafruit-circuitpython-typing = "*"
 
 [[package]]
+name = "adafruit-circuitpython-logging"
+version = "5.2.4"
+description = "Logging module for CircuitPython"
+optional = false
+python-versions = "*"
+files = [
+    {file = "adafruit-circuitpython-logging-5.2.4.tar.gz", hash = "sha256:11a4b67d078197a873f554a1da0dd05387b73b35e7e5a4dbd315743c67f29423"},
+    {file = "adafruit_circuitpython_logging-5.2.4-py3-none-any.whl", hash = "sha256:3b9ddfaaa95f83c2a51cae3a4c41352ab1cb8328146ef899b8cf143169a18336"},
+]
+
+[package.dependencies]
+Adafruit-Blinka = "*"
+typing-extensions = "*"
+
+[[package]]
 name = "adafruit-circuitpython-minimqtt"
 version = "7.5.3"
 description = "MQTT client library for CircuitPython"
@@ -1084,4 +1099,4 @@ test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "2810d5b7baad860e6c93bc93e3cc92acb44953b1c6af1ad59b263bd90bb9df82"
+content-hash = "7fc111baa4b20504afad2e5e490f13e87831e4ec6a2c4e4eb6dd004d79dfa8bd"

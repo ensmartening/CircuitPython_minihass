@@ -1,5 +1,6 @@
 adafruit-blinka==8.26.0 ; python_version >= "3.10" and python_version < "4.0"
 adafruit-circuitpython-busdevice==5.2.6 ; python_version >= "3.10" and python_version < "4.0"
+adafruit-circuitpython-logging==5.2.4 ; python_version >= "3.10" and python_version < "4.0"
 adafruit-circuitpython-minimqtt==7.5.3 ; python_version >= "3.10" and python_version < "4.0"
 adafruit-circuitpython-requests==2.0.2 ; python_version >= "3.10" and python_version < "4.0"
 adafruit-circuitpython-typing==1.9.5 ; python_version >= "3.10" and python_version < "4.0"

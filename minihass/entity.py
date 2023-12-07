@@ -5,10 +5,12 @@ as well as components that accept commands (e.g. switches)
 from __future__ import annotations
 
 from json import dumps
+from logging import WARN, WARNING
 from os import getenv
 
+import adafruit_logging as logging
+import microcontroller
 from adafruit_minimqtt.adafruit_minimqtt import MQTT
-from microcontroller import cpu
 
 from . import _validators as validators
 
@@ -34,6 +36,8 @@ class Entity(object):
         mqtt_client (adafruit_minimqtt.adafruit_minimqtt.MQTT, optional) : MMQTT object for
             communicating with Home Assistant. If the entity is a member of a device,
             the device's broker will be used instead.
+        logger_name (str) : Name for the :class:`adafruit_logging.logger` used by this
+            object. Defaults to ``'minihass'``.
     """
 
     COMPONENT = None
@@ -41,7 +45,7 @@ class Entity(object):
     @classmethod
     def chip_id(cls):
         try:
-            _chip_id = f"{int.from_bytes(cpu.uid, 'big'):x}"
+            _chip_id = f"{int.from_bytes(microcontroller.cpu.uid, 'big'):x}"
         except AttributeError:
             _chip_id = getenv("CPU_UID")
             if not _chip_id:
@@ -59,35 +63,63 @@ class Entity(object):
         icon: str | None = None,
         enabled_by_default: bool = True,
         mqtt_client: MQTT | None = None,
+        logger_name: str = "minimqtt",
     ):
 
+        self.logger = logging.getLogger(logger_name)
+        self.logger.setLevel(getattr(logging, getenv("LOGLEVEL", ""), WARNING))
+
         if self.__class__ == Entity:
+            self.logger.error(
+                "Attepted instantiation of parent class, raising an exception..."
+            )
             raise RuntimeError("Entity class cannot be raised on its own")
 
         self.name = validators.validate_string(name, none_ok=True)
+        self.logger.debug(f"Entity name: self.name")
 
         self.entity_category = validators.validate_entity_category(entity_category)
+        self.logger.debug(f"Entity category: {self.entity_category}")
 
         self.device_class = validators.validate_string(device_class, none_ok=True)
+        self.logger.debug(f"Entity device_class: {self.device_class}")
 
         if object_id:
             self.object_id = (
                 f"{validators.validate_id_string(object_id)}{Entity.chip_id()}"
             )
+            self.logger.debug(
+                f"Entity object_id: {self.object_id} (set by object_id parameter)"
+            )
         elif name:
             self.object_id = f"{validators.validate_id_string(name)}{Entity.chip_id()}"
+            self.logger.debug(
+                f"Entity object_id: {self.object_id} (derived from name parameter)"
+            )
         else:
             raise ValueError("One of name or object_id must be set")
 
         self.icon = validators.validate_string(icon, none_ok=True)
+        self.logger.debug(f"Entity icon: {self.icon}")
 
         self.enabled_by_default = validators.validate_bool(enabled_by_default)
+        self.logger.debug(
+            f"Entity {'enabled' if self.enabled_by_default else 'disabled'} by default"
+        )
 
         self.mqtt_client = mqtt_client
+        try:
+            self.logger.debug(f"Entity MQTT client: {self.mqtt_client.broker}")  # type: ignore
+        except AttributeError:
+            self.logger.debug(
+                f"MQTT{' broker' if self.mqtt_client else '_client'} not set"
+            )
 
         self._availability = False
         self.component_config = {}
         self.device: "Device" | None = None  # type: ignore
+
+        self.logger.info(f"Initialized {self.COMPONENT} {self.name}: {self.object_id} ")
 
     @property
     def availability(self) -> bool:
@@ -97,7 +129,15 @@ class Entity(object):
     @availability.setter
     def availability(self, value: bool):
         self._availability = validators.validate_bool(value)
-        # self.publish_availability()
+
+        self.logger.info(
+            f"{self.COMPONENT} {self.object_id} {'available' if self._availability else 'unavailable'}"
+        )
+
+        try:
+            self.publish_availability()
+        except:  # TODO: Narrow exceptions to catch
+            self.logger.warning("Unable to publish availability.")
 
     def announce(self):
         """Send MQTT discovery message for this entity only.
@@ -109,6 +149,7 @@ class Entity(object):
         """
 
         if self.device:
+            self.logger.debug(f"Using {self.device.name} device's MQTT broker")
             self.mqtt_client = self.device.mqtt_client
 
         if not isinstance(self.mqtt_client, MQTT):
@@ -124,7 +165,9 @@ class Entity(object):
             discovery_topic = f"homeassistant/{self.COMPONENT}/{self.object_id}/config"
             state_topic = f"entity/{self.object_id}/state"
 
-        print(discovery_topic)
+        self.logger.debug(f"Discovery topic: {discovery_topic}")
+        self.logger.debug(f"State topic: {state_topic}")
+
         discovery_payload = {
             "avty": [{"t": f"{self.COMPONENT}/{self.object_id}/availability"}],
             "dev_cla": self.device_class,
@@ -137,12 +180,16 @@ class Entity(object):
         }
 
         if self.device:
+            self.logger.debug(f"Adding device config from {self.device.name}")
             discovery_payload.update(self.device.device_config)
             discovery_payload["avty"].append({"t": self.device.availability_topic})
 
         if self.component_config:
+            self.logger.debug(f"Adding {self.COMPONENT}-specific config")
             discovery_payload.update(self.component_config)
 
+        self.logger.info(f"Publishing discovery message for {self.object_id}")
+        self.logger.debug(f"Discovery paylods: {dumps(discovery_payload)}")
         self.mqtt_client.publish(discovery_topic, dumps(discovery_payload), True, 1)
 
     def publish_availability(self) -> bool:
@@ -155,6 +202,7 @@ class Entity(object):
             bool : :class:`True` if successful.
         """
         # TODO: Implement availability updates
+        self.logger.error("publish_availability not yet implemented")
         raise NotImplementedError
 
         return True
