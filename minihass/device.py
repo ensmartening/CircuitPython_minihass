@@ -1,4 +1,3 @@
-import microcontroller
 from adafruit_minimqtt.adafruit_minimqtt import MQTT
 
 from . import _validators as validators

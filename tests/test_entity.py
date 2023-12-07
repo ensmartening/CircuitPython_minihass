@@ -1,7 +1,6 @@
 import os
-from importlib import reload
 from inspect import signature
-from unittest.mock import Mock, PropertyMock, patch
+from unittest.mock import Mock, patch
 
 import pytest
 from adafruit_minimqtt.adafruit_minimqtt import MQTT
@@ -44,14 +43,14 @@ def test_Entity_auto_device_id():
     assert o.object_id == "bar1337d00d"
 
 
-@patch("microcontroller.cpu", spec="")
+@patch("minihass.entity.cpu", spec="")
 def test_Entity_auto_device_id_from_env(m):
     """Test chip ID environement variable from non-circuitpython instances"""
     with patch.dict(os.environ, {"CPU_UID": "deadbeef"}):
         assert minihass.Entity.chip_id() == "deadbeef"
 
 
-@patch("microcontroller.cpu", spec="")
+@patch("minihass.entity.cpu", spec="")
 def test_Entity_auto_device_id_fail(m):
     """Test exception when chip ID can't be discovered"""
     with pytest.raises(RuntimeError):

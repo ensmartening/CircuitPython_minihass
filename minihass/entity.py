@@ -4,11 +4,11 @@ as well as components that accept commands (e.g. switches)
 """
 from __future__ import annotations
 
-import json
+from json import dumps
 from os import getenv
 
-import microcontroller
 from adafruit_minimqtt.adafruit_minimqtt import MQTT
+from microcontroller import cpu
 
 from . import _validators as validators
 
@@ -41,7 +41,7 @@ class Entity(object):
     @classmethod
     def chip_id(cls):
         try:
-            _chip_id = f"{int.from_bytes(microcontroller.cpu.uid, 'big'):x}"
+            _chip_id = f"{int.from_bytes(cpu.uid, 'big'):x}"
         except AttributeError:
             _chip_id = getenv("CPU_UID")
             if not _chip_id:
@@ -143,11 +143,7 @@ class Entity(object):
         if self.component_config:
             discovery_payload.update(self.component_config)
 
-        print(json.dumps(discovery_payload))
-
-        self.mqtt_client.publish(
-            discovery_topic, json.dumps(discovery_payload), True, 1
-        )
+        self.mqtt_client.publish(discovery_topic, dumps(discovery_payload), True, 1)
 
     def publish_availability(self) -> bool:
         """Explicitly publishes availability of the entity.
