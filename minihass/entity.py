@@ -45,7 +45,9 @@ class Entity(object):
     @classmethod
     def chip_id(cls):
         try:
-            _chip_id = f"{int.from_bytes(microcontroller.cpu.uid, 'big'):x}"
+            _chip_id = (
+                f"{int.from_bytes(microcontroller.cpu.uid, 'big'):x}"
+            )  # type:ignore
         except AttributeError:
             _chip_id = getenv("CPU_UID")
             if not _chip_id:
@@ -107,12 +109,12 @@ class Entity(object):
             f"Entity {'enabled' if self.enabled_by_default else 'disabled'} by default"
         )
 
-        self.mqtt_client = mqtt_client
+        self._mqtt_client = mqtt_client
         try:
-            self.logger.debug(f"Entity MQTT client: {self.mqtt_client.broker}")  # type: ignore
+            self.logger.debug(f"Entity MQTT client: {self._mqtt_client.broker}")  # type: ignore
         except AttributeError:
             self.logger.debug(
-                f"MQTT{' broker' if self.mqtt_client else '_client'} not set"
+                f"MQTT{' broker' if self._mqtt_client else '_client'} not set"
             )
 
         self._availability = False
@@ -120,6 +122,20 @@ class Entity(object):
         self.device: "Device" | None = None  # type: ignore
 
         self.logger.info(f"Initialized {self.COMPONENT} {self.name}: {self.object_id} ")
+
+    @property
+    def mqtt_client(self) -> MQTT:
+        """Returns effective MQTT client"""
+        if self.device:
+            return self.device.mqtt_client
+        else:
+            return self._mqtt_client  # type: ignore
+
+    @mqtt_client.setter
+    def mqtt_client(self, client: MQTT):
+        self._mqtt_client = client
+
+        self.logger.info(f"Entity MQTT client set")
 
     @property
     def availability(self) -> bool:
@@ -148,15 +164,15 @@ class Entity(object):
             RuntimeError : If the MQTT client is not connected
         """
 
-        if self.device:
-            self.logger.debug(f"Using {self.device.name} device's MQTT broker")
-            self.mqtt_client = self.device.mqtt_client
+        mqtt_client = self.mqtt_client
 
-        if not isinstance(self.mqtt_client, MQTT):
+        if not isinstance(mqtt_client, MQTT):
             raise ValueError("mqtt_client not set")
 
-        elif not self.mqtt_client.is_connected():
+        elif not mqtt_client.is_connected():
             raise RuntimeError("mqtt_client not connected")
+
+        self.logger.debug(f"Using MQTT broker {mqtt_client.broker}")
 
         if self.device:
             discovery_topic = f"homeassistant/{self.COMPONENT}/{self.device.device_id}/{self.object_id}/config"
@@ -165,11 +181,13 @@ class Entity(object):
             discovery_topic = f"homeassistant/{self.COMPONENT}/{self.object_id}/config"
             state_topic = f"entity/{self.object_id}/state"
 
+        self.availability_topic = f"{self.COMPONENT}/{self.object_id}/availability"
+
         self.logger.debug(f"Discovery topic: {discovery_topic}")
         self.logger.debug(f"State topic: {state_topic}")
 
         discovery_payload = {
-            "avty": [{"t": f"{self.COMPONENT}/{self.object_id}/availability"}],
+            "avty": [{"t": self.availability_topic}],
             "dev_cla": self.device_class,
             "en": self.enabled_by_default,
             "ent_cat": self.entity_category,

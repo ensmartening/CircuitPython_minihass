@@ -1,6 +1,6 @@
 import os
 from inspect import signature
-from unittest.mock import Mock, patch
+from unittest.mock import Mock, PropertyMock, patch
 
 import pytest
 from adafruit_minimqtt.adafruit_minimqtt import MQTT
@@ -18,7 +18,8 @@ def entity():
 def mqtt_client():
     mqtt_client = Mock(spec=MQTT)
     mqtt_client.is_connected.return_value = True
-
+    p = PropertyMock(return_value="broker.example.com")
+    mqtt_client.broker = p
     yield mqtt_client
 
 
