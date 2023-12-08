@@ -45,7 +45,7 @@ def test_Entity_availability(entity):
 
 @patch("adafruit_logging.Logger.warning")
 def test_Entity_availability_pub_failure(logger, entity):
-    entity.mqtt_client.publish.side_effect = Exception(MMQTTException)
+    entity.mqtt_client.publish.side_effect = MMQTTException
     entity.availability = True
     logger.assert_called_with("Unable to publish availability.")
 

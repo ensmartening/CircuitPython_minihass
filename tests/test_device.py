@@ -52,13 +52,16 @@ def test_Device_entity_management(entities, mqtt_client):
 
 
 def test_Device_add_entity(entities, mqtt_client):
-    o = minihass.Device(entities=entities[:-1], mqtt_client=mqtt_client)
-    assert o.add_entity(entities[-1]) == True
-    assert entities[-1] in o.entities
-    assert o.add_entity(entities[-1]) == False
+    o = minihass.Device(entities=[entities[0]], mqtt_client=mqtt_client)
+    assert o.add_entity(entities[1]) == True
+    assert entities[1] in o.entities
+    assert o.add_entity(entities[1]) == False
 
     with pytest.raises(TypeError):
         o.add_entity(1)  # type: ignore
+
+    mqtt_client.publish.side_effect = RuntimeError
+    assert o.add_entity(entities[2]) == True
 
 
 def test_Device_delete_entity(device, entities):
