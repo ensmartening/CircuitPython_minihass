@@ -8,6 +8,7 @@ readme = "README.rst"
 
 [tool.poetry.dependencies]
 python = "^3.10"
+Adafruit-PlatformDetect = "3.56.0"
 adafruit-circuitpython-minimqtt = "^7.4.3"
 adafruit-circuitpython-logging = "^5.2.4"
 
