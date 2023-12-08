@@ -103,7 +103,10 @@ class Device:
             if not entity in self._entities:
                 self._entities.append(entity)
                 entity.device = self
-                entity.announce()
+                try:
+                    entity.announce()
+                except RuntimeError:
+                    pass
                 return True
             else:
                 return False

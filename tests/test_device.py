@@ -74,6 +74,6 @@ def test_Device_announce(entities, mqtt_client):
     expected_topic = (
         "homeassistant/binary_sensor/mqtt_device1337d00d/baz1337d00d/config"
     )
-    expected_msg = '{"avty": [{"t": "binary_sensor/baz1337d00d/availability"}, {"t": "device/mqtt_device1337d00d/availability"}], "dev_cla": null, "en": true, "ent_cat": null, "ic": null, "name": "baz", "stat_t": "device/mqtt_device1337d00d/state", "val_tpl": "{{ value_json.baz1337d00d }}", "dev": {"mf": null, "hw": null, "ids": ["mqtt_device1337d00d"], "cns": []}, "expire_after": false, "force_update": false}'
+    expected_msg = '{"avty": [{"t": "binary_sensor/baz1337d00d/availability"}, {"t": "device/mqtt_device1337d00d/availability"}], "dev_cla": null, "en": true, "ent_cat": null, "ic": null, "name": "baz", "dev": {"mf": null, "hw": null, "ids": ["mqtt_device1337d00d"], "cns": []}, "stat_t": "device/mqtt_device1337d00d/state", "val_tpl": "{{ value_json.baz1337d00d }}", "expire_after": false, "force_update": false}'
     o.announce()
     mqtt_client.publish.assert_called_with(expected_topic, expected_msg, True, 1)

@@ -3,6 +3,6 @@ intended for use with CircuitPython.
 """
 from .binary_sensor import BinarySensor
 from .device import Device
-from .entity import Entity
+from .entity import Entity, SensorEntity
 
-__all__ = ["BinarySensor", "Device", "Entity"]
+__all__ = ["Device", "Entity", "SensorEntity", "BinarySensor"]

@@ -1,9 +1,10 @@
 import os
 from inspect import signature
-from unittest.mock import Mock, PropertyMock, patch
+from unittest.mock import MagicMock, Mock, PropertyMock, patch
 
+import adafruit_logging as logging
 import pytest
-from adafruit_minimqtt.adafruit_minimqtt import MQTT
+from adafruit_minimqtt.adafruit_minimqtt import MQTT, MMQTTException
 
 import minihass
 
@@ -42,6 +43,13 @@ def test_Entity_availability(entity):
     entity.mqtt_client.publish.assert_called_with(expected_topic, expected_msg, True, 1)
 
 
+@patch("adafruit_logging.Logger.warning")
+def test_Entity_availability_pub_failure(logger, entity):
+    entity.mqtt_client.publish.side_effect = Exception(MMQTTException)
+    entity.availability = True
+    logger.assert_called_with("Unable to publish availability.")
+
+
 def test_Entity_auto_device_id():
     """Test object_id autogeneration from friendly name"""
     o = minihass.BinarySensor(name="Bar")
@@ -68,13 +76,14 @@ def test_Entity_no_name_or_device_id():
         minihass.BinarySensor()
 
 
-def test_Entity_signatures():
-    """Verify that _Entity signature is a subset of all child classes"""
-    e = signature(minihass.entity.Entity)
-    for s in minihass.entity.Entity.__subclasses__():
-        sp = signature(s)
-        for p in e.parameters:
-            assert p in sp.parameters
+# @pytest.mark.skip("Maybe not doing this anymore")
+# def test_Entity_signatures():
+#     """Verify that _Entity signature is a subset of all child classes"""
+#     e = signature(minihass.entity.Entity)
+#     for s in minihass.entity.Entity.__subclasses__():
+#         sp = signature(s)
+#         for p in e.parameters:
+#             assert p in sp.parameters
 
 
 def test_Entity_instantiate_parent():

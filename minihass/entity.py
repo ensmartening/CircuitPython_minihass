@@ -7,6 +7,7 @@ from __future__ import annotations
 from json import dumps
 from logging import WARN, WARNING
 from os import getenv
+from xml.dom.minidom import Attr
 
 import adafruit_logging as logging
 import microcontroller
@@ -58,6 +59,7 @@ class Entity(object):
 
     def __init__(
         self,
+        *args,
         name: str | None = None,
         entity_category: str | None = None,
         device_class: str | None = None,
@@ -66,6 +68,7 @@ class Entity(object):
         enabled_by_default: bool = True,
         mqtt_client: MQTT | None = None,
         logger_name: str = "minimqtt",
+        **kwargs,
     ):
 
         self.logger = logging.getLogger(logger_name)
@@ -118,11 +121,17 @@ class Entity(object):
             )
 
         self._availability = False
-        self.component_config = {}
+
         self.device: "Device" | None = None  # type: ignore
         self.availability_topic = f"{self.COMPONENT}/{self.object_id}/availability"
+        try:
+            self.component_config
+        except AttributeError:
+            self.component_config = {}
 
         self.logger.info(f"Initialized {self.COMPONENT} {self.name}: {self.object_id} ")
+
+        super().__init__(*args, **kwargs)
 
     @property
     def mqtt_client(self) -> MQTT:
@@ -135,7 +144,6 @@ class Entity(object):
     @mqtt_client.setter
     def mqtt_client(self, client: MQTT):
         self._mqtt_client = client
-
         self.logger.info(f"Entity MQTT client set")
 
     @property
@@ -153,7 +161,7 @@ class Entity(object):
 
         try:
             self.publish_availability()
-        except:  # TODO: Narrow exceptions to catch
+        except Exception as e:  # TODO: Narrow exceptions to catch
             self.logger.warning("Unable to publish availability.")
 
     @property
@@ -204,8 +212,6 @@ class Entity(object):
             "ent_cat": self.entity_category,
             "ic": self.icon,
             "name": self.name,
-            "stat_t": self._state_topic,
-            "val_tpl": f"{{{{ value_json.{self.object_id} }}}}",
         }
 
         if self.device:
@@ -213,9 +219,18 @@ class Entity(object):
             discovery_payload.update(self.device.device_config)
             discovery_payload["avty"].append({"t": self.device.availability_topic})
 
-        if self.component_config:
-            self.logger.debug(f"Adding {self.COMPONENT}-specific config")
-            discovery_payload.update(self.component_config)
+        try:
+            self.state  # type: ignore
+            discovery_payload.update(
+                {
+                    "stat_t": self._state_topic,  # type: ignore
+                    "val_tpl": f"{{{{ value_json.{self.object_id} }}}}",  # type: ignore
+                }
+            )
+        except AttributeError:
+            pass
+
+        discovery_payload.update(self.component_config)
 
         self.logger.info(f"Publishing discovery message for {self.object_id}")
         self.logger.debug(f"Discovery paylods: {dumps(discovery_payload)}")
@@ -236,6 +251,16 @@ class Entity(object):
             True,
             1,
         )
+
+
+class SensorEntity:
+    """Parent class representing a Home Assistant Entity that publishes states"""
+
+    def __init__(self, *args, **kwargs):
+
+        self.state = None
+
+        super().__init__(*args, **kwargs)
 
 
 # class _CommandEntity(Entity):
