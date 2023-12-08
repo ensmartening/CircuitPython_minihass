@@ -25,7 +25,7 @@ jobs:
     - name: Build HTML
       uses: ammaraskar/sphinx-action@master
       with:
-        pre-build-command: "source .venv/bin/activate"
+        pre-build-command: ". .venv/bin/activate"
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
       with:
