@@ -12,14 +12,16 @@ jobs:
     - name: Install Poetry
       uses: snok/install-poetry@v1
       with:
+        virtualenvs-create: true
         virtualenvs-in-project: true
-
-    - name: Install project
+    - name: Load cached venv
+      id: cached-poetry-dependencies
+      uses: actions/cache@v3
+      with:
+        path: .venv
+        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+    - name: Install project and dependencies
       run: poetry install --no-interaction
-    - name: Activate virtualenv
-      run: |
-        . .venv/bin/activate
-        echo PATH=$PATH >> $GITHUB_ENV
     - name: Build HTML
       uses: ammaraskar/sphinx-action@master
     - name: Upload artifacts
