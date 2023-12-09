@@ -220,7 +220,7 @@ class Entity(object):
             discovery_payload["avty"].append({"t": self.device.availability_topic})
 
         try:
-            self.state  # type: ignore
+            self._state  # type: ignore
             discovery_payload.update(
                 {
                     "stat_t": self._state_topic,  # type: ignore
@@ -258,9 +258,37 @@ class SensorEntity:
 
     def __init__(self, *args, **kwargs):
 
-        self.state = None
+        self._state = None
 
         super().__init__(*args, **kwargs)
+
+    @property
+    def state(self):
+        return self._state
+
+    @state.setter
+    def state(self, newstate):
+        self._state = newstate
+        try:
+            self.publish_state()  # type: ignore
+        except Exception as e:  # TODO: Narrow exception scope
+            self.logger.warning("Unable to publish state change")  # type: ignore
+
+    def publish_state(self):
+        """Explicitly publishes state of the entity.
+
+        This function is called automatically when :attr:`state` property is
+        changed.
+
+        Returns:
+            bool : :class:`True` if successful.
+        """
+        self.mqtt_client.publish(  # type: ignore
+            self._state_topic,  # type: ignore
+            dumps({self.object_id: self._state}),  # type: ignore
+            True,
+            1,
+        )
 
 
 # class _CommandEntity(Entity):
