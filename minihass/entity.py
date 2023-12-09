@@ -135,7 +135,8 @@ class Entity(object):
 
     @property
     def mqtt_client(self) -> MQTT:
-        """Returns effective MQTT client"""
+        """Sets or gets the MQTT client for this entity. If this entity is a member
+        of a device, the device MQTT client will be returned."""
         if self.device:
             return self.device.mqtt_client
         else:
@@ -148,7 +149,12 @@ class Entity(object):
 
     @property
     def availability(self) -> bool:
-        """Availability of the entity. Setting this property triggers :meth:`publish_availability()`."""
+        """Availability of the entity. Setting this entity to :class:`false` makes the
+        entity appear as `unavailable` in Home Assistant. This may be desired if, for
+        instance, the sensor providing this entity's state is not initialized or has
+        not yet returned a valid state, or if the hardware that implements commands
+        from Home Assistant is not ready. Setting this property triggers
+        :meth:`publish_availability()`."""
         return self._availability
 
     @availability.setter
