@@ -270,6 +270,8 @@ class SensorEntity:
 
     @property
     def state(self):
+        """Gets or sets the state of a sensor entity. Setting this parameter calls
+        :meth:`publish_state()`"""
         return self._state
 
     @state.setter
