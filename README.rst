@@ -12,4 +12,4 @@ A python module to manage Home Assistant devices over MQTT in CircuitPython.
    :target: https://codecov.io/gh/cybershoe/minihass
 
 .. |codecov-devel| image:: https://img.shields.io/codecov/c/github/cybershoe/minihass/branch/devel?label=codecov-devel
-   :target: https://codecov.io/gh/cybershoe/minihass
+   :target: https://codecov.io/gh/cybershoe/minihass/tree/devel
