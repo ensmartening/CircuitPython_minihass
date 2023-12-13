@@ -149,3 +149,6 @@ class Device:
             entity.announce()
 
         return True
+
+    def publish_state_queue(self):
+        pass

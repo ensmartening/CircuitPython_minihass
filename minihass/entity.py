@@ -7,6 +7,7 @@ from __future__ import annotations
 from json import dumps
 from logging import WARN, WARNING
 from os import getenv
+from typing import Any
 from xml.dom.minidom import Attr
 
 import adafruit_logging as logging
@@ -260,11 +261,23 @@ class Entity(object):
 
 
 class SensorEntity:
-    """Parent class representing a Home Assistant Entity that publishes states"""
+    def __init__(self, *args, queue="yes", **kwargs):
+        """Parent class representing a Home Assistant Entity that publishes states
 
-    def __init__(self, *args, **kwargs):
+        Args:
+            queue ("yes"|"no"|"always", optional): Controls state queuing behaviour.
+                If ``"yes"``, if publishing to the MQTT broker fails, the message will
+                be queued and can be re-published, by calling the device's
+                :meth:`publish_state_queue()` method. If ``"no"``, unpublished states
+                are not queued, but can still be explicitly published by calling the
+                entity's :meth:`publish_state` method. If ``"always"``, states are not
+                automatically published and will alawys be queued. Defaults to
+                ``"yes"``.
+        """
 
-        self._state = None
+        self.queue = validators.validate_queue_option(queue)
+        self._state: Any = None
+        self._state_queued: bool = False
 
         super().__init__(*args, **kwargs)
 
@@ -277,10 +290,16 @@ class SensorEntity:
     @state.setter
     def state(self, newstate):
         self._state = newstate
-        try:
-            self.publish_state()  # type: ignore
-        except Exception as e:  # TODO: Narrow exception scope
-            self.logger.warning("Unable to publish state change")  # type: ignore
+
+        if self.queue == "always":
+            self._state_queued = True
+        else:
+            try:
+                self.publish_state()  # type: ignore
+            except Exception as e:  # TODO: Narrow exception scope
+                if self.queue in ["yes", "always"]:
+                    self.state_queued = True
+                self.logger.warning("Unable to publish state change")  # type: ignore
 
     def publish_state(self):
         """Explicitly publishes state of the entity.
@@ -297,6 +316,7 @@ class SensorEntity:
             True,
             1,
         )
+        self._state_queued = False
 
 
 # class _CommandEntity(Entity):

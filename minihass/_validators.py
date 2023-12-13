@@ -167,3 +167,33 @@ def validate_bool(param, strict: bool = False) -> bool:
         raise TypeError(f"Expected bool, got {type(param).__name__}")
 
     return True if param else False
+
+
+def validate_queue_option(param, strict: bool = False) -> str:
+    """Validates that the entry is a valid queue option. If ``strict`` is
+    :class:`True`, only literal values `"yes"`, `"no"`, and `"always"`. If ``strict``
+    is :class:`False`, then truthy and falsy values are returned as `yes` and `no`,
+    respectively.
+
+    Args:
+        param (str): Parameter to validate
+        strict (bool, optional): Disallow "truthy" or "falsy" values.
+            Defaults to False.
+
+    Returns:
+        str: `"yes"`, `"no"`, or `"always"`
+    """
+
+    if param in ["yes", "no", "always"]:
+        return param
+
+    elif not strict:
+        if param.lower() == "always":
+            return "always"
+        else:
+            return "yes" if param else "no"
+
+    else:
+        raise ValueError(
+            f'Invalid parameter, {param}. Should be "yes", "no", or "always"'
+        )
