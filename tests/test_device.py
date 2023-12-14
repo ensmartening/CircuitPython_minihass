@@ -1,7 +1,7 @@
 from unittest.mock import Mock, PropertyMock, patch
 
 import pytest
-from adafruit_minimqtt.adafruit_minimqtt import MQTT
+from adafruit_minimqtt.adafruit_minimqtt import MQTT, MMQTTException
 
 import minihass
 
@@ -80,3 +80,17 @@ def test_Device_announce(entities, mqtt_client):
     expected_msg = '{"avty": [{"t": "binary_sensor/baz1337d00d/availability"}, {"t": "device/mqtt_device1337d00d/availability"}], "dev_cla": null, "en": true, "ent_cat": null, "ic": null, "name": "baz", "dev": {"mf": null, "hw": null, "ids": ["mqtt_device1337d00d"], "cns": []}, "stat_t": "device/mqtt_device1337d00d/state", "val_tpl": "{{ value_json.baz1337d00d }}", "expire_after": false, "force_update": false}'
     o.announce()
     mqtt_client.publish.assert_called_with(expected_topic, expected_msg, True, 1)
+
+
+def test_Device_publish_state_queue(entities, mqtt_client):
+    o = minihass.Device(entities=entities, mqtt_client=mqtt_client)
+    mqtt_client.publish.side_effect = MMQTTException
+    for e in entities:
+        e.state = True
+    mqtt_client.reset_mock()
+    mqtt_client.publish.side_effect = None
+    o.publish_state_queue()
+    assert mqtt_client.publish.call_count == len(entities)
+    mqtt_client.reset_mock()
+    o.publish_state_queue()
+    mqtt_client.publish.assert_not_called()

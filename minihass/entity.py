@@ -5,10 +5,8 @@ as well as components that accept commands (e.g. switches)
 from __future__ import annotations
 
 from json import dumps
-from logging import WARN, WARNING
 from os import getenv
 from typing import Any
-from xml.dom.minidom import Attr
 
 import adafruit_logging as logging
 import microcontroller
@@ -73,7 +71,7 @@ class Entity(object):
     ):
 
         self.logger = logging.getLogger(logger_name)
-        self.logger.setLevel(getattr(logging, getenv("LOGLEVEL", ""), WARNING))
+        self.logger.setLevel(getattr(logging, getenv("LOGLEVEL", ""), logging.WARNING))  # type: ignore
 
         if self.__class__ == Entity:
             self.logger.error(
@@ -314,9 +312,3 @@ class SensorEntity:
             1,
         )
         self.state_queued = False
-
-
-# class _CommandEntity(Entity):
-#     """Parent class representing a Home Assistant Entity that accepts commands"""
-
-#     pass
