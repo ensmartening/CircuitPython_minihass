@@ -80,6 +80,7 @@ class Device:
 
         for entity in entities:
             self.add_entity(entity)
+        raise RuntimeError("This should fail")
 
     @property
     def entities(self) -> list[Entity]:
