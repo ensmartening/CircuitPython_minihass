@@ -5,6 +5,8 @@ on: [push, pull_request]
 jobs:
   codecov:
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
     steps:
     - uses: actions/checkout@v4
     - name: Install Poetry
@@ -24,9 +26,12 @@ jobs:
       uses: codecov/codecov-action@v3
     - name: label when tests fail
       if: ${{ always() && (steps.pytest.outcome == 'failure' && github.event_name != 'push') }}
-      uses: andymckay/labeler@1.0.4
-      with:
-        add-labels: "test-failing"
+      run: gh issue edit "$NUMBER" --add-label "LABELS"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_REPO: ${{ github.repository }}
+        NUMBER: ${{ github.event.issue.number }}
+        LABELS: triage
     - name: remove label when tests succeed
       if: ${{ steps.pytest.outcome == 'failure' && github.event_name != 'push' }}
       uses: andymckay/labeler@1.0.4
