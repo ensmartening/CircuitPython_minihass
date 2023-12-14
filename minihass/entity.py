@@ -10,7 +10,7 @@ from typing import Any
 
 import adafruit_logging as logging
 import microcontroller
-from adafruit_minimqtt.adafruit_minimqtt import MQTT
+from adafruit_minimqtt.adafruit_minimqtt import MQTT, MMQTTException
 
 from . import _validators as validators
 
@@ -70,8 +70,11 @@ class Entity(object):
         **kwargs,
     ):
 
-        self.logger = logging.getLogger(logger_name)
-        self.logger.setLevel(getattr(logging, getenv("LOGLEVEL", ""), logging.WARNING))  # type: ignore
+        try:
+            self.logger
+        except AttributeError:
+            self.logger = logging.getLogger(logger_name)
+            self.logger.setLevel(getattr(logging, getenv("LOGLEVEL", ""), logging.WARNING))  # type: ignore
 
         if self.__class__ == Entity:
             self.logger.error(
@@ -166,8 +169,10 @@ class Entity(object):
 
         try:
             self.publish_availability()
-        except Exception as e:  # TODO: Narrow exceptions to catch
-            self.logger.warning("Unable to publish availability.")
+        except AttributeError:
+            self.logger.warning("Unable to publish availability - MQTT client not set")
+        except MMQTTException as e:
+            self.logger.error(f"Availability publishing failed, {e.args}")
 
     @property
     def _state_topic(self) -> str:
@@ -193,15 +198,10 @@ class Entity(object):
             RuntimeError : If the MQTT client is not connected
         """
 
-        mqtt_client = self.mqtt_client
-
-        if not isinstance(mqtt_client, MQTT):
-            raise ValueError("mqtt_client not set")
-
-        elif not mqtt_client.is_connected():
-            raise RuntimeError("mqtt_client not connected")
-
-        self.logger.debug(f"Using MQTT broker {mqtt_client.broker}")
+        try:
+            self.logger.debug(f"Using MQTT broker {self.mqtt_client.broker}")
+        except AttributeError:
+            self.logger.warning("MQTT client not set")
 
         if self.device:
             discovery_topic = f"homeassistant/{self.COMPONENT}/{self.device.device_id}/{self.object_id}/config"
@@ -238,8 +238,41 @@ class Entity(object):
         discovery_payload.update(self.component_config)
 
         self.logger.info(f"Publishing discovery message for {self.object_id}")
-        self.logger.debug(f"Discovery paylods: {dumps(discovery_payload)}")
-        self.mqtt_client.publish(discovery_topic, dumps(discovery_payload), True, 1)
+        self.logger.debug(f"Discovery payload: {dumps(discovery_payload)}")
+        try:
+            self.mqtt_client.publish(discovery_topic, dumps(discovery_payload), True, 1)
+        except AttributeError:
+            self.logger.warning("Unable to announce: - MQTT client not set")
+        except MMQTTException as e:
+            self.logger.error(f"Announcement failed, {e.args}")
+
+
+    def withdraw(self):
+        """Send MQTT discovery message to remove this entity.
+
+        Raises:
+            ValueError : If the entity or its parent device does not have a valid
+                ``mqtt_client`` set.
+            RuntimeError : If the MQTT client is not connected
+        """
+
+        try:
+            self.logger.debug(f"Using MQTT broker {self.mqtt_client.broker}")
+        except AttributeError:
+            self.logger.warning("MQTT client not set")
+
+        if self.device:
+            discovery_topic = f"homeassistant/{self.COMPONENT}/{self.device.device_id}/{self.object_id}/config"
+        else:
+            discovery_topic = f"homeassistant/{self.COMPONENT}/{self.object_id}/config"
+
+        self.logger.info(f"Publishing withdrawal message for {self.object_id}")
+        try:
+            self.mqtt_client.publish(discovery_topic, "", True, 1)
+        except AttributeError:
+            self.logger.warning("Unable to withdraw: - MQTT client not set")
+        except MMQTTException as e:
+            self.logger.error(f"Withdrawal failed, {e.args}")
 
     def publish_availability(self):
         """Explicitly publishes availability of the entity.
@@ -258,7 +291,7 @@ class Entity(object):
         )
 
 
-class SensorEntity:
+class SensorEntity():
     """Mixin class representing a Home Assistant Entity that publishes states
 
     Args:
@@ -272,11 +305,17 @@ class SensorEntity:
             ``"yes"``.
     """
 
-    def __init__(self, *args, queue="yes", **kwargs):
+    def __init__(self, *args, queue="yes", logger_name="minimqtt", **kwargs):
 
         self.queue = validators.validate_queue_option(queue)
         self._state: Any = None
         self.state_queued: bool = False
+
+        try:
+            self.logger
+        except AttributeError:
+            self.logger = logging.getLogger(logger_name)
+            self.logger.setLevel(getattr(logging, getenv("LOGLEVEL", ""), logging.WARNING))  # type: ignore
 
         super().__init__(*args, **kwargs)
         if self.__class__ == SensorEntity:
