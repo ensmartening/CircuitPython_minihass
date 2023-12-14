@@ -25,12 +25,12 @@ jobs:
       if: always()
       uses: codecov/codecov-action@v3
     - name: label when tests fail
-      if: ${{ always() && (steps.pytest.outcome == 'failure' && github.event_name != 'push') }}
+      if: ${{ always() && (steps.pytest.outcome == 'failure' && github.event_name == 'pull_request') }}
       run: gh issue edit "$NUMBER" --add-label "LABELS"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GH_REPO: ${{ github.repository }}
-        NUMBER: ${{ github.event.issue.number }}
+        NUMBER: ${{ github.event.pull_request.number }}
         LABELS: triage
     - name: remove label when tests succeed
       if: ${{ steps.pytest.outcome == 'failure' && github.event_name != 'push' }}
