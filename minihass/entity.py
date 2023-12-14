@@ -69,7 +69,6 @@ class Entity(object):
         logger_name: str = "minimqtt",
         **kwargs,
     ):
-
         try:
             self.logger
         except AttributeError:
@@ -305,7 +304,6 @@ class SensorEntity:
     """
 
     def __init__(self, *args, queue="yes", logger_name="minimqtt", **kwargs):
-
         self.queue = validators.validate_queue_option(queue)
         self._state: Any = None
         self.state_queued: bool = False

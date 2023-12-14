@@ -44,7 +44,6 @@ def test_Device_with_device_id(mqtt_client):
 
 
 def test_Device_entity_management(entities, mqtt_client):
-
     o = minihass.Device(entities=entities, mqtt_client=mqtt_client)
     # # Ensure entities are populated
     for l in entities:
