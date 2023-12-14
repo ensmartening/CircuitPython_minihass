@@ -38,7 +38,7 @@ def test_Entity_state(binary_sensor):
     """Test publishing of MQTT dicsovery messages"""
     expected_topic = "entity/foo1337d00d/state"
     expected_msg = '{"foo1337d00d": true}'
-    binary_sensor.state = True
+    binary_sensor.state = "yes"
     binary_sensor.mqtt_client.publish.assert_called_with(
         expected_topic, expected_msg, True, 1
     )

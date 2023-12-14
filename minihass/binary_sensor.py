@@ -26,15 +26,7 @@ class BinarySensor(Entity, SensorEntity):
 
     def __init__(
         self,
-        # name: str | None = None,
-        # entity_category: str | None = None,
-        # device_class: str | None = None,
-        # object_id: str | None = None,
-        # icon: str | None = None,
-        # enabled_by_default: bool = True,
-        # mqtt_client: MQTT | None = None,
-        # logger_name: str = "minimqtt",
-        # Component-specific arguments start here
+        *args,
         force_update: bool = False,
         expire_after: int | None = None,
         **kwargs
@@ -47,13 +39,9 @@ class BinarySensor(Entity, SensorEntity):
             "force_update": self.force_update,
         }
 
-        super().__init__(
-            **kwargs
-            # name=name,
-            # entity_category=entity_category,
-            # device_class=device_class,
-            # object_id=object_id,
-            # icon=icon,
-            # enabled_by_default=enabled_by_default,
-            # mqtt_client=mqtt_client,
-        )
+        super().__init__(*args, **kwargs)
+
+    @SensorEntity.state.setter
+    def state(self, state):
+        state = validators.validate_bool(state)
+        SensorEntity.state.fset(self, state)  # type: ignore
