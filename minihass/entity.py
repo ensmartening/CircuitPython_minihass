@@ -193,15 +193,13 @@ class Entity(object):
             RuntimeError : If the MQTT client is not connected
         """
 
-        mqtt_client = self.mqtt_client
-
-        if not isinstance(mqtt_client, MQTT):
+        if not isinstance(self.mqtt_client, MQTT):
             raise ValueError("mqtt_client not set")
 
-        elif not mqtt_client.is_connected():
+        elif not self.mqtt_client.is_connected():
             raise RuntimeError("mqtt_client not connected")
 
-        self.logger.debug(f"Using MQTT broker {mqtt_client.broker}")
+        self.logger.debug(f"Using MQTT broker {self.mqtt_client.broker}")
 
         if self.device:
             discovery_topic = f"homeassistant/{self.COMPONENT}/{self.device.device_id}/{self.object_id}/config"
@@ -250,7 +248,6 @@ class Entity(object):
             RuntimeError : If the MQTT client is not connected
         """
         pass
-
 
     def publish_availability(self):
         """Explicitly publishes availability of the entity.
