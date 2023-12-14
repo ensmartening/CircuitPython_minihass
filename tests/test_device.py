@@ -50,9 +50,12 @@ def test_Device_entity_management(entities, mqtt_client):
     for l in entities:
         assert l in o.entities
 
+
 def test_Device_add_entity(entities, mqtt_client):
     o = minihass.Device(entities=[entities[0]], mqtt_client=mqtt_client)
-    expected_topic = "homeassistant/binary_sensor/mqtt_device1337d00d/bar1337d00d/config"
+    expected_topic = (
+        "homeassistant/binary_sensor/mqtt_device1337d00d/bar1337d00d/config"
+    )
     expected_payload = '{"avty": [{"t": "binary_sensor/bar1337d00d/availability"}, {"t": "device/mqtt_device1337d00d/availability"}], "dev_cla": null, "en": true, "ent_cat": null, "ic": null, "name": "bar", "dev": {"mf": null, "hw": null, "ids": ["mqtt_device1337d00d"], "cns": []}, "stat_t": "device/mqtt_device1337d00d/state", "val_tpl": "{{ value_json.bar1337d00d }}", "expire_after": false, "force_update": false}'
     assert o.add_entity(entities[1]) == True
     mqtt_client.publish.assert_called_with(expected_topic, expected_payload, True, 1)
@@ -63,19 +66,24 @@ def test_Device_add_entity_already_exists(entities, mqtt_client):
     o = minihass.Device(entities=[entities[0]], mqtt_client=mqtt_client)
     assert o.add_entity(entities[0]) == False
 
+
 @patch("adafruit_logging.Logger.error")
 def test_Device_add_entity_mqtt_failure(logger, device, entities):
     device.mqtt_client.publish.side_effect = MMQTTException("something broke")
     assert device.add_entity(entities[2]) == True
     logger.assert_called_with("Announcement failed, ('something broke',)")
 
+
 def test_Device_add_entity_wrong_type(device):
     with pytest.raises(TypeError):
         device.add_entity(1)  # type: ignore
 
+
 def test_Device_delete_entity(device, entities):
     device.add_entity(entities[0])
-    expected_topic = f"homeassistant/binary_sensor/mqtt_device1337d00d/foo1337d00d/config"
+    expected_topic = (
+        f"homeassistant/binary_sensor/mqtt_device1337d00d/foo1337d00d/config"
+    )
     device.mqtt_client.publish.side_effect = MMQTTException
     assert device.delete_entity(entities[0]) == True
     assert device.delete_entity(entities[0]) == False
@@ -91,6 +99,7 @@ def test_Device_announce(entities, mqtt_client):
     expected_msg = '{"avty": [{"t": "binary_sensor/baz1337d00d/availability"}, {"t": "device/mqtt_device1337d00d/availability"}], "dev_cla": null, "en": true, "ent_cat": null, "ic": null, "name": "baz", "dev": {"mf": null, "hw": null, "ids": ["mqtt_device1337d00d"], "cns": []}, "stat_t": "device/mqtt_device1337d00d/state", "val_tpl": "{{ value_json.baz1337d00d }}", "expire_after": false, "force_update": false}'
     o.announce()
     mqtt_client.publish.assert_called_with(expected_topic, expected_msg, True, 1)
+
 
 def test_Device_publish_state_queue(entities, mqtt_client):
     o = minihass.Device(entities=entities, mqtt_client=mqtt_client)

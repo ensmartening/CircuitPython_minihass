@@ -246,7 +246,6 @@ class Entity(object):
         except MMQTTException as e:
             self.logger.error(f"Announcement failed, {e.args}")
 
-
     def withdraw(self):
         """Send MQTT discovery message to remove this entity.
 
@@ -291,7 +290,7 @@ class Entity(object):
         )
 
 
-class SensorEntity():
+class SensorEntity:
     """Mixin class representing a Home Assistant Entity that publishes states
 
     Args:
