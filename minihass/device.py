@@ -1,7 +1,7 @@
 from os import getenv
 
 import adafruit_logging as logging
-from adafruit_minimqtt.adafruit_minimqtt import MQTT
+from adafruit_minimqtt.adafruit_minimqtt import MQTT, MMQTTException
 
 from . import _validators as validators
 from .entity import Entity, SensorEntity
@@ -109,10 +109,7 @@ class Device:
             if not entity in self._entities:
                 self._entities.append(entity)
                 entity.device = self
-                try:
-                    entity.announce()
-                except RuntimeError:
-                    pass
+                entity.announce()
                 return True
             else:
                 return False
@@ -130,6 +127,7 @@ class Device:
                 was not a member of the device
         """
         if entity in self._entities:
+            entity.withdraw()
             self._entities.remove(entity)
             entity.device = None
             return True

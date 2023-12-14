@@ -63,12 +63,17 @@ def test_Entity_availability(entity):
     entity.mqtt_client.publish.assert_called_with(expected_topic, expected_msg, True, 1)
 
 
-@patch("adafruit_logging.Logger.warning")
+@patch("adafruit_logging.Logger.error")
 def test_Entity_availability_pub_failure(logger, entity):
-    entity.mqtt_client.publish.side_effect = MMQTTException
+    entity.mqtt_client.publish.side_effect = MMQTTException("something failed")
     entity.availability = True
-    logger.assert_called_with("Unable to publish availability.")
+    logger.assert_called_with("Availability publishing failed, ('something failed',)")
 
+@patch("adafruit_logging.Logger.warning")
+def test_Entity_availability_pub_no_MQTT(logger, entity):
+    entity.mqtt_client = None
+    entity.availability = True
+    logger.assert_called_with("Unable to publish availability - MQTT client not set")
 
 def test_Entity_auto_device_id():
     """Test object_id autogeneration from friendly name"""
@@ -102,28 +107,47 @@ def test_Entity_instantiate_parent():
         minihass.Entity()
 
 
-def test_Entity_announce(mqtt_client):
-    """Test publishing of MQTT dicsovery messages"""
-    e = GenericEntity(name="Foo", mqtt_client=mqtt_client)
+def test_Entity_announce(entity):
+    """Test publishing of MQTT discovery messages"""
     expected_topic = "homeassistant/generic/foo1337d00d/config"
-    expected_msg = '{"avty": [{"t": "generic/foo1337d00d/availability"}], "dev_cla": null, "en": true, "ent_cat": null, "ic": null, "name": "Foo"}'
-    e.announce()
-    mqtt_client.publish.assert_called_with(expected_topic, expected_msg, True, 1)
+    expected_msg = '{"avty": [{"t": "generic/foo1337d00d/availability"}], "dev_cla": null, "en": true, "ent_cat": "config", "ic": null, "name": "test"}'
+    entity.announce()
+    entity.mqtt_client.publish.assert_called_with(expected_topic, expected_msg, True, 1)
 
+@patch("adafruit_logging.Logger.warning")
+def test_Entity_announce_no_mqtt_client(logger, entity):
+    """Log a warning if announce is called without an MQTT client object"""
+    entity.mqtt_client = None
+    entity.announce()
+    logger.assert_called_with("Unable to announce: - MQTT client not set")
 
-def test_Entity_announce_mqtt_client_disconnected(mqtt_client):
-    """Throw exception if MQTT client is not connected"""
-    e = GenericEntity(name="Foo", mqtt_client=mqtt_client)
-    mqtt_client.is_connected.return_value = False
-    with pytest.raises(RuntimeError):
-        e.announce()
+@patch("adafruit_logging.Logger.error")
+def test_Entity_announce_mqtt_error(logger, entity):
+    """Log an error if MQTT publishing fails"""
+    entity.mqtt_client.publish.side_effect = MMQTTException("something failed")
+    entity.announce()
+    logger.assert_called_with("Announcement failed, ('something failed',)")
 
+def test_Entity_withdraw(entity):
+    """Test publishing of MQTT withdrawl messages"""
+    expected_topic = "homeassistant/generic/foo1337d00d/config"
+    expected_msg = ""
+    entity.withdraw()
+    entity.mqtt_client.publish.assert_called_with(expected_topic, expected_msg, True, 1)
 
-def test_Entity_announce_no_mqtt_client():
-    """Throw an error if announce is called without an MQTT client object"""
-    e = GenericEntity(name="Foo", mqtt_client=None)
-    with pytest.raises(ValueError):
-        e.announce()
+@patch("adafruit_logging.Logger.warning")
+def test_Entity_withdraw_no_mqtt_client(logger, entity):
+    """Log a warning if withdraw is called without an MQTT client object"""
+    entity.mqtt_client = None
+    entity.withdraw()
+    logger.assert_called_with("Unable to withdraw: - MQTT client not set")
+
+@patch("adafruit_logging.Logger.error")
+def test_Entity_withdraw_mqtt_error(logger, entity):
+    """Log anerror if announce is called without an MQTT client object"""
+    entity.mqtt_client.publish.side_effect = MMQTTException("something failed")
+    entity.withdraw()
+    logger.assert_called_with("Withdrawal failed, ('something failed',)")
 
 
 def test_Entity_set_mqtt_client(mqtt_client):
@@ -137,6 +161,10 @@ def test_Entity_set_state(sensor):
     sensor.state = "foobar"
     assert sensor.state == "foobar"
 
+def test_SensorEntity_instantiate_parent():
+    """Prevent direct instantiation of the SensorEntity parent class"""
+    with pytest.raises(RuntimeError):
+        minihass.SensorEntity()
 
 def test_SensorEntity_state_topic(sensor):
     assert sensor._state_topic == "entity/test1337d00d/state"
