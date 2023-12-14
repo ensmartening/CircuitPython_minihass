@@ -1,7 +1,10 @@
+from os import getenv
+
+import adafruit_logging as logging
 from adafruit_minimqtt.adafruit_minimqtt import MQTT
 
 from . import _validators as validators
-from .entity import Entity
+from .entity import Entity, SensorEntity
 
 
 class Device:
@@ -47,8 +50,11 @@ class Device:
         hw_version: str | None = None,
         connections: list[tuple[str, str]] | None = None,
         entities: list[Entity] = [],
+        logger_name: str = "minimqtt",
     ):
 
+        self.logger = logging.getLogger(logger_name)
+        self.logger.setLevel(getattr(logging, getenv("LOGLEVEL", ""), logging.WARNING))  # type: ignore
         self.name = validators.validate_string(name) if name else "MQTT Device"
 
         if device_id:
@@ -149,3 +155,19 @@ class Device:
             entity.announce()
 
         return True
+
+    def publish_state_queue(self) -> bool:
+        """Publish any queued states for all device entities
+
+        Returns:
+            bool : :class:`True` if at least one sensor state was published.
+        """
+
+        ret = False
+        for entity in (e for e in self.entities if isinstance(e, SensorEntity)):
+
+            if entity.state_queued:
+                entity.publish_state()
+                ret = True
+
+        return ret

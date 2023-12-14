@@ -5,9 +5,8 @@ as well as components that accept commands (e.g. switches)
 from __future__ import annotations
 
 from json import dumps
-from logging import WARN, WARNING
 from os import getenv
-from xml.dom.minidom import Attr
+from typing import Any
 
 import adafruit_logging as logging
 import microcontroller
@@ -72,7 +71,7 @@ class Entity(object):
     ):
 
         self.logger = logging.getLogger(logger_name)
-        self.logger.setLevel(getattr(logging, getenv("LOGLEVEL", ""), WARNING))
+        self.logger.setLevel(getattr(logging, getenv("LOGLEVEL", ""), logging.WARNING))  # type: ignore
 
         if self.__class__ == Entity:
             self.logger.error(
@@ -260,11 +259,23 @@ class Entity(object):
 
 
 class SensorEntity:
-    """Parent class representing a Home Assistant Entity that publishes states"""
+    def __init__(self, *args, queue="yes", **kwargs):
+        """Parent class representing a Home Assistant Entity that publishes states
 
-    def __init__(self, *args, **kwargs):
+        Args:
+            queue ("yes"|"no"|"always", optional): Controls state queuing behaviour.
+                If ``"yes"``, if publishing to the MQTT broker fails, the message will
+                be queued and can be re-published, by calling the device's
+                :meth:`publish_state_queue()` method. If ``"no"``, unpublished states
+                are not queued, but can still be explicitly published by calling the
+                entity's :meth:`publish_state` method. If ``"always"``, states are not
+                automatically published and will alawys be queued. Defaults to
+                ``"yes"``.
+        """
 
-        self._state = None
+        self.queue = validators.validate_queue_option(queue)
+        self._state: Any = None
+        self.state_queued: bool = False
 
         super().__init__(*args, **kwargs)
 
@@ -277,19 +288,22 @@ class SensorEntity:
     @state.setter
     def state(self, newstate):
         self._state = newstate
-        try:
-            self.publish_state()  # type: ignore
-        except Exception as e:  # TODO: Narrow exception scope
-            self.logger.warning("Unable to publish state change")  # type: ignore
+
+        if self.queue == "always":
+            self.state_queued = True
+        else:
+            try:
+                self.publish_state()  # type: ignore
+            except Exception as e:  # TODO: Narrow exception scope
+                if self.queue in ["yes", "always"]:
+                    self.state_queued = True
+                self.logger.warning("Unable to publish state change")  # type: ignore
 
     def publish_state(self):
         """Explicitly publishes state of the entity.
 
         This function is called automatically when :attr:`state` property is
         changed.
-
-        Returns:
-            bool : :class:`True` if successful.
         """
         self.mqtt_client.publish(  # type: ignore
             self._state_topic,  # type: ignore
@@ -297,9 +311,4 @@ class SensorEntity:
             True,
             1,
         )
-
-
-# class _CommandEntity(Entity):
-#     """Parent class representing a Home Assistant Entity that accepts commands"""
-
-#     pass
+        self.state_queued = False
