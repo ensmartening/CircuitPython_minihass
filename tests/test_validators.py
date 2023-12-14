@@ -105,3 +105,22 @@ def test_validate_bool_typeerror():
 )
 def test_validate_bool_normalized(n, x):
     assert validators.validate_bool(n) == x
+
+
+@pytest.mark.parametrize(
+    "n, x",
+    [
+        ("yes", "yes"),
+        ("no", "no"),
+        ("always", "always"),
+        (True, "yes"),
+        ("", "no"),
+        ("ALWAYS", "always")
+    ],
+)
+def test_validate_queue_option(n, x):
+    assert validators.validate_queue_option(n, strict=False) == x
+
+def test_validate_queue_option_strict():
+    with pytest.raises(ValueError):
+        validators.validate_queue_option("foo", strict=True)

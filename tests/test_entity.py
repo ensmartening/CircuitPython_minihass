@@ -26,6 +26,11 @@ def entity(mqtt_client):
     )
     yield e
 
+@pytest.fixture
+def sensor(mqtt_client):
+    s = GenericSensor(name="test", mqtt_client=mqtt_client)
+    yield s
+
 
 @pytest.fixture
 def mqtt_client():
@@ -114,3 +119,41 @@ def test_Entity_announce_no_mqtt_client():
     e = GenericEntity(name="Foo", mqtt_client=None)
     with pytest.raises(ValueError):
         e.announce()
+
+def test_Entity_set_mqtt_client(mqtt_client):
+    e = GenericEntity(name="foo")
+    e.mqtt_client = mqtt_client
+    assert e.mqtt_client == mqtt_client
+
+def test_Entity_set_state(sensor):
+    assert sensor.state == None
+    sensor.state = "foobar"
+    assert sensor.state == "foobar"
+
+def test_SensorEntity_state_topic(sensor):
+    assert sensor._state_topic == "entity/test1337d00d/state"
+
+def test_SensorEntity_publish(sensor):
+    sensor.state = "foo"
+    sensor.mqtt_client.publish.assert_called_with('entity/test1337d00d/state', '{"test1337d00d": "foo"}', True, 1)
+
+
+def test_SensorEntity_queue(mqtt_client):
+    s = GenericSensor(name="foo", queue="yes", mqtt_client = mqtt_client)
+    mqtt_client.publish.side_effect = MMQTTException
+    assert not s.state_queued
+    s.state = "foo"
+    assert s.state_queued
+    mqtt_client.publish.side_effect = None
+    s.publish_state()
+    mqtt_client.publish.assert_called_with('entity/foo1337d00d/state', '{"foo1337d00d": "foo"}', True, 1)
+    assert not s.state_queued
+
+
+
+def test_SensorEntity_always_queue(mqtt_client):
+    s = GenericSensor(name="foo", queue="always", mqtt_client=mqtt_client)
+    s.state = "foo"
+    mqtt_client.publish.assert_not_called()
+    s.publish_state()
+    mqtt_client.publish.assert_called_with('entity/foo1337d00d/state', '{"foo1337d00d": "foo"}', True, 1)
