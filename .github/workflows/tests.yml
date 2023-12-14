@@ -4,6 +4,7 @@ on: [push, pull_request]
 
 jobs:
   codecov:
+    continue-on-error: true
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -15,9 +16,19 @@ jobs:
     - name: Install project and dependencies
       run: poetry install --with docs --no-interaction
     - name: Run tests and collect coverage
+      id: pytest
       run: |
         . .venv/bin/activate
         pytest --cov=minihass --cov-report=xml
-      continue-on-error: true
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v3
+    - name: label when tests fail
+      if: ${{ steps.pytest.outcome == 'failure' && github.event_name != 'push' }}
+      uses: andymckay/labeler@1.0.4
+      with:
+        add-labels: "test-failing"
+    - name: remove label when tests succeed
+      if: ${{ steps.pytest.outcome == 'failure' && github.event_name != 'push' }}
+      uses: andymckay/labeler@1.0.4
+      with:
+        remove-labels: "test-failing"
