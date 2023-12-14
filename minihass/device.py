@@ -1,7 +1,7 @@
 from adafruit_minimqtt.adafruit_minimqtt import MQTT
 
 from . import _validators as validators
-from .entity import Entity
+from .entity import Entity, SensorEntity
 
 
 class Device:
@@ -150,5 +150,17 @@ class Device:
 
         return True
 
-    def publish_state_queue(self):
-        pass
+    def publish_state_queue(self) -> bool:
+        """Publish any queued states for all device entities
+
+        Returns:
+            bool : :class:`True` if at least one sensor state was published.
+        """
+
+        ret = False
+        for entity in (e for e in self.entities if isinstance(e, SensorEntity)):
+            if entity.state_queued:
+                entity.publish_state
+                ret = True
+
+        return ret

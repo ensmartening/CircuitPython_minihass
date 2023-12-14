@@ -115,11 +115,12 @@ def test_validate_bool_normalized(n, x):
         ("always", "always"),
         (True, "yes"),
         ("", "no"),
-        ("ALWAYS", "always")
+        ("ALWAYS", "always"),
     ],
 )
 def test_validate_queue_option(n, x):
     assert validators.validate_queue_option(n, strict=False) == x
+
 
 def test_validate_queue_option_strict():
     with pytest.raises(ValueError):

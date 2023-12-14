@@ -188,7 +188,11 @@ def validate_queue_option(param, strict: bool = False) -> str:
         return param
 
     elif not strict:
-        if param.lower() == "always":
+        try:
+            param = param.lower()
+        except AttributeError:
+            pass
+        if param == "always":
             return "always"
         else:
             return "yes" if param else "no"

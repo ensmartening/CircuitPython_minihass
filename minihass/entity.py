@@ -277,7 +277,7 @@ class SensorEntity:
 
         self.queue = validators.validate_queue_option(queue)
         self._state: Any = None
-        self._state_queued: bool = False
+        self.state_queued: bool = False
 
         super().__init__(*args, **kwargs)
 
@@ -292,7 +292,7 @@ class SensorEntity:
         self._state = newstate
 
         if self.queue == "always":
-            self._state_queued = True
+            self.state_queued = True
         else:
             try:
                 self.publish_state()  # type: ignore
@@ -306,9 +306,6 @@ class SensorEntity:
 
         This function is called automatically when :attr:`state` property is
         changed.
-
-        Returns:
-            bool : :class:`True` if successful.
         """
         self.mqtt_client.publish(  # type: ignore
             self._state_topic,  # type: ignore
@@ -316,7 +313,7 @@ class SensorEntity:
             True,
             1,
         )
-        self._state_queued = False
+        self.state_queued = False
 
 
 # class _CommandEntity(Entity):
