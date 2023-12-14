@@ -103,7 +103,7 @@ class Device:
             bool: :class:`True` if the entity was added. :class:`False` if the entity
                 is already a member of the device.
         """
-        raise RuntimeError("This should fail")
+
         if isinstance(entity, Entity):
             if not entity in self._entities:
                 self._entities.append(entity)
