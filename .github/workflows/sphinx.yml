@@ -3,7 +3,7 @@ name: "Docs build"
 on: push
 
 jobs:
-  build:
+  build-docs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
