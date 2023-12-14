@@ -241,6 +241,17 @@ class Entity(object):
         self.logger.debug(f"Discovery paylods: {dumps(discovery_payload)}")
         self.mqtt_client.publish(discovery_topic, dumps(discovery_payload), True, 1)
 
+    def withdraw(self):
+        """Send MQTT discovery message to remove this entity.
+
+        Raises:
+            ValueError : If the entity or its parent device does not have a valid
+                ``mqtt_client`` set.
+            RuntimeError : If the MQTT client is not connected
+        """
+        pass
+
+
     def publish_availability(self):
         """Explicitly publishes availability of the entity.
 
