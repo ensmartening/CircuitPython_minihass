@@ -259,19 +259,20 @@ class Entity(object):
 
 
 class SensorEntity:
-    def __init__(self, *args, queue="yes", **kwargs):
-        """Parent class representing a Home Assistant Entity that publishes states
+    """Parent class representing a Home Assistant Entity that publishes states
 
         Args:
             queue ("yes"|"no"|"always", optional): Controls state queuing behaviour.
                 If ``"yes"``, if publishing to the MQTT broker fails, the message will
                 be queued and can be re-published, by calling the device's
-                :meth:`publish_state_queue()` method. If ``"no"``, unpublished states
+                :meth:`Device.publish_state_queue()` method. If ``"no"``, unpublished states
                 are not queued, but can still be explicitly published by calling the
                 entity's :meth:`publish_state` method. If ``"always"``, states are not
                 automatically published and will alawys be queued. Defaults to
                 ``"yes"``.
-        """
+    """
+    def __init__(self, *args, queue="yes", **kwargs):
+
 
         self.queue = validators.validate_queue_option(queue)
         self._state: Any = None
