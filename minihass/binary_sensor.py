@@ -32,6 +32,7 @@ class BinarySensor(Entity, SensorEntity):
         **kwargs
     ):
         self.expire_after = validators.validate_bool(expire_after)
+        foo="bar"
         self.force_update = validators.validate_bool(force_update)
 
         self.component_config = {
