@@ -259,7 +259,7 @@ class Entity(object):
 
 
 class SensorEntity:
-    """Parent class representing a Home Assistant Entity that publishes states
+    """Mixin class representing a Home Assistant Entity that publishes states
 
         Args:
             queue ("yes"|"no"|"always", optional): Controls state queuing behaviour.
@@ -279,6 +279,12 @@ class SensorEntity:
         self.state_queued: bool = False
 
         super().__init__(*args, **kwargs)
+        if self.__class__ == SensorEntity:
+            self.logger.error(  # type: ignore
+                "Attepted instantiation of parent class, raising an exception..."
+            )
+            raise RuntimeError("SensorEntity class cannot be raised on its own")
+
 
     @property
     def state(self):
