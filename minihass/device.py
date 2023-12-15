@@ -17,6 +17,14 @@ class Device:
     :class:`Device` object, although it it technically possible to create multiple
     objects in one instance of CircuitPython using this module.
 
+    .. caution:: The MQTT client used to create a :class:`Device` object must not be
+        connected at the time of instantiation. The devices uses a `Last Will and
+        Testament`_ message to mark the device and its entities as `unavailable` after
+        losing its connection to the MQTT broker, and the LWT is sent as part of the
+        connection process.
+
+    .. _Last Will and Testament: https://www.hivemq.com/blog/mqtt-essentials-part-9-last-will-and-testament/
+
     Args:
         mqtt_client (adafruit_minimqtt.adafruit_minimqtt.MQTT) : MMQTT
             object for communicating with Home Assistant.
@@ -34,8 +42,8 @@ class Device:
             part of the device. Defaults to :class:`None`
 
     Attributes:
-        device_id (str) : Effective Device ID.
-        name (str) : Effective device name.
+        device_id (str) : Effective Device ID. Either normalized from the
+            ``device_id`` parameter, or derived from ``name``
         mqtt_client (adafruit_minimqtt.adafruit_minimqtt.MQTT) : MQTT client.
         connections (list[tuple(str, str)]) : List of Home Aassistant device
             connections.
@@ -76,6 +84,10 @@ class Device:
         }
         self.availability_topic = f"device/{self.device_id}/availability"
         self.state_topic = f"device/{self.device_id}/state"
+
+        self.mqtt_client.will_set(self.state_topic, "offline", 1, True)
+        self.mqtt_client.on_connect = self.mqtt_on_connect_cb  # type: ignore
+
         self._entities = []
 
         for entity in entities:
@@ -167,3 +179,9 @@ class Device:
                 ret = True
 
         return ret
+
+    def mqtt_on_connect_cb(self, mqtt_client, userdata, flags, rc):
+        self.announce()
+        self.publish_state_queue()
+        mqtt_client.publish(self.availability_topic, "online", True, 1)
+        pass
