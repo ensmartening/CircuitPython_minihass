@@ -184,4 +184,8 @@ class Device:
         self.announce()
         self.publish_state_queue()
         mqtt_client.publish(self.availability_topic, "online", True, 1)
+        try:
+            userdata['on_connect'](mqtt_client, userdata, flags, rc)
+        except KeyError:
+            pass
         pass

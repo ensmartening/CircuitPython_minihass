@@ -24,9 +24,10 @@ def device(mqtt_client):
 @pytest.fixture
 def mqtt_client():
     mqtt_client = Mock(spec=MQTT)
-    mqtt_client.is_connected.return_value = True
+    mqtt_client.is_connected.return_value = False
     p = PropertyMock(return_value="broker.example.com")
     mqtt_client.broker = p
+
 
     yield mqtt_client
 
