@@ -28,7 +28,6 @@ def mqtt_client():
     p = PropertyMock(return_value="broker.example.com")
     mqtt_client.broker = p
 
-
     yield mqtt_client
 
 
@@ -101,6 +100,23 @@ def test_Device_announce(entities, mqtt_client):
     mqtt_client.publish.assert_called_with(expected_topic, expected_msg, True, 1)
 
 
+def test_Device_availability(device):
+    assert not device.availability  # Set by constructor
+
+    expected_topic = "device/mqtt_device1337d00d/availability"
+    expected_msg = "online"
+    device.availability = True  # Set by property.setter
+    assert device.availability
+    device.mqtt_client.publish.assert_called_with(expected_topic, expected_msg, True, 1)
+
+
+@patch("adafruit_logging.Logger.error")
+def test_Device_availability_pub_failure(logger, device):
+    device.mqtt_client.publish.side_effect = MMQTTException("something failed")
+    device.availability = True
+    logger.assert_called_with("Availability publishing failed, ('something failed',)")
+
+
 def test_Device_publish_state_queue(entities, mqtt_client):
     o = minihass.Device(entities=entities, mqtt_client=mqtt_client)
     mqtt_client.publish.side_effect = MMQTTException
@@ -113,3 +129,24 @@ def test_Device_publish_state_queue(entities, mqtt_client):
     mqtt_client.reset_mock()
     o.publish_state_queue()
     mqtt_client.publish.assert_not_called()
+
+
+def test_Device_mqtt_on_connect_cb(entities, mqtt_client):
+    o = minihass.Device(entities=[entities[-1]], mqtt_client=mqtt_client)
+    mqtt_client.publish.side_effect = MMQTTException
+    for e in entities:
+        e.state = True
+    mqtt_client.reset_mock()
+    mqtt_client.publish.side_effect = None
+    announce_topic = (
+        "homeassistant/binary_sensor/mqtt_device1337d00d/baz1337d00d/config"
+    )
+    announce_msg = '{"avty": [{"t": "binary_sensor/baz1337d00d/availability"}, {"t": "device/mqtt_device1337d00d/availability"}], "dev_cla": null, "en": true, "ent_cat": null, "ic": null, "name": "baz", "dev": {"mf": null, "hw": null, "ids": ["mqtt_device1337d00d"], "cns": []}, "stat_t": "device/mqtt_device1337d00d/state", "val_tpl": "{{ value_json.baz1337d00d }}", "expire_after": false, "force_update": false}'
+    queue_topic = "device/mqtt_device1337d00d/state"
+    queue_msg = '{"baz1337d00d": true}'
+    availability_topic = "device/mqtt_device1337d00d/availability"
+    availability_msg = "online"
+    o.mqtt_on_connect_cb(mqtt_client, None, {}, 0)
+    mqtt_client.publish.assert_any_call(announce_topic, announce_msg, True, 1)
+    mqtt_client.publish.assert_any_call(queue_topic, queue_msg, True, 1)
+    mqtt_client.publish.assert_any_call(availability_topic, availability_msg, True, 1)

@@ -82,6 +82,8 @@ class Device:
                 "cns": self.connections,
             }
         }
+
+        self._availability = False
         self.availability_topic = f"device/{self.device_id}/availability"
         self.state_topic = f"device/{self.device_id}/state"
 
@@ -104,6 +106,26 @@ class Device:
             list[Entity]: List of Entity subclasses.
         """
         return list(self._entities)
+
+    @property
+    def availability(self) -> bool:
+        """Availability of the device. Setting this entity to :class:`false` makes any
+        entities belonging to this device appear as `unavailable` in Home Assistant.
+        Setting this property triggers :meth:`publish_availability()`."""
+        return self._availability
+
+    @availability.setter
+    def availability(self, value: bool):
+        self._availability = validators.validate_bool(value)
+
+        self.logger.warning(
+            f"{self.device_id} {'available' if self._availability else 'unavailable'}"
+        )
+
+        try:
+            self.publish_availability()
+        except MMQTTException as e:
+            self.logger.error(f"Availability publishing failed, {e.args}")
 
     def add_entity(self, entity: Entity) -> bool:
         """Add an entity to the device
@@ -161,6 +183,7 @@ class Device:
         """
 
         for entity in [x for x in self._entities]:
+            self.logger.warning("barwarn")
             entity.announce()
 
         return True
@@ -180,12 +203,28 @@ class Device:
 
         return ret
 
+    def publish_availability(self):
+        """Explicitly publishes availability of the device.
+
+        This function is called automatically when :attr:`availability` property is
+        changed.
+
+        Returns:
+            bool : :class:`True` if successful.
+        """
+        self.mqtt_client.publish(
+            self.availability_topic,
+            "online" if self.availability else "offline",
+            True,
+            1,
+        )
+
     def mqtt_on_connect_cb(self, mqtt_client, userdata, flags, rc):
+        """Callback for the MQTT client's :attr:`on_connect` attribute. Sends
+        announcement messages for all configured entities, publishes any outstanding
+        entity states, and publishes its own availability as :class:`True`
+        """
+        self.logger.warning("foowarn")
         self.announce()
         self.publish_state_queue()
-        mqtt_client.publish(self.availability_topic, "online", True, 1)
-        try:
-            userdata['on_connect'](mqtt_client, userdata, flags, rc)
-        except KeyError:
-            pass
-        pass
+        self.availability = True
