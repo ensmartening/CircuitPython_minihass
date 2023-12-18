@@ -183,7 +183,6 @@ class Device:
         """
 
         for entity in [x for x in self._entities]:
-            self.logger.warning("barwarn")
             entity.announce()
 
         return True
@@ -224,7 +223,10 @@ class Device:
         announcement messages for all configured entities, publishes any outstanding
         entity states, and publishes its own availability as :class:`True`
         """
-        self.logger.warning("foowarn")
-        self.announce()
-        self.publish_state_queue()
-        self.availability = True
+
+        if rc:
+            self.logger.error(f"MQTT client connection error. Reason code: {rc}")
+        else:
+            self.announce()
+            self.publish_state_queue()
+            self.availability = True
