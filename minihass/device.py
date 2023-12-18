@@ -17,6 +17,14 @@ class Device:
     :class:`Device` object, although it it technically possible to create multiple
     objects in one instance of CircuitPython using this module.
 
+    .. caution:: The MQTT client used to create a :class:`Device` object must not be
+        connected at the time of instantiation. The devices uses a `Last Will and
+        Testament`_ message to mark the device and its entities as `unavailable` after
+        losing its connection to the MQTT broker, and the LWT is sent as part of the
+        connection process.
+
+    .. _Last Will and Testament: https://www.hivemq.com/blog/mqtt-essentials-part-9-last-will-and-testament/
+
     Args:
         mqtt_client (adafruit_minimqtt.adafruit_minimqtt.MQTT) : MMQTT
             object for communicating with Home Assistant.
@@ -34,8 +42,8 @@ class Device:
             part of the device. Defaults to :class:`None`
 
     Attributes:
-        device_id (str) : Effective Device ID.
-        name (str) : Effective device name.
+        device_id (str) : Effective Device ID. Either normalized from the
+            ``device_id`` parameter, or derived from ``name``
         mqtt_client (adafruit_minimqtt.adafruit_minimqtt.MQTT) : MQTT client.
         connections (list[tuple(str, str)]) : List of Home Aassistant device
             connections.
@@ -74,8 +82,14 @@ class Device:
                 "cns": self.connections,
             }
         }
+
+        self._availability = False
         self.availability_topic = f"device/{self.device_id}/availability"
         self.state_topic = f"device/{self.device_id}/state"
+
+        self.mqtt_client.will_set(self.state_topic, "offline", 1, True)
+        self.mqtt_client.on_connect = self.mqtt_on_connect_cb  # type: ignore
+
         self._entities = []
 
         for entity in entities:
@@ -92,6 +106,26 @@ class Device:
             list[Entity]: List of Entity subclasses.
         """
         return list(self._entities)
+
+    @property
+    def availability(self) -> bool:
+        """Availability of the device. Setting this entity to :class:`false` makes any
+        entities belonging to this device appear as `unavailable` in Home Assistant.
+        Setting this property triggers :meth:`publish_availability()`."""
+        return self._availability
+
+    @availability.setter
+    def availability(self, value: bool):
+        self._availability = validators.validate_bool(value)
+
+        self.logger.warning(
+            f"{self.device_id} {'available' if self._availability else 'unavailable'}"
+        )
+
+        try:
+            self.publish_availability()
+        except MMQTTException as e:
+            self.logger.error(f"Availability publishing failed, {e.args}")
 
     def add_entity(self, entity: Entity) -> bool:
         """Add an entity to the device
@@ -149,6 +183,7 @@ class Device:
         """
 
         for entity in [x for x in self._entities]:
+            self.logger.warning("barwarn")
             entity.announce()
 
         return True
@@ -167,3 +202,29 @@ class Device:
                 ret = True
 
         return ret
+
+    def publish_availability(self):
+        """Explicitly publishes availability of the device.
+
+        This function is called automatically when :attr:`availability` property is
+        changed.
+
+        Returns:
+            bool : :class:`True` if successful.
+        """
+        self.mqtt_client.publish(
+            self.availability_topic,
+            "online" if self.availability else "offline",
+            True,
+            1,
+        )
+
+    def mqtt_on_connect_cb(self, mqtt_client, userdata, flags, rc):
+        """Callback for the MQTT client's :attr:`on_connect` attribute. Sends
+        announcement messages for all configured entities, publishes any outstanding
+        entity states, and publishes its own availability as :class:`True`
+        """
+        self.logger.warning("foowarn")
+        self.announce()
+        self.publish_state_queue()
+        self.availability = True

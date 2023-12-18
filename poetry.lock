@@ -49,13 +49,13 @@ typing-extensions = "*"
 
 [[package]]
 name = "adafruit-circuitpython-minimqtt"
-version = "7.5.4"
+version = "7.5.6"
 description = "MQTT client library for CircuitPython"
 optional = false
 python-versions = "*"
 files = [
-    {file = "adafruit-circuitpython-minimqtt-7.5.4.tar.gz", hash = "sha256:af5d2977f852b62dce2b12a62adc3a0a778a0c66121d53a527217a877176ee47"},
-    {file = "adafruit_circuitpython_minimqtt-7.5.4-py3-none-any.whl", hash = "sha256:2f21b34e7a142267309093ffe2e8aedda8c1e1f1192fe4035297cc9f3e3fa4df"},
+    {file = "adafruit-circuitpython-minimqtt-7.5.6.tar.gz", hash = "sha256:78b8417de8381a9416fa610c963f20eb541e7d68e9b94b8524fb90fa275990aa"},
+    {file = "adafruit_circuitpython_minimqtt-7.5.6-py3-none-any.whl", hash = "sha256:1d4d7bd483019b81e5a321898b3e2e73c7229137b3e7e19a5ce10583333ced26"},
 ]
 
 [package.dependencies]
