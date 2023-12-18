@@ -150,3 +150,11 @@ def test_Device_mqtt_on_connect_cb(entities, mqtt_client):
     mqtt_client.publish.assert_any_call(announce_topic, announce_msg, True, 1)
     mqtt_client.publish.assert_any_call(queue_topic, queue_msg, True, 1)
     mqtt_client.publish.assert_any_call(availability_topic, availability_msg, True, 1)
+
+
+@patch("adafruit_logging.Logger.error")
+def test_Device_mqtt_on_connect_cb_error(logger, device):
+    device.mqtt_on_connect_cb(device.mqtt_client, None, {}, 1)
+    logger.assert_called_with(
+        "MQTT client connection error: Connection Refused - Incorrect Protocol Version"
+    )
