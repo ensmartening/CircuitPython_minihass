@@ -1,7 +1,7 @@
 from os import getenv
 
 import adafruit_logging as logging
-from adafruit_minimqtt.adafruit_minimqtt import MQTT, MMQTTException
+from adafruit_minimqtt.adafruit_minimqtt import CONNACK_ERRORS, MQTT, MMQTTException
 
 from . import _validators as validators
 from .entity import Entity, SensorEntity
@@ -225,7 +225,7 @@ class Device:
         """
 
         if rc:
-            self.logger.error(f"MQTT client connection error. Reason code: {rc}")
+            self.logger.error(f"MQTT client connection error: {CONNACK_ERRORS[rc]}")
         else:
             self.announce()
             self.publish_state_queue()
