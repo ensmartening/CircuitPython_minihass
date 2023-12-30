@@ -30,15 +30,14 @@ def test_validate_string_valueerror():
         validators.validate_string("")  # invalid type, Null string not allowed
 
 
-@pytest.mark.parametrize("n, x", [(1, "1"), ("foo", "foo"), (None, None), ("", None)])
+@pytest.mark.parametrize("n, x", [(1, "1"), ("foo", "foo"), (None, ""), ("", "")])
 def test_validate_string_normalized(n, x):
-    assert validators.validate_string(n, none_ok=True) == x
+    assert validators.validate_string(n, null_ok=True) == x
 
 
 def test_validate_hostname_string_typeerror():
     with pytest.raises(TypeError):
         validators.validate_hostname_string(1)  # type: ignore invalid type
-    assert validators.validate_string(None, none_ok=True) == None  # valid type
 
 
 @pytest.mark.parametrize("n", ["foo$bar", "-foobar", "foobar-"])

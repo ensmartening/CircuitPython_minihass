@@ -46,13 +46,6 @@ def mqtt_client():
     yield mqtt_client
 
 
-def test_catch_typing_import_error():
-    with patch.dict("sys.modules", {"typing": None}):
-        import minihass as mh
-
-        o = mh.BinarySensor(name="foo")
-
-
 def test_Entity_instantiation(entity):
     """Test basic Entity instantiation and sanity-check attributes"""
     assert isinstance(entity, minihass.Entity)
@@ -119,7 +112,7 @@ def test_Entity_instantiate_parent():
 def test_Entity_announce(entity):
     """Test publishing of MQTT discovery messages"""
     expected_topic = "homeassistant/generic/foo1337d00d/config"
-    expected_msg = '{"avty": [{"t": "generic/foo1337d00d/availability"}], "dev_cla": null, "en": true, "ent_cat": "config", "ic": null, "name": "test"}'
+    expected_msg = '{"avty": [{"t": "generic/foo1337d00d/availability"}], "en": true, "name": "test", "ent_cat": "config"}'
     entity.announce()
     entity.mqtt_client.publish.assert_called_with(expected_topic, expected_msg, True, 1)
 

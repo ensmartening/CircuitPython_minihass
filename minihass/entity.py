@@ -58,11 +58,11 @@ class Entity(object):
     def __init__(
         self,
         *args,
-        name: str | None = None,
-        entity_category: str | None = None,
-        device_class: str | None = None,
-        object_id: str | None = None,
-        icon: str | None = None,
+        name: str = "",
+        entity_category: str = "",
+        device_class: str = "",
+        object_id: str = "",
+        icon: str = "",
         enabled_by_default: bool = True,
         mqtt_client: MQTT | None = None,
         logger_name: str = "minimqtt",
@@ -80,13 +80,13 @@ class Entity(object):
             )
             raise RuntimeError("Entity class cannot be raised on its own")
 
-        self.name = validators.validate_string(name, none_ok=True)
+        self.name = validators.validate_string(name, null_ok=True)
         self.logger.debug(f"Entity name: self.name")
 
         self.entity_category = validators.validate_entity_category(entity_category)
         self.logger.debug(f"Entity category: {self.entity_category}")
 
-        self.device_class = validators.validate_string(device_class, none_ok=True)
+        self.device_class = validators.validate_string(device_class, null_ok=True)
         self.logger.debug(f"Entity device_class: {self.device_class}")
 
         if object_id:
@@ -104,7 +104,7 @@ class Entity(object):
         else:
             raise ValueError("One of name or object_id must be set")
 
-        self.icon = validators.validate_string(icon, none_ok=True)
+        self.icon = validators.validate_string(icon, null_ok=True)
         self.logger.debug(f"Entity icon: {self.icon}")
 
         self.enabled_by_default = validators.validate_bool(enabled_by_default)
@@ -210,12 +210,20 @@ class Entity(object):
 
         discovery_payload = {
             "avty": [{"t": self.availability_topic}],
-            "dev_cla": self.device_class,
             "en": self.enabled_by_default,
-            "ent_cat": self.entity_category,
-            "ic": self.icon,
-            "name": self.name,
         }
+
+        if self.name:
+            discovery_payload.update({"name": self.name})
+
+        if self.device_class:
+            discovery_payload.update({"dev_cla": self.device_class})
+
+        if self.entity_category:
+            discovery_payload.update({"ent_cat": self.entity_category})
+
+        if self.icon:
+            discovery_payload.update({"ic": self.icon})
 
         if self.device:
             self.logger.debug(f"Adding device config from {self.device.name}")

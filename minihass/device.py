@@ -54,9 +54,9 @@ class Device:
         mqtt_client: MQTT,
         device_id: str = "",
         name: str = "",
-        manufacturer: str | None = None,
-        hw_version: str | None = None,
-        connections: list[tuple[str, str]] | None = None,
+        manufacturer: str = "",
+        hw_version: str = "",
+        connections: list[tuple[str, str]] = [],
         entities: list[Entity] = [],
         logger_name: str = "minimqtt",
     ):
@@ -69,19 +69,23 @@ class Device:
         else:
             self.device_id = f"{validators.validate_id_string(self.name)}{Entity.chip_id()}"  # type: ignore
 
-        self.manufacturer = validators.validate_string(manufacturer, none_ok=True)
-        self.hw_version = validators.validate_string(hw_version, none_ok=True)
+        self.manufacturer = validators.validate_string(manufacturer, null_ok=True)
+        self.hw_version = validators.validate_string(hw_version, null_ok=True)
         self.mqtt_client = mqtt_client
         self.connections = connections if connections else []
 
         self.device_config = {
             "dev": {
-                "mf": self.manufacturer,
-                "hw": self.hw_version,
                 "ids": [self.device_id],
                 "cns": self.connections,
             }
         }
+
+        if self.manufacturer:
+            self.device_config["dev"].update({"mf": self.manufacturer})
+
+        if self.hw_version:
+            self.device_config["dev"].update({"hw": self.hw_version})
 
         self._availability = False
         self.availability_topic = f"device/{self.device_id}/availability"
