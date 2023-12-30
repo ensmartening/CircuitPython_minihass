@@ -2,10 +2,10 @@
 from adafruit_minimqtt.adafruit_minimqtt import MQTT
 
 from . import _validators as validators
-from .entity import Entity, SensorEntity
+from .entity import SensorEntity
 
 
-class BinarySensor(Entity, SensorEntity):
+class BinarySensor(SensorEntity):
     """
     Class representing a Home Assistant Binary Sensor entity.
 

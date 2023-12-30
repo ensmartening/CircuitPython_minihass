@@ -16,7 +16,7 @@ class GenericEntity(minihass.entity.Entity):
         super().__init__(*args, **kwargs)
 
 
-class GenericSensor(minihass.entity.Entity, minihass.entity.SensorEntity):
+class GenericSensor(minihass.entity.SensorEntity):
     COMPONENT = "sensor"
 
     def __init__(self, *args, **kwargs):

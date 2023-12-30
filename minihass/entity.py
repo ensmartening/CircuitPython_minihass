@@ -288,7 +288,7 @@ class Entity(object):
         )
 
 
-class SensorEntity:
+class SensorEntity(Entity):
     """Mixin class representing a Home Assistant Entity that publishes states
 
     Args:
@@ -313,12 +313,13 @@ class SensorEntity:
             self.logger = logging.getLogger(logger_name)
             self.logger.setLevel(getattr(logging, getenv("LOGLEVEL", ""), logging.WARNING))  # type: ignore
 
-        super().__init__(*args, **kwargs)
         if self.__class__ == SensorEntity:
             self.logger.error(  # type: ignore
                 "Attepted instantiation of parent class, raising an exception..."
             )
             raise RuntimeError("SensorEntity class cannot be raised on its own")
+
+        super().__init__(*args, **kwargs)
 
     @property
     def state(self):
