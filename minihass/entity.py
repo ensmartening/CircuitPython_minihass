@@ -7,11 +7,6 @@ from __future__ import annotations
 from json import dumps
 from os import getenv
 
-try:  # Not available (nor needed) in runtime
-    from typing import Any
-except ImportError:
-    pass
-
 import adafruit_logging as logging
 import microcontroller
 from adafruit_minimqtt.adafruit_minimqtt import MQTT, MMQTTException
@@ -309,7 +304,7 @@ class SensorEntity:
 
     def __init__(self, *args, queue="yes", logger_name="minimqtt", **kwargs):
         self.queue = validators.validate_queue_option(queue)
-        self._state: Any = None
+        self._state: object = None
         self.state_queued: bool = False
 
         try:

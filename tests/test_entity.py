@@ -46,6 +46,13 @@ def mqtt_client():
     yield mqtt_client
 
 
+def test_catch_typing_import_error():
+    with patch.dict("sys.modules", {"typing": None}):
+        import minihass as mh
+
+        o = mh.BinarySensor(name="foo")
+
+
 def test_Entity_instantiation(entity):
     """Test basic Entity instantiation and sanity-check attributes"""
     assert isinstance(entity, minihass.Entity)
