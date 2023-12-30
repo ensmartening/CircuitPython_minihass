@@ -6,7 +6,11 @@ from __future__ import annotations
 
 from json import dumps
 from os import getenv
-from typing import Any
+
+try:  # Not available (nor needed) in runtime
+    from typing import Any
+except ImportError:
+    pass
 
 import adafruit_logging as logging
 import microcontroller
