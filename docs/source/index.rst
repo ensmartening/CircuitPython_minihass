@@ -3,20 +3,10 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to minihass's documentation!
-====================================
+minihass
+========
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+A lightweight Python package to interact with Home Assistant over MQTT,
+intended for use with CircuitPython and the Adafruit MiniMQTT library.
 
-   minihass
-
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+Coming soon...
