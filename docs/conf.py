@@ -35,7 +35,6 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.napoleon",
     "sphinx.ext.todo",
-    "piccolo_theme"
 ]
 
 templates_path = ["_templates"]
