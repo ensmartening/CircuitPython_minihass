@@ -15,7 +15,7 @@ sys.path.insert(0, os.path.abspath("../"))
 project = "minihass"
 copyright = "2023, Adam Schumacher"
 author = "Adam Schumacher"
-release = "0.1.0"
+release = "0.1.0-beta"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
