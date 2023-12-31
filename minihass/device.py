@@ -4,6 +4,7 @@ import adafruit_logging as logging
 from adafruit_minimqtt.adafruit_minimqtt import CONNACK_ERRORS, MQTT, MMQTTException
 
 from . import _validators as validators
+from .const import *
 from .entity import Entity, SensorEntity
 
 
@@ -88,8 +89,10 @@ class Device:
             self.device_config["dev"].update({"hw": self.hw_version})
 
         self._availability = False
-        self.availability_topic = f"device/{self.device_id}/availability"
-        self.state_topic = f"device/{self.device_id}/state"
+        self.availability_topic = (
+            f"{HA_MQTT_PREFIX}/device/{self.device_id}/availability"
+        )
+        self.state_topic = f"{HA_MQTT_PREFIX}/device/{self.device_id}/state"
 
         self.mqtt_client.will_set(self.state_topic, "offline", 1, True)
         self.mqtt_client.on_connect = self.mqtt_on_connect_cb  # type: ignore

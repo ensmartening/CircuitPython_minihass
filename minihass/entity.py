@@ -12,6 +12,7 @@ import microcontroller
 from adafruit_minimqtt.adafruit_minimqtt import MQTT, MMQTTException
 
 from . import _validators as validators
+from .const import *
 
 
 class Entity(object):
@@ -123,7 +124,9 @@ class Entity(object):
         self._availability = False
 
         self.device: "Device" | None = None  # type: ignore
-        self.availability_topic = f"{self.COMPONENT}/{self.object_id}/availability"
+        self.availability_topic = (
+            f"{HA_MQTT_PREFIX}/{self.COMPONENT}/{self.object_id}/availability"
+        )
         try:
             self.component_config
         except AttributeError:
@@ -182,7 +185,7 @@ class Entity(object):
             self.logger.debug(f"State topic from device {self.device.device_id}")  # type: ignore
             state_topic = self.device.state_topic  # type: ignore
         except AttributeError:
-            state_topic = f"entity/{self.object_id}/state"
+            state_topic = f"{HA_MQTT_PREFIX}/entity/{self.object_id}/state"
 
         self.logger.debug(f"State topic: {state_topic}")
         return state_topic
@@ -202,9 +205,11 @@ class Entity(object):
             self.logger.warning("MQTT client not set")
 
         if self.device:
-            discovery_topic = f"homeassistant/{self.COMPONENT}/{self.device.device_id}/{self.object_id}/config"
+            discovery_topic = f"{HA_MQTT_PREFIX}/{self.COMPONENT}/{self.device.device_id}/{self.object_id}/config"
         else:
-            discovery_topic = f"homeassistant/{self.COMPONENT}/{self.object_id}/config"
+            discovery_topic = (
+                f"{HA_MQTT_PREFIX}/{self.COMPONENT}/{self.object_id}/config"
+            )
 
         self.logger.debug(f"Discovery topic: {discovery_topic}")
 
@@ -268,9 +273,11 @@ class Entity(object):
             self.logger.warning("MQTT client not set")
 
         if self.device:
-            discovery_topic = f"homeassistant/{self.COMPONENT}/{self.device.device_id}/{self.object_id}/config"
+            discovery_topic = f"{HA_MQTT_PREFIX}/{self.COMPONENT}/{self.device.device_id}/{self.object_id}/config"
         else:
-            discovery_topic = f"homeassistant/{self.COMPONENT}/{self.object_id}/config"
+            discovery_topic = (
+                f"{HA_MQTT_PREFIX}/{self.COMPONENT}/{self.object_id}/config"
+            )
 
         self.logger.info(f"Publishing withdrawal message for {self.object_id}")
         try:

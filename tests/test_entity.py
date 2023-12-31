@@ -61,7 +61,7 @@ def test_Entity_instantiation(entity):
 def test_Entity_availability(entity):
     assert not entity.availability  # Set by constructor
 
-    expected_topic = "generic/foo1337d00d/availability"
+    expected_topic = "homeassistant/generic/foo1337d00d/availability"
     expected_msg = "online"
     entity.availability = True  # Set by property.setter
     assert entity.availability
@@ -117,7 +117,7 @@ def test_Entity_instantiate_parent():
 def test_Entity_announce(entity):
     """Test publishing of MQTT discovery messages"""
     expected_topic = "homeassistant/generic/foo1337d00d/config"
-    expected_msg = '{"avty": [{"t": "generic/foo1337d00d/availability"}], "en": true, "unique_id": "foo1337d00d", "name": "test", "dev_cla": "temperature", "ent_cat": "config", "ic": "mdi:check-circle"}'
+    expected_msg = '{"avty": [{"t": "homeassistant/generic/foo1337d00d/availability"}], "en": true, "unique_id": "foo1337d00d", "name": "test", "dev_cla": "temperature", "ent_cat": "config", "ic": "mdi:check-circle"}'
     entity.announce()
     entity.mqtt_client.publish.assert_called_with(expected_topic, expected_msg, True, 1)
 
@@ -181,13 +181,13 @@ def test_SensorEntity_instantiate_parent():
 
 
 def test_SensorEntity_state_topic(sensor):
-    assert sensor._state_topic == "entity/test1337d00d/state"
+    assert sensor._state_topic == "homeassistant/entity/test1337d00d/state"
 
 
 def test_SensorEntity_publish(sensor):
     sensor.state = "foo"
     sensor.mqtt_client.publish.assert_called_with(
-        "entity/test1337d00d/state", '{"test1337d00d": "foo"}', True, 1
+        "homeassistant/entity/test1337d00d/state", '{"test1337d00d": "foo"}', True, 1
     )
 
 
@@ -200,7 +200,7 @@ def test_SensorEntity_queue(mqtt_client):
     mqtt_client.publish.side_effect = None
     s.publish_state()
     mqtt_client.publish.assert_called_with(
-        "entity/foo1337d00d/state", '{"foo1337d00d": "foo"}', True, 1
+        "homeassistant/entity/foo1337d00d/state", '{"foo1337d00d": "foo"}', True, 1
     )
     assert not s.state_queued
 
@@ -211,5 +211,5 @@ def test_SensorEntity_always_queue(mqtt_client):
     mqtt_client.publish.assert_not_called()
     s.publish_state()
     mqtt_client.publish.assert_called_with(
-        "entity/foo1337d00d/state", '{"foo1337d00d": "foo"}', True, 1
+        "homeassistant/entity/foo1337d00d/state", '{"foo1337d00d": "foo"}', True, 1
     )

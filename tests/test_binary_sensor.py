@@ -40,7 +40,7 @@ def test_Entity_instantiation(binary_sensor):
 
 def test_Entity_state(binary_sensor):
     """Test publishing of MQTT dicsovery messages"""
-    expected_topic = "entity/foo1337d00d/state"
+    expected_topic = "homeassistant/entity/foo1337d00d/state"
     expected_msg = '{"foo1337d00d": true}'
     binary_sensor.state = "yes"
     binary_sensor.mqtt_client.publish.assert_called_with(
