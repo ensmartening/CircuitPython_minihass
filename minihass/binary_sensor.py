@@ -32,6 +32,8 @@ class BinarySensor(SensorEntity):
 
         self.component_config = {
             "force_update": self.force_update,
+            "pl_off": False,
+            "pl_on": True
         }
 
         if self.expire_after:
