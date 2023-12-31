@@ -52,7 +52,6 @@ intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
     "mmqtt": ("https://docs.circuitpython.org/projects/minimqtt/en/latest/", None),
     "CircuitPython": ("https://docs.circuitpython.org/en/latest/", None),
-
 }
 napoleon_google_docstrings = True
 # intersphinx_disabled_reftypes = ["*"]
