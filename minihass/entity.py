@@ -6,13 +6,13 @@ from __future__ import annotations
 
 from json import dumps
 from os import getenv
-from typing import Any
 
 import adafruit_logging as logging
 import microcontroller
 from adafruit_minimqtt.adafruit_minimqtt import MQTT, MMQTTException
 
 from . import _validators as validators
+from .const import *
 
 
 class Entity(object):
@@ -59,11 +59,11 @@ class Entity(object):
     def __init__(
         self,
         *args,
-        name: str | None = None,
-        entity_category: str | None = None,
-        device_class: str | None = None,
-        object_id: str | None = None,
-        icon: str | None = None,
+        name: str = "",
+        entity_category: str = "",
+        device_class: str = "",
+        object_id: str = "",
+        icon: str = "",
         enabled_by_default: bool = True,
         mqtt_client: MQTT | None = None,
         logger_name: str = "minimqtt",
@@ -81,13 +81,13 @@ class Entity(object):
             )
             raise RuntimeError("Entity class cannot be raised on its own")
 
-        self.name = validators.validate_string(name, none_ok=True)
+        self.name = validators.validate_string(name, null_ok=True)
         self.logger.debug(f"Entity name: self.name")
 
         self.entity_category = validators.validate_entity_category(entity_category)
         self.logger.debug(f"Entity category: {self.entity_category}")
 
-        self.device_class = validators.validate_string(device_class, none_ok=True)
+        self.device_class = validators.validate_string(device_class, null_ok=True)
         self.logger.debug(f"Entity device_class: {self.device_class}")
 
         if object_id:
@@ -105,7 +105,7 @@ class Entity(object):
         else:
             raise ValueError("One of name or object_id must be set")
 
-        self.icon = validators.validate_string(icon, none_ok=True)
+        self.icon = validators.validate_string(icon, null_ok=True)
         self.logger.debug(f"Entity icon: {self.icon}")
 
         self.enabled_by_default = validators.validate_bool(enabled_by_default)
@@ -124,7 +124,9 @@ class Entity(object):
         self._availability = False
 
         self.device: "Device" | None = None  # type: ignore
-        self.availability_topic = f"{self.COMPONENT}/{self.object_id}/availability"
+        self.availability_topic = (
+            f"{HA_MQTT_PREFIX}/{self.COMPONENT}/{self.object_id}/availability"
+        )
         try:
             self.component_config
         except AttributeError:
@@ -183,7 +185,7 @@ class Entity(object):
             self.logger.debug(f"State topic from device {self.device.device_id}")  # type: ignore
             state_topic = self.device.state_topic  # type: ignore
         except AttributeError:
-            state_topic = f"entity/{self.object_id}/state"
+            state_topic = f"{HA_MQTT_PREFIX}/entity/{self.object_id}/state"
 
         self.logger.debug(f"State topic: {state_topic}")
         return state_topic
@@ -203,20 +205,31 @@ class Entity(object):
             self.logger.warning("MQTT client not set")
 
         if self.device:
-            discovery_topic = f"homeassistant/{self.COMPONENT}/{self.device.device_id}/{self.object_id}/config"
+            discovery_topic = f"{HA_MQTT_PREFIX}/{self.COMPONENT}/{self.device.device_id}/{self.object_id}/config"
         else:
-            discovery_topic = f"homeassistant/{self.COMPONENT}/{self.object_id}/config"
+            discovery_topic = (
+                f"{HA_MQTT_PREFIX}/{self.COMPONENT}/{self.object_id}/config"
+            )
 
         self.logger.debug(f"Discovery topic: {discovery_topic}")
 
         discovery_payload = {
             "avty": [{"t": self.availability_topic}],
-            "dev_cla": self.device_class,
             "en": self.enabled_by_default,
-            "ent_cat": self.entity_category,
-            "ic": self.icon,
-            "name": self.name,
+            "unique_id": self.object_id,
         }
+
+        if self.name:
+            discovery_payload.update({"name": self.name})
+
+        if self.device_class:
+            discovery_payload.update({"dev_cla": self.device_class})
+
+        if self.entity_category:
+            discovery_payload.update({"ent_cat": self.entity_category})
+
+        if self.icon:
+            discovery_payload.update({"ic": self.icon})
 
         if self.device:
             self.logger.debug(f"Adding device config from {self.device.name}")
@@ -260,9 +273,11 @@ class Entity(object):
             self.logger.warning("MQTT client not set")
 
         if self.device:
-            discovery_topic = f"homeassistant/{self.COMPONENT}/{self.device.device_id}/{self.object_id}/config"
+            discovery_topic = f"{HA_MQTT_PREFIX}/{self.COMPONENT}/{self.device.device_id}/{self.object_id}/config"
         else:
-            discovery_topic = f"homeassistant/{self.COMPONENT}/{self.object_id}/config"
+            discovery_topic = (
+                f"{HA_MQTT_PREFIX}/{self.COMPONENT}/{self.object_id}/config"
+            )
 
         self.logger.info(f"Publishing withdrawal message for {self.object_id}")
         try:
@@ -289,7 +304,7 @@ class Entity(object):
         )
 
 
-class SensorEntity:
+class SensorEntity(Entity):
     """Mixin class representing a Home Assistant Entity that publishes states
 
     Args:
@@ -305,7 +320,7 @@ class SensorEntity:
 
     def __init__(self, *args, queue="yes", logger_name="minimqtt", **kwargs):
         self.queue = validators.validate_queue_option(queue)
-        self._state: Any = None
+        self._state: object = None
         self.state_queued: bool = False
 
         try:
@@ -314,21 +329,20 @@ class SensorEntity:
             self.logger = logging.getLogger(logger_name)
             self.logger.setLevel(getattr(logging, getenv("LOGLEVEL", ""), logging.WARNING))  # type: ignore
 
-        super().__init__(*args, **kwargs)
         if self.__class__ == SensorEntity:
             self.logger.error(  # type: ignore
                 "Attepted instantiation of parent class, raising an exception..."
             )
             raise RuntimeError("SensorEntity class cannot be raised on its own")
 
-    @property
-    def state(self):
+        super().__init__(*args, **kwargs)
+
+    def _state_getter(self):
         """Gets or sets the state of a sensor entity. Setting this parameter calls
         :meth:`publish_state()`"""
         return self._state
 
-    @state.setter
-    def state(self, newstate):
+    def _state_setter(self, newstate):
         self._state = newstate
 
         if self.queue == "always":
@@ -340,6 +354,8 @@ class SensorEntity:
                 if self.queue in ["yes", "always"]:
                     self.state_queued = True
                 self.logger.warning("Unable to publish state change")  # type: ignore
+
+    state = property(_state_getter, _state_setter)
 
     def publish_state(self):
         """Explicitly publishes state of the entity.

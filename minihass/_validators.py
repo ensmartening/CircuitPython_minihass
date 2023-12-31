@@ -6,7 +6,7 @@ import re
 VALID_ENTITY_CATEGORIES = ["diagnostic", "config"]
 
 
-def validate_entity_category(category: str | None) -> str | None:
+def validate_entity_category(category: str) -> str:
     """Validates that the entity category is an allowed value
 
     Args:
@@ -16,10 +16,10 @@ def validate_entity_category(category: str | None) -> str | None:
         ValueError : The entity category is not valid
     """
 
-    if not isinstance(category, (str, type(None))):
+    if not isinstance(category, (str)):
         raise TypeError(f"String or None expected, got {type(category).__name__}")
 
-    if category not in VALID_ENTITY_CATEGORIES + [None]:
+    if category not in VALID_ENTITY_CATEGORIES + [""]:
         raise ValueError(
             f"Invalid entity category \"{category}\", must be one of ({'|'.join(VALID_ENTITY_CATEGORIES)})"
         )
@@ -27,7 +27,7 @@ def validate_entity_category(category: str | None) -> str | None:
     return category
 
 
-def validate_string(param, strict: bool = False, none_ok: bool = False) -> str | None:
+def validate_string(param, strict: bool = False, null_ok: bool = False) -> str | None:
     """Validates that the entry is a non-null string. If `none_ok` is set to `True`,
         then `None` values are also accepted.
 
@@ -47,10 +47,10 @@ def validate_string(param, strict: bool = False, none_ok: bool = False) -> str |
         Validated parameter
     """
     if param == None:
-        if not none_ok:
+        if not null_ok:
             raise TypeError("String expected, got None")
         else:
-            return None
+            return ""
 
     if not isinstance(param, str):
         if strict:
@@ -60,8 +60,8 @@ def validate_string(param, strict: bool = False, none_ok: bool = False) -> str |
             print(param)
 
     if param == "":
-        if none_ok:
-            return None
+        if null_ok:
+            return param
         else:
             raise ValueError("Null string not allowed")
 
