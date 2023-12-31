@@ -16,28 +16,26 @@ class BinarySensor(SensorEntity):
     Args:
         force_update  (bool, optional) : Specifies whether the entity should be enabled
             when it is first added, defaults to :class:`False`.
-        expire_after (bool, optional) : Defines the number of seconds after the
+        expire_after (int, optional) : Defines the number of seconds before the
             sensor's state expires, if it's not updated. After expiry, the sensor's
-            state becomes unavailable. Defaults to :class:`False`.
+            state becomes unavailable. Defaults to `0`.
 
     """
 
     COMPONENT = "binary_sensor"
 
     def __init__(
-        self,
-        *args,
-        force_update: bool = False,
-        expire_after: int | None = None,
-        **kwargs
+        self, *args, force_update: bool = False, expire_after: int = 0, **kwargs
     ):
-        self.expire_after = validators.validate_bool(expire_after)
+        self.expire_after = expire_after
         self.force_update = validators.validate_bool(force_update)
 
         self.component_config = {
-            "expire_after": self.expire_after,
             "force_update": self.force_update,
         }
+
+        if self.expire_after:
+            self.component_config.update({"expire_after": "foo"})  # type: ignore
 
         super().__init__(*args, **kwargs)
 

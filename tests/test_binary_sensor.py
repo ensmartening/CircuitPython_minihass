@@ -13,7 +13,11 @@ import minihass
 @pytest.fixture
 def binary_sensor(mqtt_client):
     e = minihass.BinarySensor(
-        name="test", entity_category="config", object_id="foo", mqtt_client=mqtt_client
+        name="test",
+        entity_category="config",
+        object_id="foo",
+        mqtt_client=mqtt_client,
+        expire_after=1,
     )
     yield e
 
