@@ -90,12 +90,17 @@ def test_Device_delete_entity(device, entities):
 
 
 def test_Device_announce(entities, mqtt_client):
-    o = minihass.Device(entities=entities, mqtt_client=mqtt_client)
+    o = minihass.Device(
+        entities=entities,
+        mqtt_client=mqtt_client,
+        hw_version="0.1",
+        manufacturer="Genericor",
+    )
     assert entities[1] in o._entities
     expected_topic = (
         "homeassistant/binary_sensor/mqtt_device1337d00d/baz1337d00d/config"
     )
-    expected_msg = '{"avty": [{"t": "binary_sensor/baz1337d00d/availability"}, {"t": "device/mqtt_device1337d00d/availability"}], "en": true, "name": "baz", "dev": {"ids": ["mqtt_device1337d00d"], "cns": []}, "stat_t": "device/mqtt_device1337d00d/state", "val_tpl": "{{ value_json.baz1337d00d }}", "expire_after": false, "force_update": false}'
+    expected_msg = '{"avty": [{"t": "binary_sensor/baz1337d00d/availability"}, {"t": "device/mqtt_device1337d00d/availability"}], "en": true, "name": "baz", "dev": {"ids": ["mqtt_device1337d00d"], "cns": [], "mf": "Genericor", "hw": "0.1"}, "stat_t": "device/mqtt_device1337d00d/state", "val_tpl": "{{ value_json.baz1337d00d }}", "expire_after": false, "force_update": false}'
     o.announce()
     mqtt_client.publish.assert_called_with(expected_topic, expected_msg, True, 1)
 

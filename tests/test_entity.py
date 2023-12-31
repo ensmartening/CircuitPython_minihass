@@ -26,7 +26,12 @@ class GenericSensor(minihass.entity.SensorEntity):
 @pytest.fixture
 def entity(mqtt_client):
     e = GenericEntity(
-        name="test", entity_category="config", object_id="foo", mqtt_client=mqtt_client
+        name="test",
+        entity_category="config",
+        object_id="foo",
+        mqtt_client=mqtt_client,
+        icon="mdi:check-circle",
+        device_class="temperature",
     )
     yield e
 
@@ -112,7 +117,7 @@ def test_Entity_instantiate_parent():
 def test_Entity_announce(entity):
     """Test publishing of MQTT discovery messages"""
     expected_topic = "homeassistant/generic/foo1337d00d/config"
-    expected_msg = '{"avty": [{"t": "generic/foo1337d00d/availability"}], "en": true, "name": "test", "ent_cat": "config"}'
+    expected_msg = '{"avty": [{"t": "generic/foo1337d00d/availability"}], "en": true, "name": "test", "dev_cla": "temperature", "ent_cat": "config", "ic": "mdi:check-circle"}'
     entity.announce()
     entity.mqtt_client.publish.assert_called_with(expected_topic, expected_msg, True, 1)
 
