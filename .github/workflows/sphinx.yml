@@ -22,8 +22,6 @@ jobs:
     #     virtualenvs-in-project: true
     - name: Install project and dependencies
       run: |
-        pip install -r requirements.txt
-        pip install -r docs_requirements.txt
         pip install .
     - name: build docs
       run: |
