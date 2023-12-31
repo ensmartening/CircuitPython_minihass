@@ -19,7 +19,7 @@ jobs:
     #     virtualenvs-in-project: true
     - name: Install project and dependencies
       run: |
-        pip install -e .
+        pip install .
         pip install pytest
     - name: Run tests and collect coverage
       id: pytest
