@@ -1,8 +1,4 @@
 # SPDX-FileCopyrightText: 2017 Scott Shawcroft, written for Adafruit Industries
 # SPDX-FileCopyrightText: Copyright (c) 2023 Adam Schumacher
 #
-# SPDX-License-Identifier: MIT
-
-Adafruit-Blinka
-adafruit-circuitpython-minimqtt
-adafruit-circuitpython-logging
+# SPDX-License-Identifier: Unlicense
