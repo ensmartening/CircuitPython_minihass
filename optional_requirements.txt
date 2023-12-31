@@ -1,3 +1,5 @@
+piccolo-theme
+Sphinx
 pytest
 pytest-cov
 black
