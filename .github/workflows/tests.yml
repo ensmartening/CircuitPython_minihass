@@ -19,8 +19,8 @@ jobs:
     #     virtualenvs-in-project: true
     - name: Install project and dependencies
       run: |
-        pip install .
-        pip install pytest pytest-cov
+        pip install -r < requirements.txt
+        pip install . pytest pytest-cov
     - name: Run tests and collect coverage
       id: pytest
       run: |
