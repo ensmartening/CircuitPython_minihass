@@ -20,7 +20,7 @@ class Device:
 
     .. caution:: The MQTT client used to create a :class:`Device` object must not be
         connected at the time of instantiation. The devices uses a `Last Will and
-        Testament`_ message to mark the device and its entities as `unavailable` after
+        Testament`_ message to mark the device and its entities as ``unavailable`` after
         losing its connection to the MQTT broker, and the LWT is sent as part of the
         connection process.
 
@@ -117,7 +117,7 @@ class Device:
     @property
     def availability(self) -> bool:
         """Availability of the device. Setting this entity to :class:`false` makes any
-        entities belonging to this device appear as `unavailable` in Home Assistant.
+        entities belonging to this device appear as ``unavailable`` in Home Assistant.
         Setting this property triggers :meth:`publish_availability()`."""
         return self._availability
 
