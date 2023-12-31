@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "minihass"
-version = "0.1.0"
+version = "0.1.0-beta"
 description = "MQTT Home Assistant Device in CircuitPython"
 authors = ["Adam Schumacher <adam@genericor.com>"]
 license = "MIT License"
