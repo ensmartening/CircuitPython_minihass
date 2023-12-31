@@ -1,3 +1,3 @@
 from micropython import const  # type: ignore
 
-HA_MQTT_PREFIX = const("homeassistant")
+HA_MQTT_PREFIX = "homeassistant"
