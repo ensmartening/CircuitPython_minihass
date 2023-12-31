@@ -117,7 +117,7 @@ def test_Entity_instantiate_parent():
 def test_Entity_announce(entity):
     """Test publishing of MQTT discovery messages"""
     expected_topic = "homeassistant/generic/foo1337d00d/config"
-    expected_msg = '{"avty": [{"t": "generic/foo1337d00d/availability"}], "en": true, "name": "test", "dev_cla": "temperature", "ent_cat": "config", "ic": "mdi:check-circle"}'
+    expected_msg = '{"avty": [{"t": "generic/foo1337d00d/availability"}], "en": true, "unique_id": "foo1337d00d", "name": "test", "dev_cla": "temperature", "ent_cat": "config", "ic": "mdi:check-circle"}'
     entity.announce()
     entity.mqtt_client.publish.assert_called_with(expected_topic, expected_msg, True, 1)
 

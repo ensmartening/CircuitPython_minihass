@@ -211,6 +211,7 @@ class Entity(object):
         discovery_payload = {
             "avty": [{"t": self.availability_topic}],
             "en": self.enabled_by_default,
+            "unique_id": self.object_id,
         }
 
         if self.name:
