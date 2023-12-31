@@ -1,45 +1,50 @@
-[tool.poetry]
-name = "minihass"
-version = "0.1.0-beta"
-description = "MQTT Home Assistant Device in CircuitPython"
-authors = ["Adam Schumacher <adam@genericor.com>"]
-license = "MIT License"
-readme = "README.rst"
-
-[tool.poetry.dependencies]
-python = "^3.10"
-Adafruit-PlatformDetect = "3.56.0"
-adafruit-circuitpython-minimqtt = "^7.4.3"
-adafruit-circuitpython-logging = "^5.2.4"
-
-
-[tool.poetry.group.docs]
-optional = true
-
-[tool.poetry.group.dev.dependencies]
-pre-commit = "*"
-isort = "*"
-black = "^23.0"
-
-[tool.poetry.group.docs.dependencies]
-sphinx = "*"
-piccolo_theme = "*"
-
-[tool.poetry.group.test.dependencies]
-tox = "*"
-pytest = "^7.4.3"
-pytest-cov = "*"
+# SPDX-FileCopyrightText: 2022 Alec Delaney, written for Adafruit Industries
+# SPDX-FileCopyrightText: Copyright (c) 2023 Adam Schumacher
+#
+# SPDX-License-Identifier: MIT
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.pytest.ini_options]
-addopts = [
-    "--import-mode=importlib",
+requires = [
+    "setuptools",
+    "wheel",
+    "setuptools-scm",
 ]
 
-[tool.isort]
-profile = "black"
-skip_gitignore = true
-filter_files = true
+[project]
+name = "cybershoe-circuitpython-minihass"
+description = "A lightweight Python package to interact with Home Assistant over MQTT, intended for use with CircuitPython and the Adafruit MiniMQTT library."
+version = "0.0.0+auto.0"
+readme = "README.rst"
+authors = [
+    {name = "Adam Schumacher", email = "adam@genericor.com"}
+]
+urls = {Homepage = "https://github.com/cybershoe/Cybershoe_CircuitPython_minihass"}
+keywords = [
+    "adafruit",
+    "blinka",
+    "circuitpython",
+    "micropython",
+    "minihass",
+    "hass",
+    "homeassistant",
+    "mqtt",
+]
+license = {text = "MIT"}
+classifiers = [
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Embedded Systems",
+    "Topic :: System :: Hardware",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+]
+dynamic = ["dependencies", "optional-dependencies"]
+
+[tool.setuptools]
+# TODO: IF LIBRARY FILES ARE A PACKAGE FOLDER,
+#       CHANGE `py_modules = ['...']` TO `packages = ['...']`
+packages = ["minihass"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+optional-dependencies = {optional = {file = ["optional_requirements.txt"]}}

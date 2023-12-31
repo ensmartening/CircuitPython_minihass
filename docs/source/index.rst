@@ -1,21 +1,49 @@
-.. minihass documentation master file, created by
-   sphinx-quickstart on Mon Nov 20 20:07:28 2023.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+.. include:: ../../README.rst
 
-minihass
-========
 
-A lightweight Python package to interact with Home Assistant over MQTT,
-intended for use with CircuitPython and the Adafruit MiniMQTT library.
+Table of Contents
+=================
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+    :maxdepth: 4
+    :hidden:
 
-   minihass
+    self
 
+.. toctree::
+    :caption: Examples
 
+    examples
+
+.. toctree::
+    :caption: API Reference
+    :maxdepth: 2
+
+    api
+
+.. toctree::
+    :caption: Tutorials
+
+.. todo:: Add any Learn guide links here. If there are none, then simply delete this todo and leave
+    the toctree above for use later.
+
+.. toctree::
+    :caption: Related Products
+
+.. todo:: Add any product links here. If there are none, then simply delete this todo and leave
+    the toctree above for use later.
+
+.. toctree::
+    :caption: Other Links
+
+    Download from GitHub <https://github.com/cybershoe/Cybershoe_CircuitPython_minihass/releases/latest>
+    Download Library Bundle <https://circuitpython.org/libraries>
+    CircuitPython Reference Documentation <https://docs.circuitpython.org>
+    CircuitPython Support Forum <https://forums.adafruit.com/viewforum.php?f=60>
+    Discord Chat <https://adafru.it/discord>
+    Adafruit Learning System <https://learn.adafruit.com>
+    Adafruit Blog <https://blog.adafruit.com>
+    Adafruit Store <https://www.adafruit.com>
 
 Indices and tables
 ==================
