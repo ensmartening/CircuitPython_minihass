@@ -20,7 +20,7 @@ jobs:
     - name: Install project and dependencies
       run: |
         pip install .
-        pip install pytest
+        pip install pytest pytest-cov
     - name: Run tests and collect coverage
       id: pytest
       run: |
