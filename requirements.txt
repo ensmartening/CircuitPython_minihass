@@ -7,3 +7,8 @@ Adafruit-Blinka
 adafruit-circuitpython-minimqtt
 adafruit-circuitpython-logging
 piccolo-theme
+Sphinx
+pytest
+pytest-cov
+black
+isort
