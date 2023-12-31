@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "minihass"
-version = "0.1.0"
+version = "0.1.0-beta"
 description = "MQTT Home Assistant Device in CircuitPython"
 authors = ["Adam Schumacher <adam@genericor.com>"]
 license = "MIT License"
@@ -8,20 +8,27 @@ readme = "README.rst"
 
 [tool.poetry.dependencies]
 python = "^3.10"
+Adafruit-PlatformDetect = "3.56.0"
+adafruit-circuitpython-minimqtt = "^7.4.3"
+adafruit-circuitpython-logging = "^5.2.4"
+
 
 [tool.poetry.group.docs]
 optional = true
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "*"
+isort = "*"
+black = "^23.0"
 
 [tool.poetry.group.docs.dependencies]
 sphinx = "*"
-sphinx-material = "*"
+piccolo_theme = "*"
 
 [tool.poetry.group.test.dependencies]
 tox = "*"
 pytest = "^7.4.3"
+pytest-cov = "*"
 
 [build-system]
 requires = ["poetry-core"]
@@ -31,3 +38,8 @@ build-backend = "poetry.core.masonry.api"
 addopts = [
     "--import-mode=importlib",
 ]
+
+[tool.isort]
+profile = "black"
+skip_gitignore = true
+filter_files = true

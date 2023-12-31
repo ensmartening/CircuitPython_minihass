@@ -1,5 +1,7 @@
-import sys
 import os
+import sys
+
+import minihass
 
 sys.path.insert(0, os.path.abspath("../"))
 # Configuration file for the Sphinx documentation builder.
@@ -18,14 +20,23 @@ release = "0.1.0"
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ["sphinx.ext.autodoc"]
+extensions = ["sphinx.ext.autodoc", "sphinx.ext.intersphinx", "sphinx.ext.napoleon"]
 
 templates_path = ["_templates"]
 exclude_patterns = []
+autoclass_content = "both"
+# utodoc_inherit_docstrings = False
+autoclass_signature = "separated"
+intersphinx_mapping = {
+    "python": ("https://docs.python.org/3", None),
+    "mmqtt": ("https://docs.circuitpython.org/projects/minimqtt/en/latest/", None),
+}
+napoleon_google_docstrings = True
+# intersphinx_disabled_reftypes = ["*"]
 
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = "sphinx_material"
+html_theme = "piccolo_theme"
 html_static_path = ["_static"]

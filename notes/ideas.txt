@@ -1,0 +1,5 @@
+Custom exceptions
+
+
+availability - publish on change (if connected), re-publish on MQTT reconnect
+Bump
