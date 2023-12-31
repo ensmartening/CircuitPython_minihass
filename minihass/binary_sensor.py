@@ -44,4 +44,4 @@ class BinarySensor(SensorEntity):
     @SensorEntity.state.setter
     def state(self, state):
         state = validators.validate_bool(state)
-        SensorEntity.state.fset(self, state)  # type: ignore
+        self._state_setter(state)  # type: ignore

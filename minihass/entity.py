@@ -329,14 +329,12 @@ class SensorEntity(Entity):
 
         super().__init__(*args, **kwargs)
 
-    @property
-    def state(self):
+    def _state_getter(self):
         """Gets or sets the state of a sensor entity. Setting this parameter calls
         :meth:`publish_state()`"""
         return self._state
 
-    @state.setter
-    def state(self, newstate):
+    def _state_setter(self, newstate):
         self._state = newstate
 
         if self.queue == "always":
@@ -348,6 +346,8 @@ class SensorEntity(Entity):
                 if self.queue in ["yes", "always"]:
                     self.state_queued = True
                 self.logger.warning("Unable to publish state change")  # type: ignore
+
+    state = property(_state_getter, _state_setter)
 
     def publish_state(self):
         """Explicitly publishes state of the entity.
