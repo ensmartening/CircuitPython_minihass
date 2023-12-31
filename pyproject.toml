@@ -13,7 +13,7 @@ requires = [
 [project]
 name = "cybershoe-circuitpython-minihass"
 description = "A lightweight Python package to interact with Home Assistant over MQTT, intended for use with CircuitPython and the Adafruit MiniMQTT library."
-version = "0.0.0+auto.0"
+version = "0.2.0+auto.0"
 readme = "README.rst"
 authors = [
     {name = "Adam Schumacher", email = "adam@genericor.com"}
