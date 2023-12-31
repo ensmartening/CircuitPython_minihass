@@ -28,6 +28,7 @@ jobs:
         cd docs
         make html
         cd html
+        touch CNAME
         echo "minihass.ensmarten.ing" > CNAME
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
