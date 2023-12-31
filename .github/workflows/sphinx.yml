@@ -27,6 +27,9 @@ jobs:
         . .venv/bin/activate
         cd docs
         make html
+        cd build/html
+        touch CNAME
+        echo "minihass.ensmarten.ing" > CNAME
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
       with:
