@@ -7,8 +7,8 @@ Introduction
     :alt: Documentation Status
 
 
-.. image:: https://img.shields.io/codecov/c/github/cybershoe/minihass
-    :target: https://codecov.io/gh/cybershoe/minihass
+.. image:: https://codecov.io/gh/cybershoe/CircuitPython_minihass/graph/badge.svg?token=TOU1V17NXH
+    :target: https://codecov.io/gh/cybershoe/CircuitPython_minihass
     :alt: Codecov Status
 
 
