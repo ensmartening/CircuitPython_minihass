@@ -37,7 +37,8 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
 ]
-dynamic = ["dependencies", "optional-dependencies", "version"]
+version = "0.1.0"
+dynamic = ["dependencies", "optional-dependencies"]
 
 [tool.setuptools]
 # TODO: IF LIBRARY FILES ARE A PACKAGE FOLDER,
@@ -47,7 +48,7 @@ packages = ["minihass"]
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
 optional-dependencies = {optional = {file = ["optional_requirements.txt"]}}
-version = {attr = "minihass.__version__"}
+# version = {attr = "minihass.__version__"}
 
 [tool.isort]
 profile = "black"
