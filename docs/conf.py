@@ -3,6 +3,8 @@ import os
 import sys
 
 sys.path.insert(0, os.path.abspath("../"))
+from minihass import __version__
+
 # Configuration file for the Sphinx documentation builder.
 #
 # For the full list of built-in configuration values, see the documentation:
@@ -21,7 +23,7 @@ year_duration = (
 )
 copyright = year_duration + " Adam Schumacher"
 author = "Adam Schumacher"
-release = "0.1.0-beta"
+release = __version__
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

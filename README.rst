@@ -2,7 +2,7 @@ Introduction
 ============
 
 
-.. image:: https://github.com/cybershoe/minihass/actions/workflows/sphinx.yml/badge.svg
+.. image:: https://github.com/cybershoe/CircuitPython_minihass/actions/workflows/sphinx.yml/badge.svg
     :target: https://minihass.ensmarten.ing
     :alt: Documentation Status
 
