@@ -24,7 +24,7 @@ class Entity(object):
             relevant. One of ``name`` or ``object_id`` must be set.
         device_class (str, optional) : `Device class <https://www.home-assistant.io/integrations/binary_sensor/#device-class>`_
             of the entity. Defaults to :class:`None`
-        entity_category (str, optional) : Set to specify `DIAGNOSTIC` or `CONFIG`
+        entity_category (str, optional) : Set to specify ``DIAGNOSTIC`` or ``CONFIG``
             entities.
         object_id (str, optional) : Set to generate ``entity_id`` from ``object_id``
             instead of ``name``. One of ``name`` or ``object_id`` must be set.
@@ -153,7 +153,7 @@ class Entity(object):
     @property
     def availability(self) -> bool:
         """Availability of the entity. Setting this entity to :class:`false` makes the
-        entity appear as `unavailable` in Home Assistant. This may be desired if, for
+        entity appear as ``unavailable`` in Home Assistant. This may be desired if, for
         instance, the sensor providing this entity's state is not initialized or has
         not yet returned a valid state, or if the hardware that implements commands
         from Home Assistant is not ready. Setting this property triggers

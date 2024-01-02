@@ -18,7 +18,7 @@ class BinarySensor(SensorEntity):
             when it is first added, defaults to :class:`False`.
         expire_after (int, optional) : Defines the number of seconds before the
             sensor's state expires, if it's not updated. After expiry, the sensor's
-            state becomes unavailable. Defaults to `0`.
+            state becomes unavailable. Defaults to ``0``.
 
     """
 

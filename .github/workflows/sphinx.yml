@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - master
+      - main
 
 
 jobs:
@@ -15,16 +15,18 @@ jobs:
       contents: write
     steps:
     - uses: actions/checkout@v4
-    - name: Install Poetry
-      uses: snok/install-poetry@v1
-      with:
-        virtualenvs-create: true
-        virtualenvs-in-project: true
+    # - name: Install Poetry
+    #   uses: snok/install-poetry@v1
+    #   with:
+    #     virtualenvs-create: true
+    #     virtualenvs-in-project: true
     - name: Install project and dependencies
-      run: poetry install --with docs --no-interaction
+      run: |
+        pip install -r requirements.txt
+        pip install -r optional_requirements.txt
+        pip install .
     - name: build docs
       run: |
-        . .venv/bin/activate
         cd docs
         make html
         cd build/html
