@@ -13,7 +13,6 @@ requires = [
 [project]
 name = "cybershoe-circuitpython-minihass"
 description = "A lightweight Python package to interact with Home Assistant over MQTT, intended for use with CircuitPython and the Adafruit MiniMQTT library."
-version = "0.2.0+auto.0"
 readme = "README.rst"
 authors = [
     {name = "Adam Schumacher", email = "adam@genericor.com"}
@@ -38,7 +37,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
 ]
-dynamic = ["dependencies", "optional-dependencies"]
+dynamic = ["dependencies", "optional-dependencies", "version"]
 
 [tool.setuptools]
 # TODO: IF LIBRARY FILES ARE A PACKAGE FOLDER,
@@ -48,3 +47,7 @@ packages = ["minihass"]
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
 optional-dependencies = {optional = {file = ["optional_requirements.txt"]}}
+version = {attr = "minihass.__version__"}
+
+[tool.isort]
+profile = "black"
