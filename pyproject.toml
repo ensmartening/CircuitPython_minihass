@@ -47,4 +47,4 @@ packages = ["minihass"]
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
 optional-dependencies = {optional = {file = ["optional_requirements.txt"]}}
-version = {file = ["version"]}
+version = {attr = "minihass.__version__"}
