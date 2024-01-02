@@ -2,6 +2,8 @@ import datetime
 import os
 import sys
 
+from minihass import __version__
+
 sys.path.insert(0, os.path.abspath("../"))
 # Configuration file for the Sphinx documentation builder.
 #
@@ -21,7 +23,7 @@ year_duration = (
 )
 copyright = year_duration + " Adam Schumacher"
 author = "Adam Schumacher"
-release = "0.1.0-beta"
+release = __version__
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
