@@ -1,26 +1,17 @@
 Introduction
 ============
 
-
-.. image:: https://github.com/cybershoe/minihass/actions/workflows/sphinx.yml/badge.svg
-    :target: https://minihass.ensmarten.ing
-    :alt: Documentation Status
-
-
-.. image:: https://codecov.io/gh/cybershoe/CircuitPython_minihass/graph/badge.svg?token=TOU1V17NXH
-    :target: https://codecov.io/gh/cybershoe/CircuitPython_minihass
-    :alt: Codecov Status
-
-
-.. image:: https://img.shields.io/discord/327254708534116352.svg
-    :target: https://adafru.it/discord
-    :alt: Discord
-
-
-.. image:: https://github.com/cybershoe/CircuitPython_minihass/workflows/Build%20CI/badge.svg
-    :target: https://github.com/cybershoe/CircuitPython_minihass/actions
+.. image:: https://github.com/ensmartening/CircuitPython_minihass/actions/workflows/build.yml/badge.svg
+    :target: https://github.com/ensmartening/CircuitPython_minihass/actions/workflows/build.yml
     :alt: Build Status
 
+.. image:: https://codecov.io/gh/ensmartening/CircuitPython_minihass/graph/badge.svg?token=9H0KNZC0PO
+    :target: https://codecov.io/gh/ensmartening/CircuitPython_minihass
+    :alt: Codecov Status
+
+.. image:: https://github.com/ensmartening/CircuitPython_minihass/actions/workflows/sphinx.yml/badge.svg
+    :target: https://CircuitPython_minihass.ensmarten.ing
+    :alt: Docs Status
 
 .. image:: https://img.shields.io/badge/code%20style-black-000000.svg
     :target: https://github.com/psf/black
