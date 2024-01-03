@@ -1,26 +1,17 @@
 Introduction
 ============
 
-
-.. image:: https://github.com/cybershoe/CircuitPython_minihass/actions/workflows/sphinx.yml/badge.svg
-    :target: https://minihass.ensmarten.ing
-    :alt: Documentation Status
-
-
-.. image:: https://codecov.io/gh/cybershoe/CircuitPython_minihass/graph/badge.svg?token=TOU1V17NXH
-    :target: https://codecov.io/gh/cybershoe/CircuitPython_minihass
-    :alt: Codecov Status
-
-
-.. image:: https://img.shields.io/discord/327254708534116352.svg
-    :target: https://adafru.it/discord
-    :alt: Discord
-
-
-.. image:: https://github.com/cybershoe/CircuitPython_minihass/workflows/Build%20CI/badge.svg
-    :target: https://github.com/cybershoe/CircuitPython_minihass/actions
+.. image:: https://github.com/ensmartening/CircuitPython_minihass/actions/workflows/build.yml/badge.svg
+    :target: https://github.com/ensmartening/CircuitPython_minihass/actions/workflows/build.yml
     :alt: Build Status
 
+.. image:: https://codecov.io/gh/ensmartening/CircuitPython_minihass/graph/badge.svg?token=9H0KNZC0PO
+    :target: https://codecov.io/gh/ensmartening/CircuitPython_minihass
+    :alt: Codecov Status
+
+.. image:: https://github.com/ensmartening/CircuitPython_minihass/actions/workflows/sphinx.yml/badge.svg
+    :target: https://CircuitPython_minihass.ensmarten.ing
+    :alt: Docs Status
 
 .. image:: https://img.shields.io/badge/code%20style-black-000000.svg
     :target: https://github.com/psf/black
@@ -41,75 +32,73 @@ This is easily achieved by downloading
 or individual libraries can be installed using
 `circup <https://github.com/adafruit/circup>`_.
 
-Installing from PyPI
-=====================
-.. note:: This library is not available on PyPI yet. Install documentation is included
-   as a standard element. Stay tuned for PyPI availability!
+..
+    Installing from PyPI
+    =====================
+    .. note:: This library is not available on PyPI yet. Install documentation is included
+    as a standard element. Stay tuned for PyPI availability!
 
-Todo: Remove the above note if PyPI version is/will be available at time of release.
+    Todo: Remove the above note if PyPI version is/will be available at time of release.
 
-On supported GNU/Linux systems like the Raspberry Pi, you can install the driver locally `from
-PyPI <https://pypi.org/project/cybershoe-circuitpython-minihass/>`_.
-To install for current user:
+    On supported GNU/Linux systems like the Raspberry Pi, you can install the driver locally `from
+    PyPI <https://pypi.org/project/cybershoe-circuitpython-minihass/>`_.
+    To install for current user:
 
-.. code-block:: shell
+    .. code-block:: shell
 
-    pip3 install cybershoe-circuitpython-minihass
+        pip3 install cybershoe-circuitpython-minihass
 
-To install system-wide (this may be required in some cases):
+    To install system-wide (this may be required in some cases):
 
-.. code-block:: shell
+    .. code-block:: shell
 
-    sudo pip3 install cybershoe-circuitpython-minihass
+        sudo pip3 install cybershoe-circuitpython-minihass
 
-To install in a virtual environment in your current project:
+    To install in a virtual environment in your current project:
 
-.. code-block:: shell
+    .. code-block:: shell
 
-    mkdir project-name && cd project-name
-    python3 -m venv .venv
-    source .env/bin/activate
-    pip3 install cybershoe-circuitpython-minihass
+        mkdir project-name && cd project-name
+        python3 -m venv .venv
+        source .env/bin/activate
+        pip3 install cybershoe-circuitpython-minihass
 
-Installing to a Connected CircuitPython Device with Circup
-==========================================================
+    Installing to a Connected CircuitPython Device with Circup
+    ==========================================================
 
-Make sure that you have ``circup`` installed in your Python environment.
-Install it with the following command if necessary:
+    Make sure that you have ``circup`` installed in your Python environment.
+    Install it with the following command if necessary:
 
-.. code-block:: shell
+    .. code-block:: shell
 
-    pip3 install circup
+        pip3 install circup
 
-With ``circup`` installed and your CircuitPython device connected use the
-following command to install:
+    With ``circup`` installed and your CircuitPython device connected use the
+    following command to install:
 
-.. code-block:: shell
+    .. code-block:: shell
 
-    circup install cybershoe_minihass
+        circup install cybershoe_minihass
 
-Or the following command to update an existing version:
+    Or the following command to update an existing version:
 
-.. code-block:: shell
+    .. code-block:: shell
 
-    circup update
+        circup update
 
-Usage Example
-=============
+    Usage Example
+    =============
 
-Todo: Add a quick, simple example. It and other examples should live in the
-examples folder and be included in docs/examples.rst.
+    Todo: Add a quick, simple example. It and other examples should live in the
+    examples folder and be included in docs/examples.rst.
 
 Documentation
 =============
-API documentation for this library can be found on `Read the Docs <https://circuitpython-minihass.readthedocs.io/>`_.
-
-For information on building library documentation, please check out
-`this guide <https://learn.adafruit.com/creating-and-sharing-a-circuitpython-library/sharing-our-docs-on-readthedocs#sphinx-5-1>`_.
+API documentation for this library can be found on `ensmarten.ing <https://circuitpython-minihass.ensmarten.ing/>`_.
 
 Contributing
 ============
 
 Contributions are welcome! Please read our `Code of Conduct
-<https://github.com/cybershoe/Cybershoe_CircuitPython_minihass/blob/HEAD/CODE_OF_CONDUCT.md>`_
+<https://github.com/ensmartening/CircuitPython_minihass/blob/HEAD/CODE_OF_CONDUCT.md>`_
 before contributing to help this project stay welcoming.
