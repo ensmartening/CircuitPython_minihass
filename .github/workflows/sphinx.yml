@@ -31,7 +31,7 @@ jobs:
         make html
         cd build/html
         touch CNAME
-        echo "minihass.ensmarten.ing" > CNAME
+        echo "circuitpython-minihass.ensmarten.ing" > CNAME
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
       with:
