@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>minihass &#8212; CircuitPython minihass package 0.1.0-beta documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/basic_mod.css?v=94a554c0" />
+    <script src="_static/documentation_options.js?v=c903bf51"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <script src="_static/js/petite-vue.js"></script>
+    <link rel="icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Simple test" href="examples.html" /> 
+  </head><body data-dark_mode_code_blocks="true">
+
+<div id="top_nav">
+    
+
+    <nav>
+        
+            
+        
+
+        <p id="toggle_sidebar">
+            <a href="#" title="Toggle sidebar">|||</a>
+        </p>
+        <h1><a href="index.html" title="Go to homepage">CircuitPython minihass package 0.1.0-beta documentation</a></h1>
+
+        <a id="mode_toggle" href="#" @click.prevent="handleClick" :title="mode">
+    <template v-if="mode == 'light'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_light"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><circle cx="39.311" cy="39.524" r="15.734" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.212,4.901c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901l-0,9.614c-0,2.705 2.196,4.901 4.9,4.901c2.705,0 4.901,-2.196 4.901,-4.901l0,-9.614Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M67.48,18.073c1.913,-1.912 1.913,-5.018 0,-6.931c-1.912,-1.912 -5.018,-1.912 -6.931,0l-6.798,6.799c-1.912,1.912 -1.912,5.018 0,6.931c1.913,1.912 5.018,1.912 6.931,-0l6.798,-6.799Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.728,61.108c1.912,-1.913 1.912,-5.018 -0,-6.931c-1.913,-1.913 -5.019,-1.913 -6.931,-0l-6.799,6.798c-1.912,1.913 -1.912,5.019 0,6.931c1.913,1.913 5.019,1.913 6.931,0l6.799,-6.798Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.682,54.177c-1.913,-1.913 -5.018,-1.913 -6.931,-0c-1.912,1.913 -1.912,5.018 0,6.931l6.798,6.798c1.913,1.913 5.019,1.913 6.931,0c1.913,-1.912 1.913,-5.018 0,-6.931l-6.798,-6.798Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M4.901,34.623c-2.705,0 -4.901,2.196 -4.901,4.901c0,2.705 2.196,4.901 4.901,4.901l9.614,0c2.705,0 4.901,-2.196 4.901,-4.901c0,-2.705 -2.196,-4.901 -4.901,-4.901l-9.614,0Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.212,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901l-0,9.614c-0,2.705 2.196,4.901 4.9,4.901c2.705,-0 4.901,-2.196 4.901,-4.901l0,-9.614Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M18.929,11.142c-1.912,-1.912 -5.018,-1.912 -6.931,0c-1.912,1.913 -1.912,5.019 0,6.931l6.799,6.799c1.912,1.912 5.018,1.912 6.931,-0c1.912,-1.913 1.912,-5.019 -0,-6.931l-6.799,-6.799Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.108,34.623c-2.705,0 -4.901,2.196 -4.901,4.901c-0,2.705 2.196,4.901 4.901,4.901l9.614,0c2.705,0 4.901,-2.196 4.901,-4.901c-0,-2.705 -2.196,-4.901 -4.901,-4.901l-9.614,0Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+
+    <template v-if="mode == 'dark'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_dark"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><circle cx="39.311" cy="39.524" r="15.734" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.212,14.515c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,0 -4.901,2.196 -4.901,4.901c0,2.705 2.197,4.901 4.901,4.901c2.705,0 4.901,-2.196 4.901,-4.901Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M60.662,24.892c1.902,-1.902 1.902,-4.99 0,-6.892l-0.04,-0.039c-1.901,-1.902 -4.989,-1.902 -6.891,-0c-1.901,1.901 -1.901,4.989 0,6.891l0.04,0.04c1.902,1.901 4.989,1.901 6.891,-0Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.732,61.103c1.91,-1.91 1.91,-5.011 0,-6.921l-0.009,-0.01c-1.91,-1.91 -5.012,-1.91 -6.921,-0c-1.91,1.91 -1.91,5.011 -0,6.921l0.01,0.01c1.909,1.91 5.011,1.91 6.92,-0Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.672,54.167c-1.907,-1.907 -5.004,-1.907 -6.911,0l-0.02,0.02c-1.907,1.907 -1.907,5.004 0,6.911c1.907,1.907 5.004,1.907 6.911,-0l0.02,-0.02c1.907,-1.907 1.907,-5.004 0,-6.911Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M14.52,34.623c-2.702,0 -4.896,2.194 -4.896,4.896l0,0.01c0,2.702 2.194,4.896 4.896,4.896c2.702,0 4.896,-2.194 4.896,-4.896l-0,-0.01c-0,-2.702 -2.194,-4.896 -4.896,-4.896Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.212,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.901,2.196 -4.901,4.901c0,2.704 2.197,4.9 4.901,4.9c2.705,0 4.901,-2.196 4.901,-4.9Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M25.73,17.943c-1.911,-1.911 -5.015,-1.911 -6.926,0l-0.005,0.005c-1.911,1.911 -1.911,5.015 0,6.926c1.911,1.911 5.015,1.911 6.926,0l0.005,-0.005c1.911,-1.911 1.911,-5.014 -0,-6.926Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.098,34.623c-2.699,0 -4.891,2.192 -4.891,4.892l-0,0.019c-0,2.699 2.192,4.891 4.891,4.891c2.7,0 4.892,-2.192 4.892,-4.891l0,-0.019c0,-2.7 -2.192,-4.892 -4.892,-4.892Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+
+    <template v-if="mode == 'darkest'">
+        <svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="mode_darkest"><rect id="Bounds" x="0" y="-0" width="78.623" height="79.049" style="fill:none;"/><path d="M39.315,23.791c8.684,-0 15.734,7.05 15.734,15.733c0,8.684 -7.05,15.734 -15.734,15.734c-8.683,0 -15.733,-7.05 -15.733,-15.734c-0,-8.683 7.05,-15.733 15.733,-15.733Zm0,4.737c6.069,0 10.997,4.927 10.997,10.996c-0,6.069 -4.928,10.996 -10.997,10.996c-6.068,0 -10.996,-4.927 -10.996,-10.996c0,-6.069 4.928,-10.996 10.996,-10.996Z" style="fill:#fff;"/><g id="beams"><g id="beam"><path id="beam1" serif:id="beam" d="M44.216,14.515c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,0 -4.9,2.196 -4.9,4.901c-0,2.705 2.196,4.901 4.9,4.901c2.705,0 4.901,-2.196 4.901,-4.901Z" style="fill:#fff;"/></g><g id="beam2" serif:id="beam"><path id="beam3" serif:id="beam" d="M60.666,24.892c1.902,-1.902 1.902,-4.99 0,-6.892l-0.04,-0.039c-1.901,-1.902 -4.989,-1.902 -6.891,-0c-1.901,1.901 -1.901,4.989 0,6.891l0.04,0.04c1.902,1.901 4.99,1.901 6.891,-0Z" style="fill:#fff;"/></g><g id="beam4" serif:id="beam"><path id="beam5" serif:id="beam" d="M25.737,61.103c1.909,-1.91 1.909,-5.011 -0,-6.921l-0.01,-0.01c-1.91,-1.91 -5.011,-1.91 -6.921,-0c-1.91,1.91 -1.91,5.011 -0,6.921l0.01,0.01c1.91,1.91 5.011,1.91 6.921,-0Z" style="fill:#fff;"/></g><g id="beam6" serif:id="beam"><path id="beam7" serif:id="beam" d="M60.676,54.167c-1.907,-1.907 -5.004,-1.907 -6.911,0l-0.02,0.02c-1.907,1.907 -1.907,5.004 0,6.911c1.907,1.907 5.004,1.907 6.911,-0l0.02,-0.02c1.907,-1.907 1.907,-5.004 0,-6.911Z" style="fill:#fff;"/></g><g id="beam8" serif:id="beam"><path id="beam9" serif:id="beam" d="M14.524,34.623c-2.702,0 -4.896,2.194 -4.896,4.896l0,0.01c0,2.702 2.194,4.896 4.896,4.896c2.702,0 4.896,-2.194 4.896,-4.896l0,-0.01c0,-2.702 -2.194,-4.896 -4.896,-4.896Z" style="fill:#fff;"/></g><g id="beam10" serif:id="beam"><path id="beam11" serif:id="beam" d="M44.216,64.534c0,-2.705 -2.196,-4.901 -4.901,-4.901c-2.704,-0 -4.9,2.196 -4.9,4.901c-0,2.704 2.196,4.9 4.9,4.9c2.705,0 4.901,-2.196 4.901,-4.9Z" style="fill:#fff;"/></g><g id="beam12" serif:id="beam"><path id="beam13" serif:id="beam" d="M25.734,17.943c-1.911,-1.911 -5.015,-1.911 -6.926,0l-0.005,0.005c-1.911,1.911 -1.911,5.015 0,6.926c1.911,1.911 5.015,1.911 6.926,0l0.005,-0.005c1.911,-1.911 1.911,-5.014 0,-6.926Z" style="fill:#fff;"/></g><g id="beam14" serif:id="beam"><path id="beam15" serif:id="beam" d="M64.103,34.623c-2.7,0 -4.892,2.192 -4.892,4.892l-0,0.019c-0,2.699 2.192,4.891 4.892,4.891c2.699,0 4.891,-2.192 4.891,-4.891l0,-0.019c0,-2.7 -2.192,-4.892 -4.891,-4.892Z" style="fill:#fff;"/></g></g></g></svg>
+    </template>
+</a>
+
+<script>
+(function() {
+    const LOCAL_STORAGE_KEY = 'piccoloThemeMode'
+
+    var initialMode = localStorage.getItem(LOCAL_STORAGE_KEY)
+
+    if (initialMode) {
+        // Make sure the value in local storage is valid
+        if (['light', 'dark', 'darkest'].indexOf(initialMode) == -1) {
+            initialMode = 'light'
+            localStorage.setItem(LOCAL_STORAGE_KEY, initialMode)
+        }
+    } else {
+        // Check if the client prefers dark mode
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            initialMode = 'dark'
+        } else {
+            initialMode = 'light'
+        }
+        localStorage.setItem(LOCAL_STORAGE_KEY, initialMode)
+    }
+
+    document.documentElement.dataset.mode = initialMode
+
+    PetiteVue.createApp({
+        'mode': initialMode,
+        handleClick() {
+            let currentMode = this.mode
+
+            if (currentMode == 'light') {
+                this.mode = 'dark'
+            } else if (currentMode == 'dark') {
+                this.mode = 'darkest'
+            } else if (currentMode == 'darkest') {
+                this.mode = 'light'
+            }
+
+            document.documentElement.dataset.mode = this.mode
+            localStorage.setItem(LOCAL_STORAGE_KEY, this.mode)
+
+            console.log(this.mode)
+        }
+    }).mount('#mode_toggle')
+})()
+</script>
+            <p class="mobile_search_link">
+                <a href="search.html" title="Search">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 65 64" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2">
+                        <path d="M14.873 40.009c-2.315-3.943-3.642-8.532-3.642-13.429C11.231 11.91 23.141 0 37.811 0s26.58 11.91 26.58 26.58-11.91 26.58-26.58 26.58a26.44 26.44 0 0 1-14.277-4.161L9.739 62.794a3.12 3.12 0 0 1-4.413 0L.913 58.382c-1.217-1.218-1.217-3.196 0-4.413l13.96-13.96zM37.811 8.054c10.225 0 18.526 8.301 18.526 18.526s-8.301 18.526-18.526 18.526-18.526-8.301-18.526-18.526S27.586 8.054 37.811 8.054z" fill="#fff" />
+                    </svg>
+                </a>
+            </p>
+        
+
+        <div class="searchbox_wrapper">
+            
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+    </nav>
+</div>
+
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Simple test</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">minihass</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Other Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/cybershoe/Cybershoe_CircuitPython_minihass/releases/latest">Download from GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://circuitpython.org/libraries">Download Library Bundle</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.circuitpython.org">CircuitPython Reference Documentation</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forums.adafruit.com/viewforum.php?f=60">CircuitPython Support Forum</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://adafru.it/discord">Discord Chat</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://learn.adafruit.com">Adafruit Learning System</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://blog.adafruit.com">Adafruit Blog</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.adafruit.com">Adafruit Store</a></li>
+</ul>
+
+        </div>
+      </div>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-minihass">
+<span id="minihass"></span><h1>minihass<a class="headerlink" href="#module-minihass" title="Link to this heading">¶</a></h1>
+<p>Module to provide classes and methods to communicate with Home Assistant over MQTT,
+intended for use with CircuitPython.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="minihass.Device">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">minihass.</span></span><span class="sig-name descname"><span class="pre">Device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mqtt_client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.circuitpython.org/projects/minimqtt/en/latest/api.html#adafruit_minimqtt.adafruit_minimqtt.MQTT" title="(in Adafruit MiniMQTT Library v1.0)"><span class="pre">MQTT</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">manufacturer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hw_version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connections</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entities</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#minihass.Entity" title="minihass.entity.Entity"><span class="pre">Entity</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'minimqtt'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#minihass.Device" title="Link to this definition">¶</a></dt>
+<dd><p>A class representing a Home Assistant device.</p>
+<p>A <a class="reference internal" href="#minihass.Device" title="minihass.Device"><code class="xref py py-class docutils literal notranslate"><span class="pre">Device</span></code></a> represents a physical device with its own control unit, or a
+service. A CircuitPython-based microcontroller might provide multiple sensors, or
+expose multiple controls and services to Home Assistant; this would represent one
+device with multiple entities. In most cases you will only have one
+<a class="reference internal" href="#minihass.Device" title="minihass.Device"><code class="xref py py-class docutils literal notranslate"><span class="pre">Device</span></code></a> object, although it it technically possible to create multiple
+objects in one instance of CircuitPython using this module.</p>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>The MQTT client used to create a <a class="reference internal" href="#minihass.Device" title="minihass.Device"><code class="xref py py-class docutils literal notranslate"><span class="pre">Device</span></code></a> object must not be
+connected at the time of instantiation. The devices uses a <a class="reference external" href="https://www.hivemq.com/blog/mqtt-essentials-part-9-last-will-and-testament/">Last Will and
+Testament</a> message to mark the device and its entities as <code class="docutils literal notranslate"><span class="pre">unavailable</span></code> after
+losing its connection to the MQTT broker, and the LWT is sent as part of the
+connection process.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mqtt_client</strong> (<a class="reference external" href="https://docs.circuitpython.org/projects/minimqtt/en/latest/api.html#adafruit_minimqtt.adafruit_minimqtt.MQTT" title="(in Adafruit MiniMQTT Library v1.0)"><em>adafruit_minimqtt.adafruit_minimqtt.MQTT</em></a>) – MMQTT
+object for communicating with Home Assistant.</p></li>
+<li><p><strong>device_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – Gloablly unique identifier for the Home
+Assistant device. Auto-generated if not specified.</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – Device name. Auto-generated if not specified.</p></li>
+<li><p><strong>manufacturer</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – Device manufacturer to appear in Home
+Assistant’s device registry. Defaults to <code class="xref py py-class docutils literal notranslate"><span class="pre">None</span></code></p></li>
+<li><p><strong>hw_version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – Device hardware version to appear in Home
+Assistant’s device registry, Defaults to <code class="xref py py-class docutils literal notranslate"><span class="pre">None</span></code></p></li>
+<li><p><strong>connections</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>)</em><em>]</em><em>, </em><em>optional</em>) – List of tuples of Home
+Assistant device connections e.g. <code class="docutils literal notranslate"><span class="pre">[('mac',</span> <span class="pre">'de:ad:be:ef:d0:0d')]</span></code>.
+Defaults to <code class="xref py py-class docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>entities</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em>[</em><a class="reference internal" href="#minihass.Entity" title="minihass.Entity"><em>Entity</em></a><em>]</em><em>, </em><em>optional</em>) – List of entity objects to include as
+part of the device. Defaults to <code class="xref py py-class docutils literal notranslate"><span class="pre">None</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="minihass.Device.device_id">
+<span class="sig-name descname"><span class="pre">device_id</span></span><a class="headerlink" href="#minihass.Device.device_id" title="Link to this definition">¶</a></dt>
+<dd><p>Effective Device ID. Either normalized from the
+<code class="docutils literal notranslate"><span class="pre">device_id</span></code> parameter, or derived from <code class="docutils literal notranslate"><span class="pre">name</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="minihass.Device.mqtt_client">
+<span class="sig-name descname"><span class="pre">mqtt_client</span></span><a class="headerlink" href="#minihass.Device.mqtt_client" title="Link to this definition">¶</a></dt>
+<dd><p>MQTT client.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.circuitpython.org/projects/minimqtt/en/latest/api.html#adafruit_minimqtt.adafruit_minimqtt.MQTT" title="(in Adafruit MiniMQTT Library v1.0)">adafruit_minimqtt.adafruit_minimqtt.MQTT</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="minihass.Device.connections">
+<span class="sig-name descname"><span class="pre">connections</span></span><a class="headerlink" href="#minihass.Device.connections" title="Link to this definition">¶</a></dt>
+<dd><p>List of Home Aassistant device
+connections.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)">list</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a>)]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="minihass.Device.entities">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">entities</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#minihass.Entity" title="minihass.entity.Entity"><span class="pre">Entity</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#minihass.Device.entities" title="Link to this definition">¶</a></dt>
+<dd><p>A list of <a class="reference internal" href="#minihass.Entity" title="minihass.Entity"><code class="xref py py-class docutils literal notranslate"><span class="pre">Entity</span></code></a> objects associated with the device.</p>
+<p>This is a read-only property. Modify this property with the
+<a class="reference internal" href="#minihass.Device.add_entity" title="minihass.Device.add_entity"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_entity()</span></code></a> and <a class="reference internal" href="#minihass.Device.delete_entity" title="minihass.Device.delete_entity"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete_entity()</span></code></a> methods.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of Entity subclasses.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)">list</a>[<a class="reference internal" href="#minihass.Entity" title="minihass.Entity">Entity</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="minihass.Device.availability">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">availability</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></em><a class="headerlink" href="#minihass.Device.availability" title="Link to this definition">¶</a></dt>
+<dd><p>Availability of the device. Setting this entity to <code class="xref py py-class docutils literal notranslate"><span class="pre">false</span></code> makes any
+entities belonging to this device appear as <code class="docutils literal notranslate"><span class="pre">unavailable</span></code> in Home Assistant.
+Setting this property triggers <a class="reference internal" href="#minihass.Device.publish_availability" title="minihass.Device.publish_availability"><code class="xref py py-meth docutils literal notranslate"><span class="pre">publish_availability()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="minihass.Device.add_entity">
+<span class="sig-name descname"><span class="pre">add_entity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#minihass.Entity" title="minihass.entity.Entity"><span class="pre">Entity</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span></span><a class="headerlink" href="#minihass.Device.add_entity" title="Link to this definition">¶</a></dt>
+<dd><p>Add an entity to the device</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Entity</strong> (<a class="reference internal" href="#minihass.Entity" title="minihass.Entity"><em>Entity</em></a>) – Entity to add.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt><code class="xref py py-class docutils literal notranslate"><span class="pre">True</span></code> if the entity was added. <code class="xref py py-class docutils literal notranslate"><span class="pre">False</span></code> if the entity</dt><dd><p>is already a member of the device.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="minihass.Device.delete_entity">
+<span class="sig-name descname"><span class="pre">delete_entity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#minihass.Entity" title="minihass.entity.Entity"><span class="pre">Entity</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span></span><a class="headerlink" href="#minihass.Device.delete_entity" title="Link to this definition">¶</a></dt>
+<dd><p>Delete an entity from the device</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>entity</strong> (<a class="reference internal" href="#minihass.Entity" title="minihass.Entity"><em>Entity</em></a>) – Entity to delete.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt><code class="xref py py-class docutils literal notranslate"><span class="pre">True</span></code> if the entity is deleted, <code class="xref py py-class docutils literal notranslate"><span class="pre">False</span></code> if the entity</dt><dd><p>was not a member of the device</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="minihass.Device.announce">
+<span class="sig-name descname"><span class="pre">announce</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clean</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span></span><a class="headerlink" href="#minihass.Device.announce" title="Link to this definition">¶</a></dt>
+<dd><p>Send MQTT discovery messages for all device entities.</p>
+<p>Used immediately after connnecting to the MQTT broker to configure the
+corresponding entities in Home Assistant. Individual entities can be announced
+with their own <a class="reference internal" href="#minihass.Entity.announce" title="minihass.Entity.announce"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Entity.announce()</span></code></a> methods.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>clean</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – Remove previously discovered entites that are no
+longer present. Defaults to <code class="xref py py-class docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">True</span></code> if successful.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="minihass.Device.publish_state_queue">
+<span class="sig-name descname"><span class="pre">publish_state_queue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span></span><a class="headerlink" href="#minihass.Device.publish_state_queue" title="Link to this definition">¶</a></dt>
+<dd><p>Publish any queued states for all device entities</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">True</span></code> if at least one sensor state was published.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="minihass.Device.publish_availability">
+<span class="sig-name descname"><span class="pre">publish_availability</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#minihass.Device.publish_availability" title="Link to this definition">¶</a></dt>
+<dd><p>Explicitly publishes availability of the device.</p>
+<p>This function is called automatically when <a class="reference internal" href="#minihass.Device.availability" title="minihass.Device.availability"><code class="xref py py-attr docutils literal notranslate"><span class="pre">availability</span></code></a> property is
+changed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">True</span></code> if successful.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="minihass.Device.mqtt_on_connect_cb">
+<span class="sig-name descname"><span class="pre">mqtt_on_connect_cb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mqtt_client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">userdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#minihass.Device.mqtt_on_connect_cb" title="Link to this definition">¶</a></dt>
+<dd><p>Callback for the MQTT client’s <code class="xref py py-attr docutils literal notranslate"><span class="pre">on_connect</span></code> attribute. Sends
+announcement messages for all configured entities, publishes any outstanding
+entity states, and publishes its own availability as <code class="xref py py-class docutils literal notranslate"><span class="pre">True</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="minihass.Entity">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">minihass.</span></span><span class="sig-name descname"><span class="pre">Entity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_category</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">icon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enabled_by_default</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mqtt_client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.circuitpython.org/projects/minimqtt/en/latest/api.html#adafruit_minimqtt.adafruit_minimqtt.MQTT" title="(in Adafruit MiniMQTT Library v1.0)"><span class="pre">MQTT</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'minimqtt'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#minihass.Entity" title="Link to this definition">¶</a></dt>
+<dd><p>Parent class for child classes representing Home Assistant entities. Cannot be
+instantiated directly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – Entity Name. Can be null if only the device name is
+relevant. One of <code class="docutils literal notranslate"><span class="pre">name</span></code> or <code class="docutils literal notranslate"><span class="pre">object_id</span></code> must be set.</p></li>
+<li><p><strong>device_class</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – <a class="reference external" href="https://www.home-assistant.io/integrations/binary_sensor/#device-class">Device class</a>
+of the entity. Defaults to <code class="xref py py-class docutils literal notranslate"><span class="pre">None</span></code></p></li>
+<li><p><strong>entity_category</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – Set to specify <code class="docutils literal notranslate"><span class="pre">DIAGNOSTIC</span></code> or <code class="docutils literal notranslate"><span class="pre">CONFIG</span></code>
+entities.</p></li>
+<li><p><strong>object_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – Set to generate <code class="docutils literal notranslate"><span class="pre">entity_id</span></code> from <code class="docutils literal notranslate"><span class="pre">object_id</span></code>
+instead of <code class="docutils literal notranslate"><span class="pre">name</span></code>. One of <code class="docutils literal notranslate"><span class="pre">name</span></code> or <code class="docutils literal notranslate"><span class="pre">object_id</span></code> must be set.</p></li>
+<li><p><strong>icon</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – Send update events even when the state hasn’t changed,
+defaults to <code class="xref py py-class docutils literal notranslate"><span class="pre">False</span></code></p></li>
+<li><p><strong>enabled_by_default</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – Defines the number of seconds after the
+sensor’s state expires, if it’s not updated. After expiry, the sensor’s
+state becomes unavailable. Defaults to <code class="xref py py-class docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>mqtt_client</strong> (<a class="reference external" href="https://docs.circuitpython.org/projects/minimqtt/en/latest/api.html#adafruit_minimqtt.adafruit_minimqtt.MQTT" title="(in Adafruit MiniMQTT Library v1.0)"><em>adafruit_minimqtt.adafruit_minimqtt.MQTT</em></a><em>, </em><em>optional</em>) – MMQTT object for
+communicating with Home Assistant. If the entity is a member of a device,
+the device’s broker will be used instead.</p></li>
+<li><p><strong>logger_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – Name for the <code class="xref py py-class docutils literal notranslate"><span class="pre">adafruit_logging.logger</span></code> used by this
+object. Defaults to <code class="docutils literal notranslate"><span class="pre">'minihass'</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="minihass.Entity.mqtt_client">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mqtt_client</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.circuitpython.org/projects/minimqtt/en/latest/api.html#adafruit_minimqtt.adafruit_minimqtt.MQTT" title="(in Adafruit MiniMQTT Library v1.0)"><span class="pre">MQTT</span></a></em><a class="headerlink" href="#minihass.Entity.mqtt_client" title="Link to this definition">¶</a></dt>
+<dd><p>Sets or gets the MQTT client for this entity. If this entity is a member
+of a device, the device MQTT client will be returned.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="minihass.Entity.availability">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">availability</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></em><a class="headerlink" href="#minihass.Entity.availability" title="Link to this definition">¶</a></dt>
+<dd><p>Availability of the entity. Setting this entity to <code class="xref py py-class docutils literal notranslate"><span class="pre">false</span></code> makes the
+entity appear as <code class="docutils literal notranslate"><span class="pre">unavailable</span></code> in Home Assistant. This may be desired if, for
+instance, the sensor providing this entity’s state is not initialized or has
+not yet returned a valid state, or if the hardware that implements commands
+from Home Assistant is not ready. Setting this property triggers
+<a class="reference internal" href="#minihass.Entity.publish_availability" title="minihass.Entity.publish_availability"><code class="xref py py-meth docutils literal notranslate"><span class="pre">publish_availability()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="minihass.Entity.announce">
+<span class="sig-name descname"><span class="pre">announce</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#minihass.Entity.announce" title="Link to this definition">¶</a></dt>
+<dd><p>Send MQTT discovery message for this entity only.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.12)"><strong>ValueError</strong></a> – If the entity or its parent device does not have a valid
+    <code class="docutils literal notranslate"><span class="pre">mqtt_client</span></code> set.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.12)"><strong>RuntimeError</strong></a> – If the MQTT client is not connected</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="minihass.Entity.withdraw">
+<span class="sig-name descname"><span class="pre">withdraw</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#minihass.Entity.withdraw" title="Link to this definition">¶</a></dt>
+<dd><p>Send MQTT discovery message to remove this entity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.12)"><strong>ValueError</strong></a> – If the entity or its parent device does not have a valid
+    <code class="docutils literal notranslate"><span class="pre">mqtt_client</span></code> set.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.12)"><strong>RuntimeError</strong></a> – If the MQTT client is not connected</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="minihass.Entity.publish_availability">
+<span class="sig-name descname"><span class="pre">publish_availability</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#minihass.Entity.publish_availability" title="Link to this definition">¶</a></dt>
+<dd><p>Explicitly publishes availability of the entity.</p>
+<p>This function is called automatically when <a class="reference internal" href="#minihass.Entity.availability" title="minihass.Entity.availability"><code class="xref py py-attr docutils literal notranslate"><span class="pre">availability</span></code></a> property is
+changed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">True</span></code> if successful.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="minihass.SensorEntity">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">minihass.</span></span><span class="sig-name descname"><span class="pre">SensorEntity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'yes'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'minimqtt'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#minihass.SensorEntity" title="Link to this definition">¶</a></dt>
+<dd><p>Mixin class representing a Home Assistant Entity that publishes states</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>queue</strong> (<em>&quot;yes&quot;</em><em>|</em><em>&quot;no&quot;</em><em>|</em><em>&quot;always&quot;</em><em>, </em><em>optional</em>) – Controls state queuing behaviour.
+If <code class="docutils literal notranslate"><span class="pre">&quot;yes&quot;</span></code>, if publishing to the MQTT broker fails, the message will
+be queued and can be re-published, by calling the device’s
+<a class="reference internal" href="#minihass.Device.publish_state_queue" title="minihass.Device.publish_state_queue"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Device.publish_state_queue()</span></code></a> method. If <code class="docutils literal notranslate"><span class="pre">&quot;no&quot;</span></code>, unpublished states
+are not queued, but can still be explicitly published by calling the
+entity’s <a class="reference internal" href="#minihass.SensorEntity.publish_state" title="minihass.SensorEntity.publish_state"><code class="xref py py-meth docutils literal notranslate"><span class="pre">publish_state()</span></code></a> method. If <code class="docutils literal notranslate"><span class="pre">&quot;always&quot;</span></code>, states are not
+automatically published and will alawys be queued. Defaults to
+<code class="docutils literal notranslate"><span class="pre">&quot;yes&quot;</span></code>.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="minihass.SensorEntity.announce">
+<span class="sig-name descname"><span class="pre">announce</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#minihass.SensorEntity.announce" title="Link to this definition">¶</a></dt>
+<dd><p>Send MQTT discovery message for this entity only.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.12)"><strong>ValueError</strong></a> – If the entity or its parent device does not have a valid
+    <code class="docutils literal notranslate"><span class="pre">mqtt_client</span></code> set.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.12)"><strong>RuntimeError</strong></a> – If the MQTT client is not connected</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="minihass.SensorEntity.availability">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">availability</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></em><a class="headerlink" href="#minihass.SensorEntity.availability" title="Link to this definition">¶</a></dt>
+<dd><p>Availability of the entity. Setting this entity to <code class="xref py py-class docutils literal notranslate"><span class="pre">false</span></code> makes the
+entity appear as <code class="docutils literal notranslate"><span class="pre">unavailable</span></code> in Home Assistant. This may be desired if, for
+instance, the sensor providing this entity’s state is not initialized or has
+not yet returned a valid state, or if the hardware that implements commands
+from Home Assistant is not ready. Setting this property triggers
+<a class="reference internal" href="#minihass.SensorEntity.publish_availability" title="minihass.SensorEntity.publish_availability"><code class="xref py py-meth docutils literal notranslate"><span class="pre">publish_availability()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="minihass.SensorEntity.mqtt_client">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mqtt_client</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.circuitpython.org/projects/minimqtt/en/latest/api.html#adafruit_minimqtt.adafruit_minimqtt.MQTT" title="(in Adafruit MiniMQTT Library v1.0)"><span class="pre">MQTT</span></a></em><a class="headerlink" href="#minihass.SensorEntity.mqtt_client" title="Link to this definition">¶</a></dt>
+<dd><p>Sets or gets the MQTT client for this entity. If this entity is a member
+of a device, the device MQTT client will be returned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="minihass.SensorEntity.publish_availability">
+<span class="sig-name descname"><span class="pre">publish_availability</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#minihass.SensorEntity.publish_availability" title="Link to this definition">¶</a></dt>
+<dd><p>Explicitly publishes availability of the entity.</p>
+<p>This function is called automatically when <a class="reference internal" href="#minihass.SensorEntity.availability" title="minihass.SensorEntity.availability"><code class="xref py py-attr docutils literal notranslate"><span class="pre">availability</span></code></a> property is
+changed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">True</span></code> if successful.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="minihass.SensorEntity.withdraw">
+<span class="sig-name descname"><span class="pre">withdraw</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#minihass.SensorEntity.withdraw" title="Link to this definition">¶</a></dt>
+<dd><p>Send MQTT discovery message to remove this entity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.12)"><strong>ValueError</strong></a> – If the entity or its parent device does not have a valid
+    <code class="docutils literal notranslate"><span class="pre">mqtt_client</span></code> set.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.12)"><strong>RuntimeError</strong></a> – If the MQTT client is not connected</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="minihass.SensorEntity.state">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">state</span></span><a class="headerlink" href="#minihass.SensorEntity.state" title="Link to this definition">¶</a></dt>
+<dd><p>Gets or sets the state of a sensor entity. Setting this parameter calls
+<a class="reference internal" href="#minihass.SensorEntity.publish_state" title="minihass.SensorEntity.publish_state"><code class="xref py py-meth docutils literal notranslate"><span class="pre">publish_state()</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="minihass.SensorEntity.publish_state">
+<span class="sig-name descname"><span class="pre">publish_state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#minihass.SensorEntity.publish_state" title="Link to this definition">¶</a></dt>
+<dd><p>Explicitly publishes state of the entity.</p>
+<p>This function is called automatically when <a class="reference internal" href="#minihass.SensorEntity.state" title="minihass.SensorEntity.state"><code class="xref py py-attr docutils literal notranslate"><span class="pre">state</span></code></a> property is
+changed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="minihass.BinarySensor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">minihass.</span></span><span class="sig-name descname"><span class="pre">BinarySensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_update</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expire_after</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#minihass.BinarySensor" title="Link to this definition">¶</a></dt>
+<dd><p>Class representing a Home Assistant Binary Sensor entity.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A <a class="reference internal" href="#minihass.BinarySensor" title="minihass.BinarySensor"><code class="xref py py-class docutils literal notranslate"><span class="pre">BinarySensor</span></code></a> object takes all parameters from both the
+<a class="reference internal" href="#minihass.Entity" title="minihass.Entity"><code class="xref py py-class docutils literal notranslate"><span class="pre">Entity</span></code></a> and <a class="reference internal" href="#minihass.SensorEntity" title="minihass.SensorEntity"><code class="xref py py-class docutils literal notranslate"><span class="pre">SensorEntity</span></code></a> classes, as well as the parameters
+listed below.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>force_update</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – Specifies whether the entity should be enabled
+when it is first added, defaults to <code class="xref py py-class docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>expire_after</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – Defines the number of seconds before the
+sensor’s state expires, if it’s not updated. After expiry, the sensor’s
+state becomes unavailable. Defaults to <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="minihass.BinarySensor.state">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">state</span></span><a class="headerlink" href="#minihass.BinarySensor.state" title="Link to this definition">¶</a></dt>
+<dd><p>Gets or sets the state of a sensor entity. Setting this parameter calls
+<a class="reference internal" href="#minihass.BinarySensor.publish_state" title="minihass.BinarySensor.publish_state"><code class="xref py py-meth docutils literal notranslate"><span class="pre">publish_state()</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="minihass.BinarySensor.announce">
+<span class="sig-name descname"><span class="pre">announce</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#minihass.BinarySensor.announce" title="Link to this definition">¶</a></dt>
+<dd><p>Send MQTT discovery message for this entity only.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.12)"><strong>ValueError</strong></a> – If the entity or its parent device does not have a valid
+    <code class="docutils literal notranslate"><span class="pre">mqtt_client</span></code> set.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.12)"><strong>RuntimeError</strong></a> – If the MQTT client is not connected</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="minihass.BinarySensor.availability">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">availability</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></em><a class="headerlink" href="#minihass.BinarySensor.availability" title="Link to this definition">¶</a></dt>
+<dd><p>Availability of the entity. Setting this entity to <code class="xref py py-class docutils literal notranslate"><span class="pre">false</span></code> makes the
+entity appear as <code class="docutils literal notranslate"><span class="pre">unavailable</span></code> in Home Assistant. This may be desired if, for
+instance, the sensor providing this entity’s state is not initialized or has
+not yet returned a valid state, or if the hardware that implements commands
+from Home Assistant is not ready. Setting this property triggers
+<a class="reference internal" href="#minihass.BinarySensor.publish_availability" title="minihass.BinarySensor.publish_availability"><code class="xref py py-meth docutils literal notranslate"><span class="pre">publish_availability()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="minihass.BinarySensor.mqtt_client">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mqtt_client</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.circuitpython.org/projects/minimqtt/en/latest/api.html#adafruit_minimqtt.adafruit_minimqtt.MQTT" title="(in Adafruit MiniMQTT Library v1.0)"><span class="pre">MQTT</span></a></em><a class="headerlink" href="#minihass.BinarySensor.mqtt_client" title="Link to this definition">¶</a></dt>
+<dd><p>Sets or gets the MQTT client for this entity. If this entity is a member
+of a device, the device MQTT client will be returned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="minihass.BinarySensor.publish_availability">
+<span class="sig-name descname"><span class="pre">publish_availability</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#minihass.BinarySensor.publish_availability" title="Link to this definition">¶</a></dt>
+<dd><p>Explicitly publishes availability of the entity.</p>
+<p>This function is called automatically when <a class="reference internal" href="#minihass.BinarySensor.availability" title="minihass.BinarySensor.availability"><code class="xref py py-attr docutils literal notranslate"><span class="pre">availability</span></code></a> property is
+changed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">True</span></code> if successful.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="minihass.BinarySensor.publish_state">
+<span class="sig-name descname"><span class="pre">publish_state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#minihass.BinarySensor.publish_state" title="Link to this definition">¶</a></dt>
+<dd><p>Explicitly publishes state of the entity.</p>
+<p>This function is called automatically when <a class="reference internal" href="#minihass.BinarySensor.state" title="minihass.BinarySensor.state"><code class="xref py py-attr docutils literal notranslate"><span class="pre">state</span></code></a> property is
+changed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="minihass.BinarySensor.withdraw">
+<span class="sig-name descname"><span class="pre">withdraw</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#minihass.BinarySensor.withdraw" title="Link to this definition">¶</a></dt>
+<dd><p>Send MQTT discovery message to remove this entity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.12)"><strong>ValueError</strong></a> – If the entity or its parent device does not have a valid
+    <code class="docutils literal notranslate"><span class="pre">mqtt_client</span></code> set.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.12)"><strong>RuntimeError</strong></a> – If the MQTT client is not connected</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+    
+        <div id="show_right_sidebar">
+            <p><a class="toggle_right_sidebar" href="#"><span class="icon">&lt;</span><span>Page contents</span></a></p>
+        </div>
+
+        <div id="right_sidebar">
+            <p><a class="toggle_right_sidebar" href="#"><span class="icon">&gt;</span><span>Page contents:</span></a></p>
+            <div class="page_toc">
+                <ul>
+<li><a class="reference internal" href="#">minihass</a><ul>
+<li><a class="reference internal" href="#minihass.Device"><code class="docutils literal notranslate"><span class="pre">Device</span></code></a><ul>
+<li><a class="reference internal" href="#minihass.Device.device_id"><code class="docutils literal notranslate"><span class="pre">Device.device_id</span></code></a></li>
+<li><a class="reference internal" href="#minihass.Device.mqtt_client"><code class="docutils literal notranslate"><span class="pre">Device.mqtt_client</span></code></a></li>
+<li><a class="reference internal" href="#minihass.Device.connections"><code class="docutils literal notranslate"><span class="pre">Device.connections</span></code></a></li>
+<li><a class="reference internal" href="#minihass.Device.entities"><code class="docutils literal notranslate"><span class="pre">Device.entities</span></code></a></li>
+<li><a class="reference internal" href="#minihass.Device.availability"><code class="docutils literal notranslate"><span class="pre">Device.availability</span></code></a></li>
+<li><a class="reference internal" href="#minihass.Device.add_entity"><code class="docutils literal notranslate"><span class="pre">Device.add_entity()</span></code></a></li>
+<li><a class="reference internal" href="#minihass.Device.delete_entity"><code class="docutils literal notranslate"><span class="pre">Device.delete_entity()</span></code></a></li>
+<li><a class="reference internal" href="#minihass.Device.announce"><code class="docutils literal notranslate"><span class="pre">Device.announce()</span></code></a></li>
+<li><a class="reference internal" href="#minihass.Device.publish_state_queue"><code class="docutils literal notranslate"><span class="pre">Device.publish_state_queue()</span></code></a></li>
+<li><a class="reference internal" href="#minihass.Device.publish_availability"><code class="docutils literal notranslate"><span class="pre">Device.publish_availability()</span></code></a></li>
+<li><a class="reference internal" href="#minihass.Device.mqtt_on_connect_cb"><code class="docutils literal notranslate"><span class="pre">Device.mqtt_on_connect_cb()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#minihass.Entity"><code class="docutils literal notranslate"><span class="pre">Entity</span></code></a><ul>
+<li><a class="reference internal" href="#minihass.Entity.mqtt_client"><code class="docutils literal notranslate"><span class="pre">Entity.mqtt_client</span></code></a></li>
+<li><a class="reference internal" href="#minihass.Entity.availability"><code class="docutils literal notranslate"><span class="pre">Entity.availability</span></code></a></li>
+<li><a class="reference internal" href="#minihass.Entity.announce"><code class="docutils literal notranslate"><span class="pre">Entity.announce()</span></code></a></li>
+<li><a class="reference internal" href="#minihass.Entity.withdraw"><code class="docutils literal notranslate"><span class="pre">Entity.withdraw()</span></code></a></li>
+<li><a class="reference internal" href="#minihass.Entity.publish_availability"><code class="docutils literal notranslate"><span class="pre">Entity.publish_availability()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#minihass.SensorEntity"><code class="docutils literal notranslate"><span class="pre">SensorEntity</span></code></a><ul>
+<li><a class="reference internal" href="#minihass.SensorEntity.announce"><code class="docutils literal notranslate"><span class="pre">SensorEntity.announce()</span></code></a></li>
+<li><a class="reference internal" href="#minihass.SensorEntity.availability"><code class="docutils literal notranslate"><span class="pre">SensorEntity.availability</span></code></a></li>
+<li><a class="reference internal" href="#minihass.SensorEntity.mqtt_client"><code class="docutils literal notranslate"><span class="pre">SensorEntity.mqtt_client</span></code></a></li>
+<li><a class="reference internal" href="#minihass.SensorEntity.publish_availability"><code class="docutils literal notranslate"><span class="pre">SensorEntity.publish_availability()</span></code></a></li>
+<li><a class="reference internal" href="#minihass.SensorEntity.withdraw"><code class="docutils literal notranslate"><span class="pre">SensorEntity.withdraw()</span></code></a></li>
+<li><a class="reference internal" href="#minihass.SensorEntity.state"><code class="docutils literal notranslate"><span class="pre">SensorEntity.state</span></code></a></li>
+<li><a class="reference internal" href="#minihass.SensorEntity.publish_state"><code class="docutils literal notranslate"><span class="pre">SensorEntity.publish_state()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#minihass.BinarySensor"><code class="docutils literal notranslate"><span class="pre">BinarySensor</span></code></a><ul>
+<li><a class="reference internal" href="#minihass.BinarySensor.state"><code class="docutils literal notranslate"><span class="pre">BinarySensor.state</span></code></a></li>
+<li><a class="reference internal" href="#minihass.BinarySensor.announce"><code class="docutils literal notranslate"><span class="pre">BinarySensor.announce()</span></code></a></li>
+<li><a class="reference internal" href="#minihass.BinarySensor.availability"><code class="docutils literal notranslate"><span class="pre">BinarySensor.availability</span></code></a></li>
+<li><a class="reference internal" href="#minihass.BinarySensor.mqtt_client"><code class="docutils literal notranslate"><span class="pre">BinarySensor.mqtt_client</span></code></a></li>
+<li><a class="reference internal" href="#minihass.BinarySensor.publish_availability"><code class="docutils literal notranslate"><span class="pre">BinarySensor.publish_availability()</span></code></a></li>
+<li><a class="reference internal" href="#minihass.BinarySensor.publish_state"><code class="docutils literal notranslate"><span class="pre">BinarySensor.publish_state()</span></code></a></li>
+<li><a class="reference internal" href="#minihass.BinarySensor.withdraw"><code class="docutils literal notranslate"><span class="pre">BinarySensor.withdraw()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            </div>
+        </div>
+    
+
+      <div class="clearer"></div>
+    </div>
+    <div class="button_nav_wrapper">
+        <div class="button_nav">
+            <div class="left">
+                
+                <a href="examples.html">
+                    <span class="icon">&lt;</span><span>Simple test</span></a>
+                
+            </div>
+
+            <div class="right">
+                
+            </div>
+        </div>
+    </div>
+
+
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2023 - 2024 Adam Schumacher.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+
+<p id="theme_credit">Styled using the <a href="https://github.com/piccolo-orm/piccolo_theme">Piccolo Theme</a></p>
+  </body>
+</html>
