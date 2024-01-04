@@ -1,6 +1,9 @@
 Introduction
 ============
 
+.. image:: https://ensmarten-ing-assets.s3.amazonaws.com/minihass_social.png
+    :alt: Minihass Banner
+|
 .. image:: https://github.com/ensmartening/CircuitPython_minihass/actions/workflows/build.yml/badge.svg
     :target: https://github.com/ensmartening/CircuitPython_minihass/actions/workflows/build.yml
     :alt: Build Status
