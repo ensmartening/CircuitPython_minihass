@@ -1,9 +1,9 @@
-Introduction
-============
-
 |banner|
 
 |build status| |codecov status| |docs status| |black|
+
+Introduction
+============
 
 minihass is a lightweight Python package to interact with Home Assistant over MQTT,
 intended for use with CircuitPython and the Adafruit MiniMQTT library. It provides
