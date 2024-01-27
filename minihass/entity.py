@@ -62,6 +62,7 @@ class Entity(object):
         name: str = "",
         entity_category: str = "",
         device_class: str = "",
+        encoding: str = "utf-8",
         object_id: str = "",
         icon: str = "",
         enabled_by_default: bool = True,
@@ -89,6 +90,9 @@ class Entity(object):
 
         self.device_class = validators.validate_string(device_class, null_ok=True)
         self.logger.debug(f"Entity device_class: {self.device_class}")
+
+        self.encoding = encoding
+        self.logger.debug(f"Entity encoding: {self.encoding}")
 
         if object_id:
             self.object_id = (
@@ -217,6 +221,7 @@ class Entity(object):
             "avty": [{"t": self.availability_topic}],
             "en": self.enabled_by_default,
             "unique_id": self.object_id,
+            "e": self.encoding,
         }
 
         if self.name:
