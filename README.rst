@@ -14,7 +14,7 @@ Supported components
 ====================
 
 * `Binary sensor <https://www.home-assistant.io/integrations/binary_sensor/>`_
-* `Sensor <https://www.home-assistant.io/integrations/sensor/>`_
+* *not implemented* `Sensor <https://www.home-assistant.io/integrations/sensor/>`_
 * *not implemented* `Switch <https://www.home-assistant.io/integrations/switch/>`_
 
 
