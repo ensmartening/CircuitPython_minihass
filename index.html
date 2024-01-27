@@ -5,10 +5,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Introduction &#8212; CircuitPython minihass package 0.1.0-beta documentation</title>
+    <title>Introduction &#8212; CircuitPython minihass package 0.1.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/basic_mod.css?v=94a554c0" />
-    <script src="_static/documentation_options.js?v=c903bf51"></script>
+    <script src="_static/documentation_options.js?v=01f34227"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -30,7 +30,7 @@
         <p id="toggle_sidebar">
             <a href="#" title="Toggle sidebar">|||</a>
         </p>
-        <h1><a href="#" title="Go to homepage">CircuitPython minihass package 0.1.0-beta documentation</a></h1>
+        <h1><a href="#" title="Go to homepage">CircuitPython minihass package 0.1.0 documentation</a></h1>
 
         <a id="mode_toggle" href="#" @click.prevent="handleClick" :title="mode">
     <template v-if="mode == 'light'">
@@ -152,17 +152,27 @@
             
   <section id="introduction">
 <h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h1>
-<a class="reference external image-reference" href="https://github.com/ensmartening/CircuitPython_minihass/actions/workflows/build.yml"><img alt="Build Status" src="https://github.com/ensmartening/CircuitPython_minihass/actions/workflows/build.yml/badge.svg" /></a>
-<a class="reference external image-reference" href="https://codecov.io/gh/ensmartening/CircuitPython_minihass"><img alt="Codecov Status" src="https://codecov.io/gh/ensmartening/CircuitPython_minihass/graph/badge.svg?token=9H0KNZC0PO" /></a>
-<a class="reference external image-reference" href="https://CircuitPython_minihass.ensmarten.ing"><img alt="Docs Status" src="https://github.com/ensmartening/CircuitPython_minihass/actions/workflows/sphinx.yml/badge.svg" /></a>
-<a class="reference external image-reference" href="https://github.com/psf/black"><img alt="Code Style: Black" src="https://img.shields.io/badge/code%20style-black-000000.svg" /></a>
-<p>A lightweight Python package to interact with Home Assistant over MQTT, intended for use with CircuitPython and the Adafruit MiniMQTT library.</p>
+<p><img alt="Minihass Banner" src="https://ensmarten-ing-assets.s3.amazonaws.com/minihass_social.png" /></p>
+<p><a class="reference external" href="https://github.com/ensmartening/CircuitPython_minihass/actions/workflows/build.yml"><img alt="Build Status" src="https://github.com/ensmartening/CircuitPython_minihass/actions/workflows/build.yml/badge.svg" /></a> <a class="reference external" href="https://codecov.io/gh/ensmartening/CircuitPython_minihass"><img alt="Codecov Status" src="https://codecov.io/gh/ensmartening/CircuitPython_minihass/graph/badge.svg?token=9H0KNZC0PO" /></a> <a class="reference external" href="https://CircuitPython_minihass.ensmarten.ing"><img alt="Docs Status" src="https://github.com/ensmartening/CircuitPython_minihass/actions/workflows/sphinx.yml/badge.svg" /></a> <a class="reference external" href="https://github.com/psf/black"><img alt="Code Style: Black" src="https://img.shields.io/badge/code%20style-black-000000.svg" /></a></p>
+<p>minihass is a lightweight Python package to interact with Home Assistant over MQTT,
+intended for use with CircuitPython and the Adafruit MiniMQTT library. It provides
+classes to describe Home Assistant devices and entities, and handles configuration,
+state, command, and availability messages to and from your Home Assistant MQTT broker.</p>
+</section>
+<section id="supported-components">
+<h1>Supported components<a class="headerlink" href="#supported-components" title="Link to this heading">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.home-assistant.io/integrations/binary_sensor/">Binary sensor</a></p></li>
+<li><p><a class="reference external" href="https://www.home-assistant.io/integrations/sensor/">Sensor</a></p></li>
+<li><p><em>not implemented</em> <a class="reference external" href="https://www.home-assistant.io/integrations/switch/">Switch</a></p></li>
+</ul>
 </section>
 <section id="dependencies">
 <h1>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading">¶</a></h1>
 <p>This driver depends on:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/adafruit/circuitpython">Adafruit CircuitPython</a></p></li>
+<li><p><a class="reference external" href="https://github.com/adafruit/Adafruit_CircuitPython_Logging">Adafruit CircuitPython Logging</a></p></li>
 </ul>
 <p>Please ensure all dependencies are available on the CircuitPython filesystem.
 This is easily achieved by downloading
@@ -243,6 +253,7 @@ before contributing to help this project stay welcoming.</p>
             <div class="page_toc">
                 <ul>
 <li><a class="reference internal" href="#">Introduction</a></li>
+<li><a class="reference internal" href="#supported-components">Supported components</a></li>
 <li><a class="reference internal" href="#dependencies">Dependencies</a></li>
 <li><a class="reference internal" href="#documentation">Documentation</a></li>
 <li><a class="reference internal" href="#contributing">Contributing</a></li>
