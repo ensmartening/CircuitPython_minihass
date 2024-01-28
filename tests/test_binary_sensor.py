@@ -40,8 +40,8 @@ def test_Entity_instantiation(binary_sensor):
 
 def test_Entity_state(binary_sensor):
     """Test publishing of MQTT state message"""
-    expected_topic = "homeassistant/entity/foo1337d00d/state"
-    expected_msg = '{"foo1337d00d": true}'
+    expected_topic = "homeassistant/foo1337d00d/state"
+    expected_msg = "True"
     binary_sensor.state = "yes"
     binary_sensor.mqtt_client.publish.assert_called_with(
         expected_topic, expected_msg, True, 1
@@ -51,7 +51,7 @@ def test_Entity_state(binary_sensor):
 def test_Entity_announce(binary_sensor):
     """Test publishing of MQTT discovery messages"""
     expected_topic = "homeassistant/binary_sensor/foo1337d00d/config"
-    expected_msg = '{"avty": [{"t": "homeassistant/foo1337d00d/availability"}], "en": true, "unique_id": "foo1337d00d", "e": "utf-8", "stat_t": "homeassistant/foo1337d00d/state", "name": "test", "ent_cat": "config", "force_update": false, "pl_off": false, "pl_on": true, "expire_after": 1}'
+    expected_msg = '{"avty": [{"t": "homeassistant/foo1337d00d/availability"}], "en": true, "unique_id": "foo1337d00d", "e": "utf-8", "name": "test", "ent_cat": "config", "stat_t": "homeassistant/foo1337d00d/state", "force_update": false, "pl_off": "False", "pl_on": "True", "expire_after": 1}'
     binary_sensor.announce()
     binary_sensor.mqtt_client.publish.assert_called_with(
         expected_topic, expected_msg, True, 1

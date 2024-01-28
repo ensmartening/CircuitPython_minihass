@@ -7,6 +7,7 @@ import pytest
 from adafruit_minimqtt.adafruit_minimqtt import MQTT, MMQTTException
 
 import minihass
+from minihass import const
 
 
 class GenericEntity(minihass.entity.Entity):
@@ -16,7 +17,7 @@ class GenericEntity(minihass.entity.Entity):
         super().__init__(*args, **kwargs)
 
 
-class GenericSensor(minihass.entity.SensorEntity):
+class GenericSensor(minihass.entity.StateEntity, minihass.entity.Entity):
     COMPONENT = "sensor"
 
     def __init__(self, *args, **kwargs):
@@ -174,25 +175,25 @@ def test_Entity_set_state(sensor):
     assert sensor.state == "foobar"
 
 
-def test_SensorEntity_instantiate_parent():
+def test_StateEntity_instantiate_parent():
     """Prevent direct instantiation of the SensorEntity parent class"""
     with pytest.raises(RuntimeError):
-        minihass.SensorEntity()
+        minihass.StateEntity()
 
 
-def test_SensorEntity_state_topic(sensor):
+def test_StateEntity_state_topic(sensor):
     assert sensor._state_topic == "homeassistant/entity/test1337d00d/state"
 
 
-def test_SensorEntity_publish(sensor):
+def test_StateEntity_publish(sensor):
     sensor.state = "foo"
     sensor.mqtt_client.publish.assert_called_with(
-        "homeassistant/entity/test1337d00d/state", '{"test1337d00d": "foo"}', True, 1
+        "homeassistant/test1337d00d/state", 'foo', True, 1
     )
 
 
-def test_SensorEntity_queue(mqtt_client):
-    s = GenericSensor(name="foo", queue="yes", mqtt_client=mqtt_client)
+def test_StateEntity_queue(mqtt_client):
+    s = GenericSensor(name="foo", queue_mode=const.QueueMode.YES, mqtt_client=mqtt_client)
     mqtt_client.publish.side_effect = MMQTTException
     assert not s.state_queued
     s.state = "foo"
@@ -200,16 +201,16 @@ def test_SensorEntity_queue(mqtt_client):
     mqtt_client.publish.side_effect = None
     s.publish_state()
     mqtt_client.publish.assert_called_with(
-        "homeassistant/entity/foo1337d00d/state", '{"foo1337d00d": "foo"}', True, 1
+        "homeassistant/foo1337d00d/state", 'foo', True, 1
     )
     assert not s.state_queued
 
 
-def test_SensorEntity_always_queue(mqtt_client):
-    s = GenericSensor(name="foo", queue="always", mqtt_client=mqtt_client)
+def test_StateEntity_always_queue(mqtt_client):
+    s = GenericSensor(name="foo", queue_mode=const.QueueMode.ALWAYS, mqtt_client=mqtt_client)
     s.state = "foo"
     mqtt_client.publish.assert_not_called()
     s.publish_state()
     mqtt_client.publish.assert_called_with(
-        "homeassistant/entity/foo1337d00d/state", '{"foo1337d00d": "foo"}', True, 1
+        "homeassistant/foo1337d00d/state", 'foo', True, 1
     )
