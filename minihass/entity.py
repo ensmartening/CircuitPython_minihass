@@ -123,23 +123,23 @@ class Entity(object):
         # )
 
         self.config = {
-            "avty": [{"t": f"{HA_MQTT_PREFIX}/{self.object_id}/availability"}],
-            "en": self.enabled_by_default,
-            "unique_id": self.object_id,
-            "e": encoding,
+            CONFIG_AVAILABILITY: [{"t": f"{HA_MQTT_PREFIX}/{self.object_id}/availability"}],
+            CONFIG_ENABLED_BY_DEFAULT: self.enabled_by_default,
+            CONFIG_UNIQUE_ID: self.object_id,
+            CONFIG_ENCODING: encoding,
         }
 
         if self.name:
-            self.config.update({"name": self.name})
+            self.config.update({CONFIG_NAME: self.name})
 
         if device_class:
-            self.config.update({"dev_cla": device_class})
+            self.config.update({CONFIG_DEVICE_CLASS: device_class})
 
         if entity_category:
-            self.config.update({"ent_cat": entity_category})
+            self.config.update({CONFIG_ENTITY_CATEGORY: entity_category})
 
         if self.icon:
-            self.config.update({"ic": self.icon})
+            self.config.update({CONFIG_ICON: self.icon})
 
         self._mqtt_client = mqtt_client
         try:
@@ -325,7 +325,7 @@ class Entity(object):
             bool : :class:`True` if successful.
         """
         self.mqtt_client.publish(
-            self.config["avty"][0]["t"],
+            self.config[CONFIG_AVAILABILITY][0][CONFIG_TOPIC],
             "online" if self.availability else "offline",
             True,
             1,
@@ -359,7 +359,7 @@ class StateEntity(Entity):
             self.logger.error(  # type: ignore
                 "Attepted instantiation of parent class, raising an exception..."
             )
-            raise RuntimeError("SensorEntity class cannot be raised on its own")
+            raise RuntimeError("StateEntity class cannot be raised on its own")
 
         super().__init__(*args, **kwargs)
 
@@ -367,7 +367,7 @@ class StateEntity(Entity):
         self._state: object = None
         self.state_queued: bool = False
 
-        self.config.update({"stat_t": f"{HA_MQTT_PREFIX}/{self.object_id}/state"})
+        self.config.update({CONFIG_STATE_TOPIC: f"{HA_MQTT_PREFIX}/{self.object_id}/state"})
 
         # super().__init__(*args, **kwargs)
 
@@ -398,7 +398,7 @@ class StateEntity(Entity):
         changed.
         """
         self.mqtt_client.publish(  # type: ignore
-            self.config["stat_t"],  # type: ignore
+            self.config[CONFIG_STATE_TOPIC],  # type: ignore
             self._state,  # type: ignore
             True,
             1,

@@ -76,17 +76,17 @@ class Device:
         # self.connections = connections if connections else []
 
         self.device_config = {
-            "dev": {
-                "ids": [self.device_id],
-                "cns": connections if connections else [],
+            CONFIG_DEVICE: {
+                CONFIG_IDENTIFIERS: [self.device_id],
+                CONFIG_CONNECTIONS: connections if connections else [],
             }
         }
 
         if manufacturer:
-            self.device_config["dev"].update({"mf": manufacturer})
+            self.device_config[CONFIG_DEVICE].update({CONFIG_MANUFACTURER: manufacturer})
 
         if hw_version:
-            self.device_config["dev"].update({"hw": hw_version})
+            self.device_config[CONFIG_DEVICE].update({CONFIG_HARDWARE: hw_version})
 
         self._availability = False
         self.availability_topic = (
@@ -149,7 +149,7 @@ class Device:
             if not entity in self._entities:
                 self._entities.append(entity)
                 entity.device = self
-                entity.config["avty"].append({"t": self.availability_topic})
+                entity.config[CONFIG_AVAILABILITY].append({CONFIG_TOPIC: self.availability_topic})
                 entity.config.update(self.device_config)
                 entity.announce()
                 return True
