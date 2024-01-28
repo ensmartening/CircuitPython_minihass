@@ -70,23 +70,23 @@ class Device:
         else:
             self.device_id = f"{validators.validate_id_string(self.name)}{Entity.chip_id()}"  # type: ignore
 
-        self.manufacturer = validators.validate_string(manufacturer, null_ok=True)
-        self.hw_version = validators.validate_string(hw_version, null_ok=True)
+        # self.manufacturer = validators.validate_string(manufacturer, null_ok=True)
+        # self.hw_version = validators.validate_string(hw_version, null_ok=True)
         self.mqtt_client = mqtt_client
-        self.connections = connections if connections else []
+        # self.connections = connections if connections else []
 
         self.device_config = {
             "dev": {
                 "ids": [self.device_id],
-                "cns": self.connections,
+                "cns": connections if connections else [],
             }
         }
 
-        if self.manufacturer:
-            self.device_config["dev"].update({"mf": self.manufacturer})
+        if manufacturer:
+            self.device_config["dev"].update({"mf": manufacturer})
 
-        if self.hw_version:
-            self.device_config["dev"].update({"hw": self.hw_version})
+        if hw_version:
+            self.device_config["dev"].update({"hw": hw_version})
 
         self._availability = False
         self.availability_topic = (
@@ -149,6 +149,8 @@ class Device:
             if not entity in self._entities:
                 self._entities.append(entity)
                 entity.device = self
+                entity.config["avty"].append({"t": self.availability_topic})
+                entity.config.update(self.device_config)
                 entity.announce()
                 return True
             else:
@@ -202,7 +204,9 @@ class Device:
         """
 
         ret = False
-        for entity in (e for e in self.entities if isinstance(e, SensorEntity)): # TODO: based on existence of publisher
+        for entity in (
+            e for e in self.entities if isinstance(e, SensorEntity)
+        ):  # TODO: based on existence of publisher
             if entity.state_queued:
                 entity.publish_state()
                 ret = True
