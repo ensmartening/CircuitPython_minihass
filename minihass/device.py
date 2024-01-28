@@ -83,7 +83,9 @@ class Device:
         }
 
         if manufacturer:
-            self.device_config[CONFIG_DEVICE].update({CONFIG_MANUFACTURER: manufacturer})
+            self.device_config[CONFIG_DEVICE].update(
+                {CONFIG_MANUFACTURER: manufacturer}
+            )
 
         if hw_version:
             self.device_config[CONFIG_DEVICE].update({CONFIG_HARDWARE: hw_version})
@@ -149,7 +151,9 @@ class Device:
             if not entity in self._entities:
                 self._entities.append(entity)
                 entity.device = self
-                entity.config[CONFIG_AVAILABILITY].append({CONFIG_TOPIC: self.availability_topic})
+                entity.config[CONFIG_AVAILABILITY].append(
+                    {CONFIG_TOPIC: self.availability_topic}
+                )
                 entity.config.update(self.device_config)
                 entity.announce()
                 return True
