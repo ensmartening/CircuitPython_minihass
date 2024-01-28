@@ -188,12 +188,14 @@ def test_StateEntity_state_topic(sensor):
 def test_StateEntity_publish(sensor):
     sensor.state = "foo"
     sensor.mqtt_client.publish.assert_called_with(
-        "homeassistant/test1337d00d/state", 'foo', True, 1
+        "homeassistant/test1337d00d/state", "foo", True, 1
     )
 
 
 def test_StateEntity_queue(mqtt_client):
-    s = GenericSensor(name="foo", queue_mode=const.QueueMode.YES, mqtt_client=mqtt_client)
+    s = GenericSensor(
+        name="foo", queue_mode=const.QueueMode.YES, mqtt_client=mqtt_client
+    )
     mqtt_client.publish.side_effect = MMQTTException
     assert not s.state_queued
     s.state = "foo"
@@ -201,16 +203,18 @@ def test_StateEntity_queue(mqtt_client):
     mqtt_client.publish.side_effect = None
     s.publish_state()
     mqtt_client.publish.assert_called_with(
-        "homeassistant/foo1337d00d/state", 'foo', True, 1
+        "homeassistant/foo1337d00d/state", "foo", True, 1
     )
     assert not s.state_queued
 
 
 def test_StateEntity_always_queue(mqtt_client):
-    s = GenericSensor(name="foo", queue_mode=const.QueueMode.ALWAYS, mqtt_client=mqtt_client)
+    s = GenericSensor(
+        name="foo", queue_mode=const.QueueMode.ALWAYS, mqtt_client=mqtt_client
+    )
     s.state = "foo"
     mqtt_client.publish.assert_not_called()
     s.publish_state()
     mqtt_client.publish.assert_called_with(
-        "homeassistant/foo1337d00d/state", 'foo', True, 1
+        "homeassistant/foo1337d00d/state", "foo", True, 1
     )
