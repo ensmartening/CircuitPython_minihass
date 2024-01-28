@@ -2,10 +2,10 @@
 from adafruit_minimqtt.adafruit_minimqtt import MQTT
 
 from . import _validators as validators
-from .entity import SensorEntity
+from .entity import Entity, StateEntity
 
 
-class BinarySensor(SensorEntity):
+class BinarySensor(StateEntity, Entity):
     """
     Class representing a Home Assistant Binary Sensor entity.
 
@@ -27,7 +27,9 @@ class BinarySensor(SensorEntity):
     def __init__(
         self, *args, force_update: bool = False, expire_after: int = 0, **kwargs
     ):
-        self.expire_after = expire_after
+        super().__init__(*args, **kwargs)
+
+        # self.expire_after = expire_after
         self.force_update = validators.validate_bool(force_update)
 
         self.component_config = {
@@ -35,13 +37,21 @@ class BinarySensor(SensorEntity):
             "pl_off": False,
             "pl_on": True,
         }
+        self.config.update(
+            {
+                "force_update": self.force_update,
+                "pl_off": str(False),
+                "pl_on": str(True),
+                "expire_after": expire_after,
+            }
+        )
 
-        if self.expire_after:
-            self.component_config.update({"expire_after": "foo"})  # type: ignore
+        # if self.expire_after:
+        #     self.component_config.update({"expire_after": "foo"})  # type: ignore
 
-        super().__init__(*args, **kwargs)
+        # super().__init__(*args, **kwargs)
 
-    @SensorEntity.state.setter
-    def state(self, state):
-        state = validators.validate_bool(state)
-        self._state_setter(state)  # type: ignore
+    @StateEntity.state.setter
+    def state(self, state: bool):
+        # state = validators.validate_bool(state)
+        self._state_setter(str(bool(state)))  # type: ignore

@@ -55,7 +55,7 @@ def test_Device_add_entity(entities, mqtt_client):
     expected_topic = (
         "homeassistant/binary_sensor/mqtt_device1337d00d/bar1337d00d/config"
     )
-    expected_payload = '{"avty": [{"t": "homeassistant/binary_sensor/bar1337d00d/availability"}, {"t": "homeassistant/device/mqtt_device1337d00d/availability"}], "en": true, "unique_id": "bar1337d00d", "name": "bar", "dev": {"ids": ["mqtt_device1337d00d"], "cns": []}, "stat_t": "homeassistant/device/mqtt_device1337d00d/state", "val_tpl": "{{ value_json.bar1337d00d }}", "force_update": false, "pl_off": false, "pl_on": true}'
+    expected_payload = '{"avty": [{"t": "homeassistant/bar1337d00d/availability"}, {"t": "homeassistant/device/mqtt_device1337d00d/availability"}], "en": true, "unique_id": "bar1337d00d", "e": "utf-8", "name": "bar", "stat_t": "homeassistant/bar1337d00d/state", "force_update": false, "pl_off": "False", "pl_on": "True", "expire_after": 0, "dev": {"ids": ["mqtt_device1337d00d"], "cns": []}}'
     assert o.add_entity(entities[1]) == True
     mqtt_client.publish.assert_called_with(expected_topic, expected_payload, True, 1)
     assert entities[1] in o.entities
@@ -100,7 +100,7 @@ def test_Device_announce(entities, mqtt_client):
     expected_topic = (
         "homeassistant/binary_sensor/mqtt_device1337d00d/baz1337d00d/config"
     )
-    expected_msg = '{"avty": [{"t": "homeassistant/binary_sensor/baz1337d00d/availability"}, {"t": "homeassistant/device/mqtt_device1337d00d/availability"}], "en": true, "unique_id": "baz1337d00d", "name": "baz", "dev": {"ids": ["mqtt_device1337d00d"], "cns": [], "mf": "Genericor", "hw": "0.1"}, "stat_t": "homeassistant/device/mqtt_device1337d00d/state", "val_tpl": "{{ value_json.baz1337d00d }}", "force_update": false, "pl_off": false, "pl_on": true}'
+    expected_msg = '{"avty": [{"t": "homeassistant/baz1337d00d/availability"}, {"t": "homeassistant/device/mqtt_device1337d00d/availability"}], "en": true, "unique_id": "baz1337d00d", "e": "utf-8", "name": "baz", "stat_t": "homeassistant/baz1337d00d/state", "force_update": false, "pl_off": "False", "pl_on": "True", "expire_after": 0, "dev": {"ids": ["mqtt_device1337d00d"], "cns": [], "mf": "Genericor", "hw": "0.1"}}'
     o.announce()
     mqtt_client.publish.assert_called_with(expected_topic, expected_msg, True, 1)
 
@@ -146,9 +146,9 @@ def test_Device_mqtt_on_connect_cb(entities, mqtt_client):
     announce_topic = (
         "homeassistant/binary_sensor/mqtt_device1337d00d/baz1337d00d/config"
     )
-    announce_msg = '{"avty": [{"t": "homeassistant/binary_sensor/baz1337d00d/availability"}, {"t": "homeassistant/device/mqtt_device1337d00d/availability"}], "en": true, "unique_id": "baz1337d00d", "name": "baz", "dev": {"ids": ["mqtt_device1337d00d"], "cns": []}, "stat_t": "homeassistant/device/mqtt_device1337d00d/state", "val_tpl": "{{ value_json.baz1337d00d }}", "force_update": false, "pl_off": false, "pl_on": true}'
-    queue_topic = "homeassistant/device/mqtt_device1337d00d/state"
-    queue_msg = '{"baz1337d00d": true}'
+    announce_msg = '{"avty": [{"t": "homeassistant/baz1337d00d/availability"}, {"t": "homeassistant/device/mqtt_device1337d00d/availability"}], "en": true, "unique_id": "baz1337d00d", "e": "utf-8", "name": "baz", "stat_t": "homeassistant/baz1337d00d/state", "force_update": false, "pl_off": "False", "pl_on": "True", "expire_after": 0, "dev": {"ids": ["mqtt_device1337d00d"], "cns": []}}'
+    queue_topic = "homeassistant/baz1337d00d/state"
+    queue_msg = "True"
     availability_topic = "homeassistant/device/mqtt_device1337d00d/availability"
     availability_msg = "online"
     o.mqtt_on_connect_cb(mqtt_client, None, {}, 0)

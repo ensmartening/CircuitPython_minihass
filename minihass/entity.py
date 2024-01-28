@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from json import dumps
 from os import getenv
+from queue import Queue
 
 import adafruit_logging as logging
 import microcontroller
@@ -62,6 +63,7 @@ class Entity(object):
         name: str = "",
         entity_category: str = "",
         device_class: str = "",
+        encoding: str = "utf-8",
         object_id: str = "",
         icon: str = "",
         enabled_by_default: bool = True,
@@ -84,11 +86,14 @@ class Entity(object):
         self.name = validators.validate_string(name, null_ok=True)
         self.logger.debug(f"Entity name: self.name")
 
-        self.entity_category = validators.validate_entity_category(entity_category)
-        self.logger.debug(f"Entity category: {self.entity_category}")
+        # self.entity_category = validators.validate_entity_category(entity_category)
+        # self.logger.debug(f"Entity category: {self.entity_category}")
 
-        self.device_class = validators.validate_string(device_class, null_ok=True)
-        self.logger.debug(f"Entity device_class: {self.device_class}")
+        # self.device_class = validators.validate_string(device_class, null_ok=True)
+        # self.logger.debug(f"Entity device_class: {self.device_class}")
+
+        # self.encoding = encoding
+        # self.logger.debug(f"Entity encoding: {self.encoding}")
 
         if object_id:
             self.object_id = (
@@ -113,6 +118,29 @@ class Entity(object):
             f"Entity {'enabled' if self.enabled_by_default else 'disabled'} by default"
         )
 
+        # self.availability_topic = (
+        #     f"{HA_MQTT_PREFIX}/{self.object_id}/availability"
+        # )
+
+        self.config = {
+            "avty": [{"t": f"{HA_MQTT_PREFIX}/{self.object_id}/availability"}],
+            "en": self.enabled_by_default,
+            "unique_id": self.object_id,
+            "e": encoding,
+        }
+
+        if self.name:
+            self.config.update({"name": self.name})
+
+        if device_class:
+            self.config.update({"dev_cla": device_class})
+
+        if entity_category:
+            self.config.update({"ent_cat": entity_category})
+
+        if self.icon:
+            self.config.update({"ic": self.icon})
+
         self._mqtt_client = mqtt_client
         try:
             self.logger.debug(f"Entity MQTT client: {self._mqtt_client.broker}")  # type: ignore
@@ -124,15 +152,14 @@ class Entity(object):
         self._availability = False
 
         self.device: "Device" | None = None  # type: ignore
-        self.availability_topic = (
-            f"{HA_MQTT_PREFIX}/{self.COMPONENT}/{self.object_id}/availability"
-        )
+
         try:
             self.component_config
         except AttributeError:
             self.component_config = {}
 
-        self.logger.info(f"Initialized {self.COMPONENT} {self.name}: {self.object_id} ")
+        self.logger.info(f"Initialized {self.name}: {self.object_id} ")
+        self.logger.warning(f"args: {args}, kwargs: {kwargs}")
 
         super().__init__(*args, **kwargs)
 
@@ -175,20 +202,20 @@ class Entity(object):
         except MMQTTException as e:
             self.logger.error(f"Availability publishing failed, {e.args}")
 
-    @property
-    def _state_topic(self) -> str:
-        """Returns device-level state topic if a member of a device to allow batching
-        of state updates, returns entity-level topic otherwise"""
+    # @property
+    # def _state_topic(self) -> str:
+    #     """Returns device-level state topic if a member of a device to allow batching
+    #     of state updates, returns entity-level topic otherwise"""
 
-        state_topic = ""
-        try:
-            self.logger.debug(f"State topic from device {self.device.device_id}")  # type: ignore
-            state_topic = self.device.state_topic  # type: ignore
-        except AttributeError:
-            state_topic = f"{HA_MQTT_PREFIX}/entity/{self.object_id}/state"
+    #     state_topic = ""
+    #     try:
+    #         self.logger.debug(f"State topic from device {self.device.device_id}")  # type: ignore
+    #         state_topic = self.device.state_topic  # type: ignore
+    #     except AttributeError:
+    #         state_topic = f"{HA_MQTT_PREFIX}/entity/{self.object_id}/state"
 
-        self.logger.debug(f"State topic: {state_topic}")
-        return state_topic
+    #     self.logger.debug(f"State topic: {state_topic}")
+    #     return state_topic
 
     def announce(self):
         """Send MQTT discovery message for this entity only.
@@ -213,46 +240,47 @@ class Entity(object):
 
         self.logger.debug(f"Discovery topic: {discovery_topic}")
 
-        discovery_payload = {
-            "avty": [{"t": self.availability_topic}],
-            "en": self.enabled_by_default,
-            "unique_id": self.object_id,
-        }
+        # discovery_payload = {
+        #     "avty": [{"t": self.availability_topic}],
+        #     "en": self.enabled_by_default,
+        #     "unique_id": self.object_id,
+        #     "e": self.encoding,
+        # }
 
-        if self.name:
-            discovery_payload.update({"name": self.name})
+        # if self.name:
+        #     discovery_payload.update({"name": self.name})
 
-        if self.device_class:
-            discovery_payload.update({"dev_cla": self.device_class})
+        # if self.device_class:
+        #     discovery_payload.update({"dev_cla": self.device_class})
 
-        if self.entity_category:
-            discovery_payload.update({"ent_cat": self.entity_category})
+        # if self.entity_category:
+        #     discovery_payload.update({"ent_cat": self.entity_category})
 
-        if self.icon:
-            discovery_payload.update({"ic": self.icon})
+        # if self.icon:
+        #     discovery_payload.update({"ic": self.icon})
 
-        if self.device:
-            self.logger.debug(f"Adding device config from {self.device.name}")
-            discovery_payload.update(self.device.device_config)
-            discovery_payload["avty"].append({"t": self.device.availability_topic})
+        # if self.device:
+        #     self.logger.debug(f"Adding device config from {self.device.name}")
+        #     discovery_payload.update(self.device.device_config)
+        #     discovery_payload["avty"].append({"t": self.device.availability_topic})
 
-        try:
-            self._state  # type: ignore
-            discovery_payload.update(
-                {
-                    "stat_t": self._state_topic,  # type: ignore
-                    "val_tpl": f"{{{{ value_json.{self.object_id} }}}}",  # type: ignore
-                }
-            )
-        except AttributeError:
-            pass
-
-        discovery_payload.update(self.component_config)
-
+        # try:
+        #     self._state  # type: ignore
+        #     discovery_payload.update(
+        #         {
+        #             "stat_t": self._state_topic,  # type: ignore
+        #             # "val_tpl": f"{{{{ value_json.{self.object_id} }}}}",  # type: ignore
+        #         }
+        #     )
+        # except AttributeError:
+        #     pass
+        # discovery_payload.update(self.component_config)
+        self.logger.warning(f"self.config: {dumps(self.config)}")
+        # self.logger.warning(f'discovery_payload: {dumps(discovery_payload)}')
         self.logger.info(f"Publishing discovery message for {self.object_id}")
-        self.logger.debug(f"Discovery payload: {dumps(discovery_payload)}")
+        # self.logger.debug(f"Discovery payload: {dumps(discovery_payload)}")
         try:
-            self.mqtt_client.publish(discovery_topic, dumps(discovery_payload), True, 1)
+            self.mqtt_client.publish(discovery_topic, dumps(self.config), True, 1)
         except AttributeError:
             self.logger.warning("Unable to announce: - MQTT client not set")
         except MMQTTException as e:
@@ -297,15 +325,15 @@ class Entity(object):
             bool : :class:`True` if successful.
         """
         self.mqtt_client.publish(
-            self.availability_topic,
+            self.config["avty"][0]["t"],
             "online" if self.availability else "offline",
             True,
             1,
         )
 
 
-class SensorEntity(Entity):
-    """Mixin class representing a Home Assistant Entity that publishes states
+class StateEntity(Entity):
+    """Mixin class implementing state publishing
 
     Args:
         queue ("yes"|"no"|"always", optional): Controls state queuing behaviour.
@@ -318,24 +346,30 @@ class SensorEntity(Entity):
             ``"yes"``.
     """
 
-    def __init__(self, *args, queue="yes", logger_name="minimqtt", **kwargs):
-        self.queue = validators.validate_queue_option(queue)
-        self._state: object = None
-        self.state_queued: bool = False
-
+    def __init__(
+        self, *args, queue_mode=QueueMode.YES, logger_name="minimqtt", **kwargs
+    ):
         try:
             self.logger
         except AttributeError:
             self.logger = logging.getLogger(logger_name)
             self.logger.setLevel(getattr(logging, getenv("LOGLEVEL", ""), logging.WARNING))  # type: ignore
 
-        if self.__class__ == SensorEntity:
+        if self.__class__ == StateEntity:
             self.logger.error(  # type: ignore
                 "Attepted instantiation of parent class, raising an exception..."
             )
             raise RuntimeError("SensorEntity class cannot be raised on its own")
 
         super().__init__(*args, **kwargs)
+
+        self.queue_mode = queue_mode
+        self._state: object = None
+        self.state_queued: bool = False
+
+        self.config.update({"stat_t": f"{HA_MQTT_PREFIX}/{self.object_id}/state"})
+
+        # super().__init__(*args, **kwargs)
 
     def _state_getter(self):
         """Gets or sets the state of a sensor entity. Setting this parameter calls
@@ -345,13 +379,13 @@ class SensorEntity(Entity):
     def _state_setter(self, newstate):
         self._state = newstate
 
-        if self.queue == "always":
+        if self.queue_mode == QueueMode.ALWAYS:
             self.state_queued = True
         else:
             try:
                 self.publish_state()  # type: ignore
             except Exception as e:  # TODO: Narrow exception scope
-                if self.queue in ["yes", "always"]:
+                if self.queue_mode != QueueMode.NO:
                     self.state_queued = True
                 self.logger.warning("Unable to publish state change")  # type: ignore
 
@@ -364,8 +398,8 @@ class SensorEntity(Entity):
         changed.
         """
         self.mqtt_client.publish(  # type: ignore
-            self._state_topic,  # type: ignore
-            dumps({self.object_id: self._state}),  # type: ignore
+            self.config["stat_t"],  # type: ignore
+            self._state,  # type: ignore
             True,
             1,
         )

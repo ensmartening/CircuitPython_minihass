@@ -1,30 +1,29 @@
+|banner|
+
+|build status| |codecov status| |docs status| |black|
+
 Introduction
 ============
 
-.. image:: https://github.com/ensmartening/CircuitPython_minihass/actions/workflows/build.yml/badge.svg
-    :target: https://github.com/ensmartening/CircuitPython_minihass/actions/workflows/build.yml
-    :alt: Build Status
+minihass is a lightweight Python package to interact with Home Assistant over MQTT,
+intended for use with CircuitPython and the Adafruit MiniMQTT library. It provides
+classes to describe Home Assistant devices and entities, and handles configuration,
+state, command, and availability messages to and from your Home Assistant MQTT broker.
 
-.. image:: https://codecov.io/gh/ensmartening/CircuitPython_minihass/graph/badge.svg?token=9H0KNZC0PO
-    :target: https://codecov.io/gh/ensmartening/CircuitPython_minihass
-    :alt: Codecov Status
+Supported components
+====================
 
-.. image:: https://github.com/ensmartening/CircuitPython_minihass/actions/workflows/sphinx.yml/badge.svg
-    :target: https://CircuitPython_minihass.ensmarten.ing
-    :alt: Docs Status
-
-.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
-    :target: https://github.com/psf/black
-    :alt: Code Style: Black
-
-A lightweight Python package to interact with Home Assistant over MQTT, intended for use with CircuitPython and the Adafruit MiniMQTT library.
+* `Binary sensor <https://www.home-assistant.io/integrations/binary_sensor/>`_
+* *not implemented* `Sensor <https://www.home-assistant.io/integrations/sensor/>`_
+* *not implemented* `Switch <https://www.home-assistant.io/integrations/switch/>`_
 
 
 Dependencies
-=============
+============
 This driver depends on:
 
 * `Adafruit CircuitPython <https://github.com/adafruit/circuitpython>`_
+* `Adafruit CircuitPython Logging <https://github.com/adafruit/Adafruit_CircuitPython_Logging>`_
 
 Please ensure all dependencies are available on the CircuitPython filesystem.
 This is easily achieved by downloading
@@ -102,3 +101,22 @@ Contributing
 Contributions are welcome! Please read our `Code of Conduct
 <https://github.com/ensmartening/CircuitPython_minihass/blob/HEAD/CODE_OF_CONDUCT.md>`_
 before contributing to help this project stay welcoming.
+
+.. |banner| image:: https://ensmarten-ing-assets.s3.amazonaws.com/minihass_social.png
+    :alt: Minihass Banner
+
+.. |build status| image:: https://github.com/ensmartening/CircuitPython_minihass/actions/workflows/build.yml/badge.svg
+    :target: https://github.com/ensmartening/CircuitPython_minihass/actions/workflows/build.yml
+    :alt: Build Status
+
+.. |codecov status| image:: https://codecov.io/gh/ensmartening/CircuitPython_minihass/graph/badge.svg?token=9H0KNZC0PO
+    :target: https://codecov.io/gh/ensmartening/CircuitPython_minihass
+    :alt: Codecov Status
+
+.. |docs status| image:: https://github.com/ensmartening/CircuitPython_minihass/actions/workflows/sphinx.yml/badge.svg
+    :target: https://CircuitPython_minihass.ensmarten.ing
+    :alt: Docs Status
+
+.. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
+    :target: https://github.com/psf/black
+    :alt: Code Style: Black

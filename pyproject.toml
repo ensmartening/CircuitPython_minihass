@@ -11,13 +11,13 @@ requires = [
 ]
 
 [project]
-name = "cybershoe-circuitpython-minihass"
+name = "ensmartening-minihass"
 description = "A lightweight Python package to interact with Home Assistant over MQTT, intended for use with CircuitPython and the Adafruit MiniMQTT library."
 readme = "README.rst"
 authors = [
-    {name = "Adam Schumacher", email = "adam@genericor.com"}
+    {name = "Adam Schumacher", email = "adam@ensmarten.ing"}
 ]
-urls = {Homepage = "https://github.com/cybershoe/Cybershoe_CircuitPython_minihass"}
+urls = {Homepage = "https://github.com/ensmartening/CircuitPython_minihass"}
 keywords = [
     "adafruit",
     "blinka",
