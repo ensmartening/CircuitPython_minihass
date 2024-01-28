@@ -27,7 +27,9 @@ class BinarySensor(SensorEntity):
     def __init__(
         self, *args, force_update: bool = False, expire_after: int = 0, **kwargs
     ):
-        self.expire_after = expire_after
+        super().__init__(*args, **kwargs)
+
+        # self.expire_after = expire_after
         self.force_update = validators.validate_bool(force_update)
 
         self.component_config = {
@@ -35,11 +37,19 @@ class BinarySensor(SensorEntity):
             "pl_off": False,
             "pl_on": True,
         }
+        self.config.update(
+            {
+                "force_update": self.force_update,
+                "pl_off": False,
+                "pl_on": True,
+                "expire_after": expire_after,
+            }
+        )
 
-        if self.expire_after:
-            self.component_config.update({"expire_after": "foo"})  # type: ignore
+        # if self.expire_after:
+        #     self.component_config.update({"expire_after": "foo"})  # type: ignore
 
-        super().__init__(*args, **kwargs)
+        # super().__init__(*args, **kwargs)
 
     @SensorEntity.state.setter
     def state(self, state):
