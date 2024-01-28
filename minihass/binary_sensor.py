@@ -1,12 +1,7 @@
 """Implements the binary_sensor MQTT component"""
 from adafruit_minimqtt.adafruit_minimqtt import MQTT
 
-from minihass.const import (
-    CONFIG_EXPIRE_AFTER,
-    CONFIG_FORCE_UPDATE,
-    CONFIG_PAYLOAD_OFF,
-    CONFIG_PAYLOAD_ON,
-)
+from minihass.const import *
 
 from . import _validators as validators
 from .entity import Entity, StateEntity
