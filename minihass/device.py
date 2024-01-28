@@ -205,12 +205,12 @@ class Device:
 
         ret = False
         for entity in self.entities:  # TODO: based on existence of publisher
-            try:
-                if entity.state_queued:  # type:ignore
-                    entity.publish_state()  # type:ignore
-                    ret = True
-            except:
-                pass
+            # try:
+            if entity.state_queued:  # type:ignore
+                entity.publish_state()  # type:ignore
+                ret = True
+        # except:
+        #     pass
 
         return ret
 
