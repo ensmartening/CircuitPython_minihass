@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from json import dumps
 from os import getenv
+from queue import Queue
 
 import adafruit_logging as logging
 import microcontroller
@@ -126,7 +127,6 @@ class Entity(object):
             "en": self.enabled_by_default,
             "unique_id": self.object_id,
             "e": encoding,
-            "stat_t": f"{HA_MQTT_PREFIX}/{self.object_id}/state",
         }
 
         if self.name:
@@ -159,6 +159,7 @@ class Entity(object):
             self.component_config = {}
 
         self.logger.info(f"Initialized {self.name}: {self.object_id} ")
+        self.logger.warning(f"args: {args}, kwargs: {kwargs}")
 
         super().__init__(*args, **kwargs)
 
@@ -331,8 +332,8 @@ class Entity(object):
         )
 
 
-class SensorEntity(Entity):
-    """Mixin class representing a Home Assistant Entity that publishes states
+class StateEntity(Entity):
+    """Mixin class implementing state publishing
 
     Args:
         queue ("yes"|"no"|"always", optional): Controls state queuing behaviour.
@@ -345,24 +346,28 @@ class SensorEntity(Entity):
             ``"yes"``.
     """
 
-    def __init__(self, *args, queue="yes", logger_name="minimqtt", **kwargs):
-        super().__init__(*args, **kwargs)
-
-        self.queue = validators.validate_queue_option(queue)
-        self._state: object = None
-        self.state_queued: bool = False
-
+    def __init__(
+        self, *args, queue_mode=QueueMode.YES, logger_name="minimqtt", **kwargs
+    ):
         try:
             self.logger
         except AttributeError:
             self.logger = logging.getLogger(logger_name)
             self.logger.setLevel(getattr(logging, getenv("LOGLEVEL", ""), logging.WARNING))  # type: ignore
 
-        if self.__class__ == SensorEntity:
+        if self.__class__ == StateEntity:
             self.logger.error(  # type: ignore
                 "Attepted instantiation of parent class, raising an exception..."
             )
             raise RuntimeError("SensorEntity class cannot be raised on its own")
+
+        super().__init__(*args, **kwargs)
+
+        self.queue_mode = queue_mode
+        self._state: object = None
+        self.state_queued: bool = False
+
+        self.config.update({"stat_t": f"{HA_MQTT_PREFIX}/{self.object_id}/state"})
 
         # super().__init__(*args, **kwargs)
 
@@ -374,13 +379,13 @@ class SensorEntity(Entity):
     def _state_setter(self, newstate):
         self._state = newstate
 
-        if self.queue == "always":
+        if self.queue_mode == QueueMode.ALWAYS:
             self.state_queued = True
         else:
             try:
                 self.publish_state()  # type: ignore
             except Exception as e:  # TODO: Narrow exception scope
-                if self.queue in ["yes", "always"]:
+                if self.queue_mode != QueueMode.NO:
                     self.state_queued = True
                 self.logger.warning("Unable to publish state change")  # type: ignore
 
@@ -393,8 +398,8 @@ class SensorEntity(Entity):
         changed.
         """
         self.mqtt_client.publish(  # type: ignore
-            self._state_topic,  # type: ignore
-            dumps({self.object_id: self._state}),  # type: ignore
+            self.config["stat_t"],  # type: ignore
+            self._state,  # type: ignore
             True,
             1,
         )

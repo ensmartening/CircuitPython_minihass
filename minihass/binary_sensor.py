@@ -2,10 +2,10 @@
 from adafruit_minimqtt.adafruit_minimqtt import MQTT
 
 from . import _validators as validators
-from .entity import SensorEntity
+from .entity import Entity, StateEntity
 
 
-class BinarySensor(SensorEntity):
+class BinarySensor(StateEntity, Entity):
     """
     Class representing a Home Assistant Binary Sensor entity.
 
@@ -40,8 +40,8 @@ class BinarySensor(SensorEntity):
         self.config.update(
             {
                 "force_update": self.force_update,
-                "pl_off": False,
-                "pl_on": True,
+                "pl_off": str(False),
+                "pl_on": str(True),
                 "expire_after": expire_after,
             }
         )
@@ -51,7 +51,7 @@ class BinarySensor(SensorEntity):
 
         # super().__init__(*args, **kwargs)
 
-    @SensorEntity.state.setter
-    def state(self, state):
-        state = validators.validate_bool(state)
-        self._state_setter(state)  # type: ignore
+    @StateEntity.state.setter
+    def state(self, state: bool):
+        # state = validators.validate_bool(state)
+        self._state_setter(str(bool(state)))  # type: ignore

@@ -5,7 +5,7 @@ from adafruit_minimqtt.adafruit_minimqtt import CONNACK_ERRORS, MQTT, MMQTTExcep
 
 from . import _validators as validators
 from .const import *
-from .entity import Entity, SensorEntity
+from .entity import Entity
 
 
 class Device:
@@ -204,12 +204,13 @@ class Device:
         """
 
         ret = False
-        for entity in (
-            e for e in self.entities if isinstance(e, SensorEntity)
-        ):  # TODO: based on existence of publisher
-            if entity.state_queued:
-                entity.publish_state()
-                ret = True
+        for entity in self.entities:  # TODO: based on existence of publisher
+            try:
+                if entity.state_queued:  # type:ignore
+                    entity.publish_state()  # type:ignore
+                    ret = True
+            except:
+                pass
 
         return ret
 
