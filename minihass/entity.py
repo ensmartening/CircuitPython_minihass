@@ -123,7 +123,9 @@ class Entity(object):
         # )
 
         self.config = {
-            CONFIG_AVAILABILITY: [{"t": f"{HA_MQTT_PREFIX}/{self.object_id}/availability"}],
+            CONFIG_AVAILABILITY: [
+                {"t": f"{HA_MQTT_PREFIX}/{self.object_id}/availability"}
+            ],
             CONFIG_ENABLED_BY_DEFAULT: self.enabled_by_default,
             CONFIG_UNIQUE_ID: self.object_id,
             CONFIG_ENCODING: encoding,
@@ -367,7 +369,9 @@ class StateEntity(Entity):
         self._state: object = None
         self.state_queued: bool = False
 
-        self.config.update({CONFIG_STATE_TOPIC: f"{HA_MQTT_PREFIX}/{self.object_id}/state"})
+        self.config.update(
+            {CONFIG_STATE_TOPIC: f"{HA_MQTT_PREFIX}/{self.object_id}/state"}
+        )
 
         # super().__init__(*args, **kwargs)
 
