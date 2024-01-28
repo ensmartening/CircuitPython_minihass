@@ -202,7 +202,7 @@ class Device:
         """
 
         ret = False
-        for entity in (e for e in self.entities if isinstance(e, SensorEntity)):
+        for entity in (e for e in self.entities if isinstance(e, SensorEntity)): # TODO: based on existence of publisher
             if entity.state_queued:
                 entity.publish_state()
                 ret = True

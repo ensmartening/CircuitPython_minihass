@@ -117,6 +117,26 @@ class Entity(object):
             f"Entity {'enabled' if self.enabled_by_default else 'disabled'} by default"
         )
 
+        self.config = {
+            "avty": [{"t": self.availability_topic}],
+            "en": self.enabled_by_default,
+            "unique_id": self.object_id,
+            "e": self.encoding,
+        }
+
+        if self.name:
+            self.config.update({"name": self.name})
+
+        if self.device_class:
+            self.config.update({"dev_cla": self.device_class})
+
+        if self.entity_category:
+            self.config.update({"ent_cat": self.entity_category})
+
+        if self.icon:
+            self.config.update({"ic": self.icon})
+
+
         self._mqtt_client = mqtt_client
         try:
             self.logger.debug(f"Entity MQTT client: {self._mqtt_client.broker}")  # type: ignore
@@ -129,14 +149,14 @@ class Entity(object):
 
         self.device: "Device" | None = None  # type: ignore
         self.availability_topic = (
-            f"{HA_MQTT_PREFIX}/{self.COMPONENT}/{self.object_id}/availability"
+            f"{HA_MQTT_PREFIX}/{self.object_id}/availability"
         )
         try:
             self.component_config
         except AttributeError:
             self.component_config = {}
 
-        self.logger.info(f"Initialized {self.COMPONENT} {self.name}: {self.object_id} ")
+        self.logger.info(f"Initialized {self.name}: {self.object_id} ")
 
         super().__init__(*args, **kwargs)
 
