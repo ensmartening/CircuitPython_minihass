@@ -181,8 +181,8 @@ def test_StateEntity_instantiate_parent():
         minihass.StateEntity()
 
 
-def test_StateEntity_state_topic(sensor):
-    assert sensor._state_topic == "homeassistant/entity/test1337d00d/state"
+# def test_StateEntity_state_topic(sensor):
+#     assert sensor._state_topic == "homeassistant/entity/test1337d00d/state"
 
 
 def test_StateEntity_publish(sensor):

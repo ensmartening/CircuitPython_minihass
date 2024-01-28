@@ -202,20 +202,20 @@ class Entity(object):
         except MMQTTException as e:
             self.logger.error(f"Availability publishing failed, {e.args}")
 
-    @property
-    def _state_topic(self) -> str:
-        """Returns device-level state topic if a member of a device to allow batching
-        of state updates, returns entity-level topic otherwise"""
+    # @property
+    # def _state_topic(self) -> str:
+    #     """Returns device-level state topic if a member of a device to allow batching
+    #     of state updates, returns entity-level topic otherwise"""
 
-        state_topic = ""
-        try:
-            self.logger.debug(f"State topic from device {self.device.device_id}")  # type: ignore
-            state_topic = self.device.state_topic  # type: ignore
-        except AttributeError:
-            state_topic = f"{HA_MQTT_PREFIX}/entity/{self.object_id}/state"
+    #     state_topic = ""
+    #     try:
+    #         self.logger.debug(f"State topic from device {self.device.device_id}")  # type: ignore
+    #         state_topic = self.device.state_topic  # type: ignore
+    #     except AttributeError:
+    #         state_topic = f"{HA_MQTT_PREFIX}/entity/{self.object_id}/state"
 
-        self.logger.debug(f"State topic: {state_topic}")
-        return state_topic
+    #     self.logger.debug(f"State topic: {state_topic}")
+    #     return state_topic
 
     def announce(self):
         """Send MQTT discovery message for this entity only.
