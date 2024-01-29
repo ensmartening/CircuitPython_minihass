@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from json import dumps
 from os import getenv
-from queue import Queue
 
 import adafruit_logging as logging
 import microcontroller
@@ -14,6 +13,10 @@ from adafruit_minimqtt.adafruit_minimqtt import MQTT, MMQTTException
 
 from . import _validators as validators
 from .const import *
+
+# from queue import Queue
+
+
 
 
 class Entity(object):
@@ -23,8 +26,8 @@ class Entity(object):
     Args:
         name (int, optional) : Entity Name. Can be null if only the device name is
             relevant. One of ``name`` or ``object_id`` must be set.
-        device_class (str, optional) : `Device class <https://www.home-assistant.io/integrations/binary_sensor/#device-class>`_
-            of the entity. Defaults to :class:`None`
+        encoding (str, optional) : Set to specify encoding of payloads. Defaults to
+            ``utf-8``
         entity_category (str, optional) : Set to specify ``DIAGNOSTIC`` or ``CONFIG``
             entities.
         object_id (str, optional) : Set to generate ``entity_id`` from ``object_id``
@@ -62,7 +65,6 @@ class Entity(object):
         *args,
         name: str = "",
         entity_category: str = "",
-        device_class: str = "",
         encoding: str = "utf-8",
         object_id: str = "",
         icon: str = "",
@@ -133,9 +135,6 @@ class Entity(object):
 
         if self.name:
             self.config.update({CONFIG_NAME: self.name})
-
-        if device_class:
-            self.config.update({CONFIG_DEVICE_CLASS: device_class})
 
         if entity_category:
             self.config.update({CONFIG_ENTITY_CATEGORY: entity_category})

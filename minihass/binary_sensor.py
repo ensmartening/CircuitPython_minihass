@@ -12,10 +12,12 @@ class BinarySensor(StateEntity, Entity):
     Class representing a Home Assistant Binary Sensor entity.
 
     .. note:: A :class:`BinarySensor` object takes all parameters from both the
-        :class:`Entity` and :class:`SensorEntity` classes, as well as the parameters
+        :class:`Entity` and :class:`StateEntity` classes, as well as the parameters
         listed below.
 
     Args:
+        device_class (str, optional) : `Device class <https://www.home-assistant.io/integrations/binary_sensor/#device-class>`_
+            of the entity. Defaults to :class:`None`
         force_update  (bool, optional) : Specifies whether the entity should be enabled
             when it is first added, defaults to :class:`False`.
         expire_after (int, optional) : Defines the number of seconds before the
@@ -27,7 +29,7 @@ class BinarySensor(StateEntity, Entity):
     COMPONENT = "binary_sensor"
 
     def __init__(
-        self, *args, force_update: bool = False, expire_after: int = 0, **kwargs
+        self, *args, device_class: str = "", force_update: bool = False, expire_after: int = 0, **kwargs
     ):
         super().__init__(*args, **kwargs)
 
@@ -47,6 +49,9 @@ class BinarySensor(StateEntity, Entity):
                 CONFIG_EXPIRE_AFTER: expire_after,
             }
         )
+
+        if device_class:
+            self.config.update({CONFIG_DEVICE_CLASS: device_class})
 
         # if self.expire_after:
         #     self.component_config.update({"expire_after": "foo"})  # type: ignore

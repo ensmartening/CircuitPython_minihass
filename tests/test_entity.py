@@ -32,7 +32,6 @@ def entity(mqtt_client):
         object_id="foo",
         mqtt_client=mqtt_client,
         icon="mdi:check-circle",
-        device_class="temperature",
     )
     yield e
 
@@ -118,7 +117,7 @@ def test_Entity_instantiate_parent():
 def test_Entity_announce(entity):
     """Test publishing of MQTT discovery messages"""
     expected_topic = "homeassistant/generic/foo1337d00d/config"
-    expected_msg = '{"avty": [{"t": "homeassistant/foo1337d00d/availability"}], "en": true, "unique_id": "foo1337d00d", "e": "utf-8", "name": "test", "dev_cla": "temperature", "ent_cat": "config", "ic": "mdi:check-circle"}'
+    expected_msg = '{"avty": [{"t": "homeassistant/foo1337d00d/availability"}], "en": true, "unique_id": "foo1337d00d", "e": "utf-8", "name": "test", "ent_cat": "config", "ic": "mdi:check-circle"}'
     entity.announce()
     entity.mqtt_client.publish.assert_called_with(expected_topic, expected_msg, True, 1)
 
