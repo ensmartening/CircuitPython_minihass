@@ -14,8 +14,20 @@ from adafruit_minimqtt.adafruit_minimqtt import MQTT, MMQTTException
 from . import _validators as validators
 from .const import *
 
-# from queue import Queue
 
+class QueueMode(Enum):
+    """Enum of state queueing strategies"""
+
+    NO: object = None
+    """Attempt to publish immediately, discard the message if publishing fails."""
+    YES: object = None
+    """Attempt to publish immediately, queue the message if publishing fails."""
+    ALWAYS: object = None
+    """Queue the message immediately, do not attempt to publish."""
+
+QueueMode.NO = QueueMode()
+QueueMode.YES = QueueMode()
+QueueMode.ALWAYS = QueueMode()
 
 class Entity(object):
     """Parent class for child classes representing Home Assistant entities. Cannot be
@@ -335,14 +347,14 @@ class StateEntity(Entity):
     """Mixin class implementing state publishing
 
     Args:
-        queue ("yes"|"no"|"always", optional): Controls state queuing behaviour.
-            If ``"yes"``, if publishing to the MQTT broker fails, the message will
-            be queued and can be re-published, by calling the device's
-            :meth:`Device.publish_state_queue()` method. If ``"no"``, unpublished states
-            are not queued, but can still be explicitly published by calling the
-            entity's :meth:`publish_state` method. If ``"always"``, states are not
-            automatically published and will alawys be queued. Defaults to
-            ``"yes"``.
+        queue_mode (QueueMode, optional): Controls state queuing behaviour.
+            If `QueueMode.YES`, and publishing to the MQTT broker fails, the message
+            will be queued and can be re-published, by calling the device's
+            :meth:`Device.publish_state_queue()` method. If `QueueMode.NO`, states that
+            fail to publish are not queued, but can still be explicitly re-published by
+            calling the entity's :meth:`publish_state` method. If `QueueMode.ALWAYS`,
+            states are not automatically published and will alawys be queued. Defaults
+            to `QueueMode.YES`.
     """
 
     def __init__(

@@ -4,7 +4,8 @@ intended for use with CircuitPython.
 
 __version__ = "0.1.0"
 from .binary_sensor import BinarySensor
+from .const import *
 from .device import Device
-from .entity import Entity, StateEntity
+from .entity import Entity, QueueMode, StateEntity
 
-__all__ = ["Device", "Entity", "StateEntity", "BinarySensor"]
+__all__ = ["Device", "Entity", "QueueMode", "StateEntity", "BinarySensor"]

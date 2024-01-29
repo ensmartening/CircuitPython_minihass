@@ -7,7 +7,7 @@ import pytest
 from adafruit_minimqtt.adafruit_minimqtt import MQTT, MMQTTException
 
 import minihass
-from minihass import const
+from minihass.const import *
 
 
 class GenericEntity(minihass.entity.Entity):
@@ -193,7 +193,7 @@ def test_StateEntity_publish(sensor):
 
 def test_StateEntity_queue(mqtt_client):
     s = GenericSensor(
-        name="foo", queue_mode=const.QueueMode.YES, mqtt_client=mqtt_client
+        name="foo", queue_mode=minihass.QueueMode.YES, mqtt_client=mqtt_client
     )
     mqtt_client.publish.side_effect = MMQTTException
     assert not s.state_queued
@@ -209,7 +209,7 @@ def test_StateEntity_queue(mqtt_client):
 
 def test_StateEntity_always_queue(mqtt_client):
     s = GenericSensor(
-        name="foo", queue_mode=const.QueueMode.ALWAYS, mqtt_client=mqtt_client
+        name="foo", queue_mode=minihass.QueueMode.ALWAYS, mqtt_client=mqtt_client
     )
     s.state = "foo"
     mqtt_client.publish.assert_not_called()
