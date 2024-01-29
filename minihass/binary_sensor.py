@@ -1,6 +1,8 @@
 """Implements the binary_sensor MQTT component"""
 from adafruit_minimqtt.adafruit_minimqtt import MQTT
 
+from minihass.const import *
+
 from . import _validators as validators
 from .entity import Entity, StateEntity
 
@@ -32,17 +34,17 @@ class BinarySensor(StateEntity, Entity):
         # self.expire_after = expire_after
         self.force_update = validators.validate_bool(force_update)
 
-        self.component_config = {
-            "force_update": self.force_update,
-            "pl_off": False,
-            "pl_on": True,
-        }
+        # self.component_config = {
+        #     "force_update": self.force_update,
+        #     "pl_off": False,
+        #     "pl_on": True,
+        # }
         self.config.update(
             {
-                "force_update": self.force_update,
-                "pl_off": str(False),
-                "pl_on": str(True),
-                "expire_after": expire_after,
+                CONFIG_FORCE_UPDATE: self.force_update,
+                CONFIG_PAYLOAD_OFF: str(False),
+                CONFIG_PAYLOAD_ON: str(True),
+                CONFIG_EXPIRE_AFTER: expire_after,
             }
         )
 
