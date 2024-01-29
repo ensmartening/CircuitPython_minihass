@@ -25,9 +25,11 @@ class QueueMode(Enum):
     ALWAYS: object = None
     """Queue the message immediately, do not attempt to publish."""
 
+
 QueueMode.NO = QueueMode()
 QueueMode.YES = QueueMode()
 QueueMode.ALWAYS = QueueMode()
+
 
 class Entity(object):
     """Parent class for child classes representing Home Assistant entities. Cannot be
