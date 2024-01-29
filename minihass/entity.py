@@ -17,8 +17,6 @@ from .const import *
 # from queue import Queue
 
 
-
-
 class Entity(object):
     """Parent class for child classes representing Home Assistant entities. Cannot be
     instantiated directly.

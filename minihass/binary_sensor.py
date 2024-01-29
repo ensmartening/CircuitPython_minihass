@@ -29,7 +29,12 @@ class BinarySensor(StateEntity, Entity):
     COMPONENT = "binary_sensor"
 
     def __init__(
-        self, *args, device_class: str = "", force_update: bool = False, expire_after: int = 0, **kwargs
+        self,
+        *args,
+        device_class: str = "",
+        force_update: bool = False,
+        expire_after: int = 0,
+        **kwargs
     ):
         super().__init__(*args, **kwargs)
 
