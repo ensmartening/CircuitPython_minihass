@@ -359,19 +359,17 @@ class StateEntity(Entity):
             to `QueueMode.YES`.
     """
 
-    def __init__(
-        self, *args, queue_mode=QueueMode.YES, logger_name="minimqtt", **kwargs
-    ):
-        try:
-            self.logger
-        except AttributeError:
-            self.logger = logging.getLogger(logger_name)
-            self.logger.setLevel(getattr(logging, getenv("LOGLEVEL", ""), logging.WARNING))  # type: ignore
+    def __init__(self, *args, queue_mode=QueueMode.YES, **kwargs):
+        # try:
+        #     self.logger
+        # except AttributeError:
+        #     self.logger = logging.getLogger(logger_name)
+        #     self.logger.setLevel(getattr(logging, getenv("LOGLEVEL", ""), logging.WARNING))  # type: ignore
 
         if self.__class__ == StateEntity:
-            self.logger.error(  # type: ignore
-                "Attepted instantiation of parent class, raising an exception..."
-            )
+            # self.logger.error(  # type: ignore
+            #     "Attepted instantiation of parent class, raising an exception..."
+            # )
             raise RuntimeError("StateEntity class cannot be raised on its own")
 
         super().__init__(*args, **kwargs)
@@ -419,3 +417,39 @@ class StateEntity(Entity):
             1,
         )
         self.state_queued = False
+
+
+class CommandEntity(Entity):
+    """Mixin class implementing command listening
+
+    Args:
+        optimistic (bool, optional): Controls whether the entity works in optimistic
+            mode. If :class:`True`, sending a command to change the state of the entity
+            will immediately update the state of the entity in Home Assistant. If
+            :class:`False`, the entity state will only be updated when the entity sends
+            a state message. Defaults to :class:`False`.
+        retain (bool, optional): Controls whether the MQTT broker is asked to retain
+            command messages. If :class:`True`, the entity will receive the most recent
+            command message when it connects to the broker. If :class:`False`, only
+            command messages sent while the device is connected will be received.
+            Defaults to :class:`False`.
+
+    """
+
+    def __init__(self, *args, optimistic=False, retain=False, **kwargs):
+        if self.__class__ == CommandEntity:
+            raise RuntimeError("CommandEntity class cannot be raised on its own")
+
+        super().__init__(*args, **kwargs)
+
+        self.config.update(
+            {
+                CONFIG_COMMAND_TOPIC: f"{HA_MQTT_PREFIX}/{self.object_id}/command",
+                CONFIG_OPTIMISTIC: optimistic,
+                CONFIG_RETAIN: retain,
+            }
+        )
+
+        # self.config.update(
+        #     {CONFIG_STATE_TOPIC: f"{HA_MQTT_PREFIX}/{self.object_id}/state"}
+        # )

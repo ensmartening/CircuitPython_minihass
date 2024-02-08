@@ -174,7 +174,7 @@ def test_Entity_set_state(sensor):
     assert sensor.state == "foobar"
 
 
-def test_StateEntity_instantiate_parent():
+def test_StateEntity_instantiate_self():
     """Prevent direct instantiation of the SensorEntity parent class"""
     with pytest.raises(RuntimeError):
         minihass.StateEntity()
@@ -217,3 +217,9 @@ def test_StateEntity_always_queue(mqtt_client):
     mqtt_client.publish.assert_called_with(
         "homeassistant/foo1337d00d/state", "foo", True, 1
     )
+
+
+def test_CommandEntity_instantiate_self():
+    """Prevent direct instantiation of the CommandEntity parent class"""
+    with pytest.raises(RuntimeError):
+        minihass.CommandEntity()
