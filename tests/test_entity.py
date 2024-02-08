@@ -7,7 +7,7 @@ import pytest
 from adafruit_minimqtt.adafruit_minimqtt import MQTT, MMQTTException
 
 import minihass
-from minihass import const
+from minihass.const import *
 
 
 class GenericEntity(minihass.entity.Entity):
@@ -32,7 +32,6 @@ def entity(mqtt_client):
         object_id="foo",
         mqtt_client=mqtt_client,
         icon="mdi:check-circle",
-        device_class="temperature",
     )
     yield e
 
@@ -118,7 +117,7 @@ def test_Entity_instantiate_parent():
 def test_Entity_announce(entity):
     """Test publishing of MQTT discovery messages"""
     expected_topic = "homeassistant/generic/foo1337d00d/config"
-    expected_msg = '{"avty": [{"t": "homeassistant/foo1337d00d/availability"}], "en": true, "unique_id": "foo1337d00d", "e": "utf-8", "name": "test", "dev_cla": "temperature", "ent_cat": "config", "ic": "mdi:check-circle"}'
+    expected_msg = '{"avty": [{"t": "homeassistant/foo1337d00d/availability"}], "en": true, "unique_id": "foo1337d00d", "e": "utf-8", "name": "test", "ent_cat": "config", "ic": "mdi:check-circle"}'
     entity.announce()
     entity.mqtt_client.publish.assert_called_with(expected_topic, expected_msg, True, 1)
 
@@ -194,7 +193,7 @@ def test_StateEntity_publish(sensor):
 
 def test_StateEntity_queue(mqtt_client):
     s = GenericSensor(
-        name="foo", queue_mode=const.QueueMode.YES, mqtt_client=mqtt_client
+        name="foo", queue_mode=minihass.QueueMode.YES, mqtt_client=mqtt_client
     )
     mqtt_client.publish.side_effect = MMQTTException
     assert not s.state_queued
@@ -210,7 +209,7 @@ def test_StateEntity_queue(mqtt_client):
 
 def test_StateEntity_always_queue(mqtt_client):
     s = GenericSensor(
-        name="foo", queue_mode=const.QueueMode.ALWAYS, mqtt_client=mqtt_client
+        name="foo", queue_mode=minihass.QueueMode.ALWAYS, mqtt_client=mqtt_client
     )
     s.state = "foo"
     mqtt_client.publish.assert_not_called()

@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from json import dumps
 from os import getenv
-from queue import Queue
 
 import adafruit_logging as logging
 import microcontroller
@@ -16,6 +15,22 @@ from . import _validators as validators
 from .const import *
 
 
+class QueueMode(Enum):
+    """Enum of state queueing strategies"""
+
+    NO: object = None
+    """Attempt to publish immediately, discard the message if publishing fails."""
+    YES: object = None
+    """Attempt to publish immediately, queue the message if publishing fails."""
+    ALWAYS: object = None
+    """Queue the message immediately, do not attempt to publish."""
+
+
+QueueMode.NO = QueueMode()
+QueueMode.YES = QueueMode()
+QueueMode.ALWAYS = QueueMode()
+
+
 class Entity(object):
     """Parent class for child classes representing Home Assistant entities. Cannot be
     instantiated directly.
@@ -23,8 +38,8 @@ class Entity(object):
     Args:
         name (int, optional) : Entity Name. Can be null if only the device name is
             relevant. One of ``name`` or ``object_id`` must be set.
-        device_class (str, optional) : `Device class <https://www.home-assistant.io/integrations/binary_sensor/#device-class>`_
-            of the entity. Defaults to :class:`None`
+        encoding (str, optional) : Set to specify encoding of payloads. Defaults to
+            ``utf-8``
         entity_category (str, optional) : Set to specify ``DIAGNOSTIC`` or ``CONFIG``
             entities.
         object_id (str, optional) : Set to generate ``entity_id`` from ``object_id``
@@ -62,7 +77,6 @@ class Entity(object):
         *args,
         name: str = "",
         entity_category: str = "",
-        device_class: str = "",
         encoding: str = "utf-8",
         object_id: str = "",
         icon: str = "",
@@ -133,9 +147,6 @@ class Entity(object):
 
         if self.name:
             self.config.update({CONFIG_NAME: self.name})
-
-        if device_class:
-            self.config.update({CONFIG_DEVICE_CLASS: device_class})
 
         if entity_category:
             self.config.update({CONFIG_ENTITY_CATEGORY: entity_category})
@@ -338,14 +349,14 @@ class StateEntity(Entity):
     """Mixin class implementing state publishing
 
     Args:
-        queue ("yes"|"no"|"always", optional): Controls state queuing behaviour.
-            If ``"yes"``, if publishing to the MQTT broker fails, the message will
-            be queued and can be re-published, by calling the device's
-            :meth:`Device.publish_state_queue()` method. If ``"no"``, unpublished states
-            are not queued, but can still be explicitly published by calling the
-            entity's :meth:`publish_state` method. If ``"always"``, states are not
-            automatically published and will alawys be queued. Defaults to
-            ``"yes"``.
+        queue_mode (QueueMode, optional): Controls state queuing behaviour.
+            If `QueueMode.YES`, and publishing to the MQTT broker fails, the message
+            will be queued and can be re-published, by calling the device's
+            :meth:`Device.publish_state_queue()` method. If `QueueMode.NO`, states that
+            fail to publish are not queued, but can still be explicitly re-published by
+            calling the entity's :meth:`publish_state` method. If `QueueMode.ALWAYS`,
+            states are not automatically published and will alawys be queued. Defaults
+            to `QueueMode.YES`.
     """
 
     def __init__(
