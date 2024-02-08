@@ -11,3 +11,4 @@ minihass
    :members:
    :inherited-members:
    :member-order: bysource
+   :exclude-members: iteritems

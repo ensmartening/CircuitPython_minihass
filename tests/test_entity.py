@@ -7,7 +7,7 @@ import pytest
 from adafruit_minimqtt.adafruit_minimqtt import MQTT, MMQTTException
 
 import minihass
-from minihass import const
+from minihass.const import *
 
 
 class GenericEntity(minihass.entity.Entity):
@@ -24,6 +24,13 @@ class GenericSensor(minihass.entity.StateEntity, minihass.entity.Entity):
         super().__init__(*args, **kwargs)
 
 
+class GenericCommandEntity(minihass.entity.CommandEntity, minihass.entity.Entity):
+    COMPONENT = "generic_command_entity"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
 @pytest.fixture
 def entity(mqtt_client):
     e = GenericEntity(
@@ -32,7 +39,6 @@ def entity(mqtt_client):
         object_id="foo",
         mqtt_client=mqtt_client,
         icon="mdi:check-circle",
-        device_class="temperature",
     )
     yield e
 
@@ -41,6 +47,12 @@ def entity(mqtt_client):
 def sensor(mqtt_client):
     s = GenericSensor(name="test", mqtt_client=mqtt_client)
     yield s
+
+
+@pytest.fixture
+def command_entity():
+    e = GenericCommandEntity(name="test")
+    yield e
 
 
 @pytest.fixture
@@ -118,7 +130,7 @@ def test_Entity_instantiate_parent():
 def test_Entity_announce(entity):
     """Test publishing of MQTT discovery messages"""
     expected_topic = "homeassistant/generic/foo1337d00d/config"
-    expected_msg = '{"avty": [{"t": "homeassistant/foo1337d00d/availability"}], "en": true, "unique_id": "foo1337d00d", "e": "utf-8", "name": "test", "dev_cla": "temperature", "ent_cat": "config", "ic": "mdi:check-circle"}'
+    expected_msg = '{"avty": [{"t": "homeassistant/foo1337d00d/availability"}], "en": true, "unique_id": "foo1337d00d", "e": "utf-8", "name": "test", "ent_cat": "config", "ic": "mdi:check-circle"}'
     entity.announce()
     entity.mqtt_client.publish.assert_called_with(expected_topic, expected_msg, True, 1)
 
@@ -175,7 +187,7 @@ def test_Entity_set_state(sensor):
     assert sensor.state == "foobar"
 
 
-def test_StateEntity_instantiate_parent():
+def test_StateEntity_instantiate_self():
     """Prevent direct instantiation of the SensorEntity parent class"""
     with pytest.raises(RuntimeError):
         minihass.StateEntity()
@@ -194,7 +206,7 @@ def test_StateEntity_publish(sensor):
 
 def test_StateEntity_queue(mqtt_client):
     s = GenericSensor(
-        name="foo", queue_mode=const.QueueMode.YES, mqtt_client=mqtt_client
+        name="foo", queue_mode=minihass.QueueMode.YES, mqtt_client=mqtt_client
     )
     mqtt_client.publish.side_effect = MMQTTException
     assert not s.state_queued
@@ -210,7 +222,7 @@ def test_StateEntity_queue(mqtt_client):
 
 def test_StateEntity_always_queue(mqtt_client):
     s = GenericSensor(
-        name="foo", queue_mode=const.QueueMode.ALWAYS, mqtt_client=mqtt_client
+        name="foo", queue_mode=minihass.QueueMode.ALWAYS, mqtt_client=mqtt_client
     )
     s.state = "foo"
     mqtt_client.publish.assert_not_called()
@@ -218,3 +230,13 @@ def test_StateEntity_always_queue(mqtt_client):
     mqtt_client.publish.assert_called_with(
         "homeassistant/foo1337d00d/state", "foo", True, 1
     )
+
+
+def test_CommandEntity_instantiate_self():
+    """Prevent direct instantiation of the CommandEntity parent class"""
+    with pytest.raises(RuntimeError):
+        minihass.CommandEntity()
+
+
+def test_CommandEntity_instantiate(command_entity):
+    assert command_entity.name == "test"
