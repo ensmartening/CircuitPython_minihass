@@ -23,6 +23,7 @@ class GenericSensor(minihass.entity.StateEntity, minihass.entity.Entity):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+
 class GenericCommandEntity(minihass.entity.CommandEntity, minihass.entity.Entity):
     COMPONENT = "generic_command_entity"
 
@@ -47,10 +48,12 @@ def sensor(mqtt_client):
     s = GenericSensor(name="test", mqtt_client=mqtt_client)
     yield s
 
+
 @pytest.fixture
 def command_entity():
     e = GenericCommandEntity(name="test")
     yield e
+
 
 @pytest.fixture
 def mqtt_client():
@@ -233,6 +236,7 @@ def test_CommandEntity_instantiate_self():
     """Prevent direct instantiation of the CommandEntity parent class"""
     with pytest.raises(RuntimeError):
         minihass.CommandEntity()
+
 
 def test_CommandEntity_instantiate(command_entity):
     assert command_entity.name == "test"
