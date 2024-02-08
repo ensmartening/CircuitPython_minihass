@@ -423,6 +423,11 @@ class CommandEntity(Entity):
     """Mixin class implementing command listening
 
     Args:
+        command_callback (callable, optional): Callback for command messages. The
+            function will be called with one positional argument, being the payload
+            of the command message. If the payload is valid JSON, it will be parsed
+            into a `dict`; otherwise, the raw payload will be passed. Defaults to
+            `None`.
         optimistic (bool, optional): Controls whether the entity works in optimistic
             mode. If :class:`True`, sending a command to change the state of the entity
             will immediately update the state of the entity in Home Assistant. If
@@ -436,7 +441,7 @@ class CommandEntity(Entity):
 
     """
 
-    def __init__(self, *args, optimistic=False, retain=False, **kwargs):
+    def __init__(self, *args, command_callback=None, optimistic=False, retain=False, **kwargs):
         if self.__class__ == CommandEntity:
             raise RuntimeError("CommandEntity class cannot be raised on its own")
 
@@ -449,6 +454,8 @@ class CommandEntity(Entity):
                 CONFIG_RETAIN: retain,
             }
         )
+
+
 
         # self.config.update(
         #     {CONFIG_STATE_TOPIC: f"{HA_MQTT_PREFIX}/{self.object_id}/state"}
