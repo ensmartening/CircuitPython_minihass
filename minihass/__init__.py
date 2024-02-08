@@ -8,4 +8,4 @@ from .const import *
 from .device import Device
 from .entity import Entity, QueueMode, StateEntity
 
-__all__ = ["Device", "Entity", "QueueMode", "StateEntity", "BinarySensor"]
+__all__ = ["Device", "Entity", "StateEntity", "BinarySensor", "QueueMode"]

@@ -24,6 +24,10 @@ class BinarySensor(StateEntity, Entity):
             sensor's state expires, if it's not updated. After expiry, the sensor's
             state becomes unavailable. Defaults to ``0``.
 
+    .. caution:: :class:`BinarySensor` and :class:`Sensor` entities will fail to set up
+        if ``entity_category='config'``.
+        `home‑assistant/core#107199 <https://github.com/home-assistant/core/pull/107199>`_
+
     """
 
     COMPONENT = "binary_sensor"
