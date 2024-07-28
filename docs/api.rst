@@ -10,5 +10,6 @@ minihass
 .. automodule:: minihass
    :members:
    :inherited-members:
+   :show-inheritance:
    :member-order: bysource
    :exclude-members: iteritems
