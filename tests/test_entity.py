@@ -73,7 +73,9 @@ def test_Entity_availability(entity):
 def test_Entity_availability_pub_failure(logger, entity):
     entity.mqtt_client.publish.side_effect = MMQTTException("something failed")
     entity.availability = True
-    logger.assert_called_with("Availability publishing failed, ('something failed',)")
+    logger.assert_called_with(
+        "Availability publishing failed, ('something failed', None)"
+    )
 
 
 @patch("adafruit_logging.Logger.warning")
@@ -136,7 +138,7 @@ def test_Entity_announce_mqtt_error(logger, entity):
     """Log an error if MQTT publishing fails"""
     entity.mqtt_client.publish.side_effect = MMQTTException("something failed")
     entity.announce()
-    logger.assert_called_with("Announcement failed, ('something failed',)")
+    logger.assert_called_with("Announcement failed, ('something failed', None)")
 
 
 def test_Entity_withdraw(entity):
@@ -160,7 +162,7 @@ def test_Entity_withdraw_mqtt_error(logger, entity):
     """Log anerror if announce is called without an MQTT client object"""
     entity.mqtt_client.publish.side_effect = MMQTTException("something failed")
     entity.withdraw()
-    logger.assert_called_with("Withdrawal failed, ('something failed',)")
+    logger.assert_called_with("Withdrawal failed, ('something failed', None)")
 
 
 def test_Entity_set_mqtt_client(mqtt_client):
