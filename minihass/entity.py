@@ -2,6 +2,7 @@
 Defines base classes for components that only publish shates (e.g. sensors),
 as well as components that accept commands (e.g. switches)
 """
+
 from __future__ import annotations
 
 from json import dumps

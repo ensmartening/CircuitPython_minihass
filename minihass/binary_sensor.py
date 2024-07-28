@@ -1,4 +1,5 @@
 """Implements the binary_sensor MQTT component"""
+
 from adafruit_minimqtt.adafruit_minimqtt import MQTT
 
 from minihass.const import *
