@@ -441,7 +441,9 @@ class CommandEntity(Entity):
 
     """
 
-    def __init__(self, *args, command_callback=None, optimistic=False, retain=False, **kwargs):
+    def __init__(
+        self, *args, command_callback=None, optimistic=False, retain=False, **kwargs
+    ):
         if self.__class__ == CommandEntity:
             raise RuntimeError("CommandEntity class cannot be raised on its own")
 
@@ -454,8 +456,6 @@ class CommandEntity(Entity):
                 CONFIG_RETAIN: retain,
             }
         )
-
-
 
         # self.config.update(
         #     {CONFIG_STATE_TOPIC: f"{HA_MQTT_PREFIX}/{self.object_id}/state"}
