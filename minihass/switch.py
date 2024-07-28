@@ -1,37 +1,28 @@
-"""Implements the binary_sensor MQTT component"""
+"""Implements the switch MQTT Component"""
 
 from adafruit_minimqtt.adafruit_minimqtt import MQTT
 
 from minihass.const import *
 
 from . import _validators as validators
-from .entity import Entity, StateEntity
+from .entity import Entity, StateEntity, CommandEntity
 
-
-class BinarySensor(StateEntity, Entity):
+class Switch(CommandEntity, StateEntity, Entity):
     """
-    Class representing a Home Assistant Binary Sensor entity.
+    Class representing a Home Assistant Switch entity
 
-    .. note:: A :class:`BinarySensor` object takes all parameters from both the
-        :class:`Entity` and :class:`StateEntity` classes, as well as the parameters
-        listed below.
+    .. note:: A :class:`Switch` object takes all parameters from the
+        :class:`Entity`, :class:`StateEntity`, and :class:`CommandEntity`
+        classes, as well as the parameters listed below.
 
     Args:
-        device_class (str, optional) : `Device class <https://www.home-assistant.io/integrations/binary_sensor/#device-class>`_
-            of the entity. Defaults to :class:`None`
-        force_update  (bool, optional) : Specifies whether the entity should be enabled
-            when it is first added, defaults to :class:`False`.
-        expire_after (int, optional) : Defines the number of seconds before the
-            sensor's state expires, if it's not updated. After expiry, the sensor's
-            state becomes unavailable. Defaults to ``0``.
+        CommandEntity (_type_): _description_
+        StateEntity (_type_): _description_
+        Entity (_type_): _description_foo
+    """    
+    pass
 
-    .. caution:: :class:`BinarySensor` and :class:`Sensor` entities will fail to set up
-        if ``entity_category='config'``.
-        `home‑assistant/core#107199 <https://github.com/home-assistant/core/pull/107199>`_
-
-    """
-
-    COMPONENT = "binary_sensor"
+    COMPONENT = "switch"
 
     def __init__(
         self,
@@ -41,6 +32,13 @@ class BinarySensor(StateEntity, Entity):
         expire_after: int = 0,
         **kwargs
     ):
+        """_summary_
+
+        Args:
+            device_class (str, optional): _description_. Defaults to "".
+            force_update (bool, optional): _description_. Defaults to False.
+            expire_after (int, optional): _description_. Defaults to 0.
+        """        
         super().__init__(*args, **kwargs)
 
         # self.expire_after = expire_after
@@ -72,3 +70,4 @@ class BinarySensor(StateEntity, Entity):
     def state(self, state: bool):
         # state = validators.validate_bool(state)
         self._state_setter(str(bool(state)))  # type: ignore
+

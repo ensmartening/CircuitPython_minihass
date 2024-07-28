@@ -3,18 +3,8 @@ from adafruit_blinka import Enum as Enum
 
 HA_MQTT_PREFIX = "homeassistant"
 
-
-class QueueMode(Enum):
-    NO: object = None
-    YES: object = None
-    ALWAYS: object = None
-
-
-QueueMode.NO = QueueMode()
-QueueMode.YES = QueueMode()
-QueueMode.ALWAYS = QueueMode()
-
 CONFIG_AVAILABILITY = "avty"
+CONFIG_COMMAND_TOPIC = "cmd_t"
 CONFIG_CONNECTIONS = "cns"
 CONFIG_DEVICE = "dev"
 CONFIG_ENABLED_BY_DEFAULT = "en"
@@ -28,8 +18,10 @@ CONFIG_ENTITY_CATEGORY = "ent_cat"
 CONFIG_EXPIRE_AFTER = "expire_after"
 CONFIG_ICON = "ic"
 CONFIG_MANUFACTURER = "mf"
+CONFIG_OPTIMISTIC = "opt"
 CONFIG_PAYLOAD_OFF = "pl_off"
 CONFIG_PAYLOAD_ON = "pl_on"
+CONFIG_RETAIN = "ret"
 CONFIG_STATE_TOPIC = "stat_t"
 CONFIG_TOPIC = "t"
 CONFIG_UNIQUE_ID = "unique_id"

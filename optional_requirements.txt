@@ -1,5 +1,6 @@
 piccolo-theme
 Sphinx
+enum-tools[sphinx]
 pytest
 pytest-cov
 black
