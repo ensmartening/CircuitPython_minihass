@@ -70,7 +70,7 @@ def test_Device_add_entity_already_exists(entities, mqtt_client):
 def test_Device_add_entity_mqtt_failure(logger, device, entities):
     device.mqtt_client.publish.side_effect = MMQTTException("something broke")
     assert device.add_entity(entities[2]) == True
-    logger.assert_called_with("Announcement failed, ('something broke',)")
+    logger.assert_called_with("Announcement failed, ('something broke', None)")
 
 
 def test_Device_add_entity_wrong_type(device):
@@ -83,7 +83,7 @@ def test_Device_delete_entity(device, entities):
     expected_topic = (
         f"homeassistant/binary_sensor/mqtt_device1337d00d/foo1337d00d/config"
     )
-    device.mqtt_client.publish.side_effect = MMQTTException
+    device.mqtt_client.publish.side_effect = MMQTTException("something broke")
     assert device.delete_entity(entities[0]) == True
     assert device.delete_entity(entities[0]) == False
     device.mqtt_client.publish.assert_called_with(expected_topic, "", True, 1)
@@ -119,7 +119,9 @@ def test_Device_availability(device):
 def test_Device_availability_pub_failure(logger, device):
     device.mqtt_client.publish.side_effect = MMQTTException("something failed")
     device.availability = True
-    logger.assert_called_with("Availability publishing failed, ('something failed',)")
+    logger.assert_called_with(
+        "Availability publishing failed, ('something failed', None)"
+    )
 
 
 def test_Device_publish_state_queue(entities, mqtt_client):
